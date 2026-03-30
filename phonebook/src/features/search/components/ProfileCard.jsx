@@ -248,7 +248,7 @@ import FavoriteModal from "./FavoriteModal";
 import EnquiryModal from "./EnquiryModal";
 import Swal from "sweetalert2";
 import { supabase } from "../../../core/config/supabaseClient";
-import "../components/css/ProfileCard.css";
+import "../components/css/profilecard.css";
 
 import DiscountModal from "./DiscountModal";
 import { DiscountService } from "../Service/discountService";
