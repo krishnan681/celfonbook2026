@@ -1,0 +1,753 @@
+<!doctype html>
+
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Acme Plumbing &amp; Rooter - LocalServiceDirect</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#008cff",
+              "background-light": "#f5f7f8",
+              "background-dark": "#0f1a23",
+              "border-subtle": "#E0E0E0",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .sticky-nav {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+      }
+      .sticky-sidebar {
+        position: sticky;
+        top: 80px;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-[#101518] dark:text-white"
+  >
+    <!-- Top Navigation Bar -->
+    <header
+      class="w-full bg-white dark:bg-background-dark border-b border-border-subtle dark:border-gray-800 px-6 lg:px-40 py-3 flex items-center justify-between z-50 sticky top-0"
+    >
+      <div class="flex items-center gap-8">
+        <div class="flex items-center gap-2">
+          <div class="text-primary">
+            <svg
+              class="size-6"
+              fill="none"
+              viewbox="0 0 48 48"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 6H42L36 24L42 42H6L12 24L6 6Z"
+                fill="currentColor"
+              ></path>
+            </svg>
+          </div>
+          <h2 class="text-lg font-bold tracking-tight">LocalServiceDirect</h2>
+        </div>
+        <nav class="hidden md:flex items-center gap-6">
+          <a
+            class="text-sm font-medium hover:text-primary transition-colors"
+            href="#"
+            >Browse Services</a
+          >
+          <a
+            class="text-sm font-medium hover:text-primary transition-colors"
+            href="#"
+            >Write a Review</a
+          >
+          <a
+            class="text-sm font-medium hover:text-primary transition-colors"
+            href="#"
+            >For Businesses</a
+          >
+        </nav>
+      </div>
+      <div class="flex items-center gap-4">
+        <div
+          class="hidden sm:flex items-center bg-[#f0f3f5] dark:bg-gray-800 rounded-lg px-3 py-1.5 w-64"
+        >
+          <span class="material-symbols-outlined text-[#5e788d] text-lg"
+            >search</span
+          >
+          <input
+            class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-[#5e788d]"
+            placeholder="Search services..."
+            type="text"
+          />
+        </div>
+        <button
+          class="bg-primary hover:bg-primary/90 text-white text-sm font-bold py-2 px-6 rounded-lg transition-all"
+        >
+          Login
+        </button>
+      </div>
+    </header>
+    <main class="max-w-[1280px] mx-auto px-6 lg:px-10 py-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Left Column (70%) -->
+        <div class="lg:col-span-8 space-y-6">
+          <!-- Hero Profile Header -->
+          <section
+            class="bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-border-subtle dark:border-gray-800"
+          >
+            <div
+              class="h-64 md:h-80 w-full bg-cover bg-center"
+              data-alt="Plumbing professional working on industrial pipes"
+              style="
+                background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBgCysHY95IBKh2NmTkfi1SP6PA3B1YcGzvxSJ_dyHddiEzOVGhlg_H0sXXxj0aPmt2Qshj5QHaggBekB9s57Fy3A0EA8NCZd03jAZtQ7TsJx21W-wmWWoQ7ULzWzTnJnGOA4IehePKK7i40HjRErkT8qb7iDqz6AbzAZjOLbayFZbcmRhgcPM1_cDvkHci6iYJYN2VuqqTgrTqnQWvM59tb2RTrV0h3NawrxWeyvMCsBVj5_03pFgm7mZIdr7rGVxDqtEYWrZ1V5Ob&quot;);
+              "
+            ></div>
+            <div class="p-6">
+              <div
+                class="flex flex-col md:flex-row md:items-end justify-between gap-4"
+              >
+                <div class="flex gap-4">
+                  <div
+                    class="w-24 h-24 rounded-lg bg-white p-1 -mt-16 shadow-lg border border-border-subtle"
+                  >
+                    <div
+                      class="w-full h-full bg-cover bg-center rounded-md"
+                      data-alt="Company logo with plumbing tools"
+                      style="
+                        background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCEGgAL4SGDj0RfUpENFbHw4HNtVwl_hQfQoB3q5IUkz4U16OSb4KkjzjjLMdWzvDXd29hW4OT95yLpWyPbdE1c2GjdErcPu9jdgjE3_8lmh7DqSZbdurWqKx0A3WxO70zNMEk5AExRnq9thBJ4NXaPYBOFIB5amJGG9ljb0KAuPPNcZSppE_2aK6C-2JAS8sMj606DOfC0lYq-OCKZJE1tNBJFvHUe0QZRD3iH1oiIId8OxBTbpmZxi7OymIrnuRGoQ2cwvAWwQLAz&quot;);
+                      "
+                    ></div>
+                  </div>
+                  <div class="flex flex-col">
+                    <div class="flex items-center gap-2">
+                      <h1 class="text-2xl font-bold">
+                        Acme Plumbing &amp; Rooter
+                      </h1>
+                      <span
+                        class="material-symbols-outlined text-primary text-xl"
+                        title="Verified Professional"
+                        >check_circle</span
+                      >
+                    </div>
+                    <div class="flex items-center gap-2 mt-1">
+                      <div
+                        class="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded"
+                      >
+                        4.8
+                      </div>
+                      <div class="flex text-yellow-400">
+                        <span
+                          class="material-symbols-outlined text-sm"
+                          style="font-variation-settings: &quot;FILL&quot; 1"
+                          >star</span
+                        >
+                        <span
+                          class="material-symbols-outlined text-sm"
+                          style="font-variation-settings: &quot;FILL&quot; 1"
+                          >star</span
+                        >
+                        <span
+                          class="material-symbols-outlined text-sm"
+                          style="font-variation-settings: &quot;FILL&quot; 1"
+                          >star</span
+                        >
+                        <span
+                          class="material-symbols-outlined text-sm"
+                          style="font-variation-settings: &quot;FILL&quot; 1"
+                          >star</span
+                        >
+                        <span
+                          class="material-symbols-outlined text-sm"
+                          style="font-variation-settings: &quot;FILL&quot; 1"
+                          >star_half</span
+                        >
+                      </div>
+                      <span class="text-sm text-[#5e788d] dark:text-gray-400"
+                        >(124 reviews) • Licensed &amp; Insured</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="flex gap-2">
+                  <button
+                    class="flex items-center gap-2 px-4 py-2 border border-border-subtle dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <span class="material-symbols-outlined text-lg">share</span>
+                    <span class="text-sm font-medium">Share</span>
+                  </button>
+                  <button
+                    class="flex items-center gap-2 px-4 py-2 border border-border-subtle dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <span class="material-symbols-outlined text-lg"
+                      >favorite</span
+                    >
+                    <span class="text-sm font-medium">Save</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Sticky Anchor Nav -->
+          <nav
+            class="sticky-nav bg-white dark:bg-gray-900 border border-border-subtle dark:border-gray-800 rounded-lg flex overflow-x-auto"
+          >
+            <a
+              class="px-6 py-4 text-sm font-bold border-b-2 border-primary text-primary whitespace-nowrap"
+              href="#overview"
+              >Overview</a
+            >
+            <a
+              class="px-6 py-4 text-sm font-bold text-[#5e788d] dark:text-gray-400 hover:text-primary whitespace-nowrap"
+              href="#photos"
+              >Photos</a
+            >
+            <a
+              class="px-6 py-4 text-sm font-bold text-[#5e788d] dark:text-gray-400 hover:text-primary whitespace-nowrap"
+              href="#about"
+              >About</a
+            >
+            <a
+              class="px-6 py-4 text-sm font-bold text-[#5e788d] dark:text-gray-400 hover:text-primary whitespace-nowrap"
+              href="#reviews"
+              >Reviews</a
+            >
+            <a
+              class="px-6 py-4 text-sm font-bold text-[#5e788d] dark:text-gray-400 hover:text-primary whitespace-nowrap"
+              href="#location"
+              >Location</a
+            >
+          </nav>
+          <!-- Photo Grid -->
+          <section
+            class="bg-white dark:bg-gray-900 rounded-xl border border-border-subtle dark:border-gray-800 p-6"
+            id="photos"
+          >
+            <h2 class="text-xl font-bold mb-4">Photo Gallery</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div
+                class="aspect-square bg-cover bg-center rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                data-alt="Residential bathroom renovation project"
+                style="
+                  background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCbOXghjelAyTG3cuJlvmuUDRHUBZFEwjw52BQQcgvPUzGx665V2_33NjyNFt-dPdcZ6PpExSEadqcCm7vb6NKkTyQBnV6epCkxELFpw_AQICzjE3Xi_dN0m9OeH3nnR0NqMB0F3XKGQm7kXqQBCCiIOGpQlVT9PfzZtgyyZqfhtZnJHS3haNGq8fMFH3hpaztOgjP0U99aQQ5tBSsquvw8i5-CeTQOXX9p9Zp6Nllv3NNNMrHU3NQjmNkfOHAVJPMN1JkjMQXD4PB3&quot;);
+                "
+              ></div>
+              <div
+                class="aspect-square bg-cover bg-center rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                data-alt="Plumber fixing a kitchen sink drain"
+                style="
+                  background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAbT_wh8f-1alTOcDkm5lU_zO6sZgaBcdnd3Gt7ujULoCtMviHaZ7nIaetBxe0XoVmIhYYwFTG2f__GD2K78VWf0vBVmrn5DZZlGkhf3gTd1GyKquhEM3g1tD7NE7Cd0yxjW1oxuqpUOe_8dMYq6Np_T769RFVz2awRafOexn8eTwDdQr_rquWR4B2Fo42vyDUvG5DgOrTbSr_8Ta0zyXgrSSgvZpTOovMdiy8CKQ4wScY61OsCR83xl9A6Uue_WDdID2V8DmVoev4x&quot;);
+                "
+              ></div>
+              <div
+                class="aspect-square bg-cover bg-center rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                data-alt="New copper pipe installation in basement"
+                style="
+                  background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCMXqb5uBU9eu7xBgsJ8nchkxfMx7zNeDYp6_oCA8qIa4FZMpX5_ETjqFX4wQX2lmGK6MA3sWCsXtrEBJx5XwdyIruwGMDU4KQ6LZ5rqJ4pIYtgc5cUP1r-VJFE8QZ4NOFqxoJVb1WGu1HxVzq4ZDLUGnFHQsKRKumm8xO03OIbvHz_J3fdmseVHwcg2n_zk3jvC3RZJpviMkeKHBiiuwU8gvDWyzoKVl-OHaCepbDRwFOjn_74rf0u8tbwLP3HrqPKVt-awpdnhWyu&quot;);
+                "
+              ></div>
+              <div
+                class="relative aspect-square bg-cover bg-center rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                data-alt="Modern high-efficiency water heater"
+                style="
+                  background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAJlp8kiOFFz9idnT4cj4XbB3h3MBrJ7wNqLq9bMTbSXPkP6pBmh3A1cZUSeG8reEifmeWMRcxYwXnmD-e4V0zDmMW9Xews7SEELj2CA9B6XWGT-T2lJtxTR2kP4pZZ7NQydbFBrFAagjlKTz3iTk168UiOn2B3KvfLQAzHArUrAIF95Rt8Ofki8cDpGv0H7tySg_KM5WwqFiO4RPTg2M1FUxZ2n5xQKjXnXX00TgOQPdF1LZ7F-ozk7Z6__W6frBJl79TmqtCUfpCC&quot;);
+                "
+              >
+                <div
+                  class="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg"
+                >
+                  <span class="text-white font-bold text-lg">+12 More</span>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- About Section -->
+          <section
+            class="bg-white dark:bg-gray-900 rounded-xl border border-border-subtle dark:border-gray-800 p-6"
+            id="about"
+          >
+            <h2 class="text-xl font-bold mb-4">
+              About Acme Plumbing &amp; Rooter
+            </h2>
+            <div
+              class="prose dark:prose-invert max-w-none text-sm md:text-base leading-relaxed text-gray-700 dark:text-gray-300"
+            >
+              <p>
+                With over 20 years of dedicated service in the local community,
+                Acme Plumbing &amp; Rooter has built a reputation for
+                excellence, reliability, and unparalleled technical expertise.
+                Our team of state-licensed master plumbers is equipped with the
+                latest diagnostic technology to handle everything from minor
+                leak repairs to complex commercial sewer line installations.
+              </p>
+              <p class="mt-4">
+                We understand that plumbing emergencies don't wait for business
+                hours. That's why we offer 24/7 emergency response across the
+                tri-county area, ensuring your home or business is protected
+                around the clock. Our commitment to transparent pricing means
+                you'll always receive a detailed estimate before any work
+                begins...
+              </p>
+            </div>
+            <button
+              class="mt-4 text-primary font-bold text-sm hover:underline flex items-center gap-1"
+            >
+              Read More
+              <span class="material-symbols-outlined text-sm">expand_more</span>
+            </button>
+            <div class="mt-8">
+              <h3 class="font-bold mb-3">Our Core Services</h3>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="px-3 py-1 bg-background-light dark:bg-gray-800 rounded-full text-xs font-medium"
+                  >Emergency Repairs</span
+                >
+                <span
+                  class="px-3 py-1 bg-background-light dark:bg-gray-800 rounded-full text-xs font-medium"
+                  >Drain Cleaning</span
+                >
+                <span
+                  class="px-3 py-1 bg-background-light dark:bg-gray-800 rounded-full text-xs font-medium"
+                  >Water Heater Service</span
+                >
+                <span
+                  class="px-3 py-1 bg-background-light dark:bg-gray-800 rounded-full text-xs font-medium"
+                  >Sewer Line Repair</span
+                >
+                <span
+                  class="px-3 py-1 bg-background-light dark:bg-gray-800 rounded-full text-xs font-medium"
+                  >Hydro Jetting</span
+                >
+                <span
+                  class="px-3 py-1 bg-background-light dark:bg-gray-800 rounded-full text-xs font-medium"
+                  >Gas Line Service</span
+                >
+              </div>
+            </div>
+          </section>
+          <!-- Review Feed -->
+          <section
+            class="bg-white dark:bg-gray-900 rounded-xl border border-border-subtle dark:border-gray-800 p-6"
+            id="reviews"
+          >
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-bold">Customer Reviews</h2>
+              <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-500">Sort by:</span>
+                <select
+                  class="bg-transparent border-none text-sm font-bold focus:ring-0 p-0 cursor-pointer"
+                >
+                  <option>Newest first</option>
+                  <option>Highest rated</option>
+                  <option>Lowest rated</option>
+                </select>
+              </div>
+            </div>
+            <div class="space-y-6">
+              <!-- Review Card 1 -->
+              <div
+                class="pb-6 border-b border-border-subtle dark:border-gray-800"
+              >
+                <div class="flex items-start justify-between">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary"
+                    >
+                      JD
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-sm">John D.</h4>
+                      <p class="text-xs text-gray-500">
+                        San Francisco, CA • 2 days ago
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex text-yellow-400">
+                    <span
+                      class="material-symbols-outlined text-sm"
+                      style="font-variation-settings: &quot;FILL&quot; 1"
+                      >star</span
+                    >
+                    <span
+                      class="material-symbols-outlined text-sm"
+                      style="font-variation-settings: &quot;FILL&quot; 1"
+                      >star</span
+                    >
+                    <span
+                      class="material-symbols-outlined text-sm"
+                      style="font-variation-settings: &quot;FILL&quot; 1"
+                      >star</span
+                    >
+                    <span
+                      class="material-symbols-outlined text-sm"
+                      style="font-variation-settings: &quot;FILL&quot; 1"
+                      >star</span
+                    >
+                    <span
+                      class="material-symbols-outlined text-sm"
+                      style="font-variation-settings: &quot;FILL&quot; 1"
+                      >star</span
+                    >
+                  </div>
+                </div>
+                <p
+                  class="mt-3 text-sm leading-relaxed text-gray-700 dark:text-gray-300"
+                >
+                  Excellent service! They arrived within 30 minutes of my
+                  emergency call. The plumber, Mike, was professional and fixed
+                  our burst pipe quickly. Pricing was very reasonable for a
+                  weekend call.
+                </p>
+                <div class="mt-4 flex items-center gap-4">
+                  <button
+                    class="flex items-center gap-1 text-xs font-bold text-gray-500 hover:text-primary"
+                  >
+                    <span class="material-symbols-outlined text-sm"
+                      >thumb_up</span
+                    >
+                    Helpful (4)
+                  </button>
+                  <button
+                    class="text-xs font-bold text-gray-500 hover:text-primary"
+                  >
+                    Report
+                  </button>
+                </div>
+              </div>
+              <!-- Review Card 2 -->
+              <div
+                class="pb-6 border-b border-border-subtle dark:border-gray-800"
+              >
+                <div class="flex items-start justify-between">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary"
+                    >
+                      SL
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-sm">Sarah L.</h4>
+                      <p class="text-xs text-gray-500">
+                        Oakland, CA • 1 week ago
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex text-yellow-400">
+                    <span
+                      class="material-symbols-outlined text-sm"
+                      style="font-variation-settings: &quot;FILL&quot; 1"
+                      >star</span
+                    >
+                    <span
+                      class="material-symbols-outlined text-sm"
+                      style="font-variation-settings: &quot;FILL&quot; 1"
+                      >star</span
+                    >
+                    <span
+                      class="material-symbols-outlined text-sm"
+                      style="font-variation-settings: &quot;FILL&quot; 1"
+                      >star</span
+                    >
+                    <span
+                      class="material-symbols-outlined text-sm"
+                      style="font-variation-settings: &quot;FILL&quot; 1"
+                      >star</span
+                    >
+                    <span class="material-symbols-outlined text-sm">star</span>
+                  </div>
+                </div>
+                <p
+                  class="mt-3 text-sm leading-relaxed text-gray-700 dark:text-gray-300"
+                >
+                  Scheduled a routine drain cleaning. They were on time and did
+                  a great job. Only reason it's 4 stars is that they were
+                  slightly more expensive than my previous quote, but the
+                  quality of work was worth it.
+                </p>
+                <div class="mt-4 flex items-center gap-4">
+                  <button
+                    class="flex items-center gap-1 text-xs font-bold text-gray-500 hover:text-primary"
+                  >
+                    <span class="material-symbols-outlined text-sm"
+                      >thumb_up</span
+                    >
+                    Helpful (1)
+                  </button>
+                  <button
+                    class="text-xs font-bold text-gray-500 hover:text-primary"
+                  >
+                    Report
+                  </button>
+                </div>
+              </div>
+            </div>
+            <button
+              class="w-full mt-6 py-3 border border-border-subtle dark:border-gray-700 rounded-lg text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            >
+              View All 124 Reviews
+            </button>
+          </section>
+        </div>
+        <!-- Right Column Sidebar (30%) -->
+        <aside class="lg:col-span-4">
+          <div class="sticky-sidebar space-y-4">
+            <!-- Lead Capture Form -->
+            <div
+              class="bg-white dark:bg-gray-900 rounded-xl border border-border-subtle dark:border-gray-800 shadow-sm p-6"
+            >
+              <h3 class="text-lg font-bold mb-1">Book a Consultation</h3>
+              <p class="text-sm text-gray-500 mb-6">
+                Average response time: 15 minutes
+              </p>
+              <form class="space-y-4">
+                <div>
+                  <label
+                    class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1 uppercase tracking-wider"
+                    >Full Name</label
+                  >
+                  <input
+                    class="w-full bg-background-light dark:bg-gray-800 border-border-subtle dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-primary focus:border-primary transition-all"
+                    placeholder="e.g. Jane Smith"
+                    type="text"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1 uppercase tracking-wider"
+                    >Phone Number</label
+                  >
+                  <input
+                    class="w-full bg-background-light dark:bg-gray-800 border-border-subtle dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-primary focus:border-primary transition-all"
+                    placeholder="(555) 000-0000"
+                    type="tel"
+                  />
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1 uppercase tracking-wider"
+                      >Preferred Date</label
+                    >
+                    <div class="relative">
+                      <input
+                        class="w-full bg-background-light dark:bg-gray-800 border-border-subtle dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-primary focus:border-primary transition-all"
+                        type="date"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1 uppercase tracking-wider"
+                      >Time</label
+                    >
+                    <select
+                      class="w-full bg-background-light dark:bg-gray-800 border-border-subtle dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-primary focus:border-primary transition-all"
+                    >
+                      <option>Morning</option>
+                      <option>Afternoon</option>
+                      <option>Evening</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1 uppercase tracking-wider"
+                    >Service Needed</label
+                  >
+                  <select
+                    class="w-full bg-background-light dark:bg-gray-800 border-border-subtle dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-primary focus:border-primary transition-all"
+                  >
+                    <option>Select a service...</option>
+                    <option>Emergency Repair</option>
+                    <option>Drain Cleaning</option>
+                    <option>Water Heater</option>
+                    <option>Inspection</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <button
+                  class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-lg shadow-lg shadow-primary/20 transition-all mt-4"
+                  type="submit"
+                >
+                  Enquire Now
+                </button>
+              </form>
+              <p
+                class="text-[11px] text-center text-gray-400 mt-4 leading-tight"
+              >
+                By clicking "Enquire Now", you agree to our Terms of Service and
+                Privacy Policy. Your data is secured with end-to-end encryption.
+              </p>
+            </div>
+            <!-- Location Card -->
+            <div
+              class="bg-white dark:bg-gray-900 rounded-xl border border-border-subtle dark:border-gray-800 p-6"
+              id="location"
+            >
+              <h3
+                class="text-sm font-bold mb-4 uppercase tracking-wider text-gray-500"
+              >
+                Service Area
+              </h3>
+              <div
+                class="w-full h-40 bg-gray-200 dark:bg-gray-800 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden"
+              >
+                <!-- Placeholder for map image -->
+                <div
+                  class="absolute inset-0 bg-cover bg-center"
+                  data-alt="Map of San Francisco service area"
+                  data-location="San Francisco, CA"
+                  style="
+                    background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDxSoSItCdLA_E77pBIY9qKLJqgFVIS0o_cXHgqqDdaN0-sDmndPVnGb6HkxsPj8cpItz8G4TyWa2s1--eH922UGC7WCIHVbKVRkYs5vARmkLgHhNFjQFNYU3QJJBpNzFbHqz-mNamGz_dRUdaxIhPkwYoNCzVvccKDh0idPWydjZFGr_sYQSdRBZhmHu33l9G9uOzdwdPtZ0MVKdgz4HegHvJVOc7AEKaviGo_Us1NQ_mefeAFSiG54-FZptoT4zxMx3PBtMqgq9jX&quot;);
+                  "
+                ></div>
+                <div
+                  class="relative z-10 bg-white/90 dark:bg-gray-900/90 p-2 rounded shadow-sm text-xs font-bold border border-primary/20"
+                >
+                  Serving San Francisco &amp; Bay Area
+                </div>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-primary text-xl"
+                    >location_on</span
+                  >
+                  <span class="text-sm"
+                    >123 Industrial Way, Suite 400<br />San Francisco, CA
+                    94103</span
+                  >
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-primary text-xl"
+                    >call</span
+                  >
+                  <span class="text-sm font-bold text-primary"
+                    >(415) 555-0123</span
+                  >
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-primary text-xl"
+                    >schedule</span
+                  >
+                  <span class="text-sm font-medium"
+                    >Open 24/7 for Emergencies</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <!-- Footer -->
+    <footer
+      class="mt-12 bg-white dark:bg-gray-900 border-t border-border-subtle dark:border-gray-800 py-12 px-6 lg:px-40"
+    >
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <div>
+          <h4 class="font-bold text-sm mb-4">Service Directory</h4>
+          <ul class="text-sm text-gray-500 space-y-2">
+            <li><a class="hover:text-primary" href="#">Home Services</a></li>
+            <li>
+              <a class="hover:text-primary" href="#">Medical Directory</a>
+            </li>
+            <li>
+              <a class="hover:text-primary" href="#">Legal Professionals</a>
+            </li>
+            <li>
+              <a class="hover:text-primary" href="#">Contractor Listings</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-4">Company</h4>
+          <ul class="text-sm text-gray-500 space-y-2">
+            <li><a class="hover:text-primary" href="#">About Us</a></li>
+            <li><a class="hover:text-primary" href="#">Careers</a></li>
+            <li><a class="hover:text-primary" href="#">Contact</a></li>
+            <li><a class="hover:text-primary" href="#">Press</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-4">Support</h4>
+          <ul class="text-sm text-gray-500 space-y-2">
+            <li><a class="hover:text-primary" href="#">Help Center</a></li>
+            <li><a class="hover:text-primary" href="#">Safety Center</a></li>
+            <li><a class="hover:text-primary" href="#">Report a Problem</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-4">Business Owners</h4>
+          <ul class="text-sm text-gray-500 space-y-2">
+            <li>
+              <a class="hover:text-primary" href="#">Claim your Listing</a>
+            </li>
+            <li><a class="hover:text-primary" href="#">Advertising</a></li>
+            <li><a class="hover:text-primary" href="#">Resources</a></li>
+          </ul>
+        </div>
+      </div>
+      <div
+        class="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-border-subtle dark:border-gray-800 gap-4"
+      >
+        <div class="flex items-center gap-2">
+          <div class="text-gray-400">
+            <svg
+              class="size-5"
+              fill="none"
+              viewbox="0 0 48 48"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 6H42L36 24L42 42H6L12 24L6 6Z"
+                fill="currentColor"
+              ></path>
+            </svg>
+          </div>
+          <p class="text-xs text-gray-400">
+            © 2024 LocalServiceDirect. All rights reserved.
+          </p>
+        </div>
+        <div class="flex gap-6">
+          <a class="text-gray-400 hover:text-primary text-xs" href="#"
+            >Privacy Policy</a
+          >
+          <a class="text-gray-400 hover:text-primary text-xs" href="#"
+            >Terms of Service</a
+          >
+          <a class="text-gray-400 hover:text-primary text-xs" href="#"
+            >Cookie Settings</a
+          >
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

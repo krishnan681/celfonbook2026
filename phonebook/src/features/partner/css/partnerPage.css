@@ -1,0 +1,214 @@
+/* PAGE WRAPPER */
+
+.partner-wrapper{
+  display:flex;
+  justify-content:center;
+  padding:50px 20px;
+  background:#f5f7fb;
+  min-height:100vh;
+}
+
+/* MAIN CARD */
+
+.partner-card{
+  width:100%;
+  max-width:1100px;
+  background:white;
+  padding:40px;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* HEADER */
+
+.partner-header{
+  margin-bottom:35px;
+}
+
+.partner-title{
+  font-size:28px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.partner-sub{
+  color:#777;
+  margin-bottom:6px;
+}
+
+.partner-heading{
+  font-size:22px;
+}
+
+/* GRID LAYOUT */
+
+.partner-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:30px;
+  align-items:start;
+}
+
+/* ACCOUNT TYPE CARD */
+
+.account-type-card{
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  padding:30px;
+}
+
+.account-title{
+  text-align:center;
+  margin-bottom:25px;
+  font-size:18px;
+}
+
+/* OPTIONS */
+
+.account-options{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:20px;
+}
+
+/* OPTION */
+
+.type-option{
+  text-align:center;
+}
+
+.type-option h3{
+  margin-top:12px;
+  font-size:18px;
+}
+
+.type-option p{
+  font-size:14px;
+  color:#666;
+  margin:10px 0 18px;
+}
+
+/* DIVIDER */
+
+.vertical-divider{
+  width:1px;
+  height:140px;
+  background:#e5e7eb;
+}
+
+/* REVENUE CARD */
+
+.revenue-card{
+  background:#f8fbff;
+  border:1px solid #e2e8f0;
+  border-radius:10px;
+  padding:30px;
+  text-align:center;
+}
+
+.revenue-card h3{
+  margin-top:12px;
+  font-size:20px;
+}
+
+.revenue-card p{
+  font-size:14px;
+  color:#666;
+  margin:14px 0 20px;
+}
+
+/* ICON CIRCLE */
+
+.icon-circle{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto;
+}
+
+.icon-circle.blue{
+  background:#e7f1ff;
+  color:#007bff;
+}
+
+.icon-circle.yellow{
+  background:#fff4d9;
+  color:#ff9800;
+}
+
+.icon-circle.green{
+  background:#e7f9ed;
+  color:#28a745;
+}
+
+/* BUTTONS */
+
+.btn-blue,
+.btn-yellow,
+.btn-green{
+  border:none;
+  padding:10px 18px;
+  border-radius:6px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.btn-blue{
+  background:#007bff;
+  color:white;
+}
+
+.btn-blue:hover{
+  background:#0066d6;
+}
+
+.btn-yellow{
+  background:#ff9800;
+  color:white;
+}
+
+.btn-yellow:hover{
+  background:#e68900;
+}
+
+.btn-green{
+  background:#28a745;
+  color:white;
+}
+
+.btn-green:hover{
+  background:#21913a;
+}
+
+/* FOOTER */
+
+.partner-footer{
+  text-align:center;
+  margin-top:40px;
+  font-size:14px;
+  color:#666;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+  .partner-grid{
+    grid-template-columns:1fr;
+  }
+
+  .account-options{
+    grid-template-columns:1fr;
+  }
+
+  .vertical-divider{
+    display:none;
+  }
+
+}

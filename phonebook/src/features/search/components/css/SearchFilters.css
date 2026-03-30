@@ -1,0 +1,162 @@
+/* ============================= */
+/* WRAPPER */
+/* ============================= */
+
+.filters-carousel-wrapper{
+width:100%;
+margin:20px 0;
+}
+
+/* header row */
+
+.filters-header-row{
+display:flex;
+align-items:center;
+gap:16px;
+width:100%;
+}
+
+/* ============================= */
+/* SWIPER */
+/* ============================= */
+
+.filters-swiper{
+flex:1;
+min-width:0;
+padding:6px 0;
+}
+
+.filter-slide{
+width:auto !important;
+display:flex;
+align-items:center;
+}
+
+/* ============================= */
+/* FILTER CHIP */
+/* ============================= */
+
+.filter-chip{
+display:flex;
+align-items:center;
+gap:8px;
+height:42px;
+padding:0 16px;
+background:#fff;
+border:1px solid #e5e7eb;
+border-radius:999px;
+font-size:14px;
+white-space:nowrap;
+transition:all .2s ease;
+}
+
+.filter-chip:hover{
+border-color:#2563eb;
+background:#f8fafc;
+}
+
+.filter-chip input,
+.filter-chip select{
+border:none;
+outline:none;
+background:transparent;
+font-size:14px;
+min-width:90px;
+}
+
+/* checkbox */
+
+.filter-chip input[type="checkbox"]{
+accent-color:#2563eb;
+cursor:pointer;
+}
+
+/* ============================= */
+/* CLEAR BUTTON */
+/* ============================= */
+
+.filters-clear{
+flex-shrink:0;
+display:flex;
+align-items:center;
+}
+
+.filters-clear button{
+height:42px;
+padding:0 18px;
+border-radius:999px;
+border:none;
+background:#111827;
+color:#fff;
+font-size:14px;
+cursor:pointer;
+white-space:nowrap;
+transition:.2s;
+}
+
+.filters-clear button:hover{
+background:#1f2937;
+}
+
+/* ============================= */
+/* TABLET */
+/* ============================= */
+
+@media (max-width:992px){
+
+.filters-header-row{
+flex-direction:column;
+align-items:stretch;
+gap:12px;
+}
+
+.filters-swiper{
+width:100%;
+}
+
+.filters-clear{
+justify-content:flex-end;
+}
+
+.filter-chip{
+height:38px;
+padding:0 14px;
+font-size:13px;
+}
+
+.filters-clear button{
+height:38px;
+font-size:13px;
+}
+
+}
+
+/* ============================= */
+/* MOBILE */
+/* ============================= */
+
+@media (max-width:768px){
+
+.filters-carousel-wrapper{
+margin:16px 0;
+}
+
+.filter-chip{
+height:36px;
+padding:0 12px;
+font-size:13px;
+}
+
+.filter-chip input,
+.filter-chip select{
+min-width:70px;
+font-size:13px;
+}
+
+.filters-clear button{
+height:36px;
+padding:0 16px;
+font-size:13px;
+}
+
+}

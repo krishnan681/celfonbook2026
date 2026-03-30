@@ -1,0 +1,583 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Signpost Phone Book - MSME Discovery Platform</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#003366",
+              "background-light": "#f5f7f8",
+              "background-dark": "#0f1923",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100"
+  >
+    <div class="relative flex flex-col min-h-screen">
+      <header
+        class="sticky top-0 z-50 w-full bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10"
+      >
+        
+      </header>
+      <main class="flex-grow">
+        <section class="relative pt-16 pb-20 lg:pt-24 lg:pb-32 overflow-hidden">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+              <div class="z-10">
+                <h1
+                  class="text-4xl lg:text-6xl font-black leading-tight tracking-tight text-slate-900 dark:text-white mb-6"
+                >
+                  Discover and Connect with
+                  <span class="text-primary">Lakhs of MSME</span> Businesses
+                  Across India
+                </h1>
+                <p
+                  class="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-xl"
+                >
+                  Search, connect, and promote your business with India's
+                  growing MSME directory and specialized marketing platform.
+                </p>
+                <div
+                  class="mb-8 p-2 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-primary/5 flex flex-col sm:flex-row gap-2"
+                >
+                  <div
+                    class="flex-1 flex items-center px-4 py-2 gap-2 border-r border-slate-100 dark:border-slate-700"
+                  >
+                    <span class="material-symbols-outlined text-primary/60"
+                      >search</span
+                    >
+                    <input
+                      class="w-full border-none focus:ring-0 bg-transparent text-slate-900 dark:text-white placeholder:text-slate-400"
+                      placeholder="Search for Manufacturers, Traders, Services..."
+                      type="text"
+                    />
+                  </div>
+                  <div class="flex items-center px-4 py-2 gap-2">
+                    <span class="material-symbols-outlined text-primary/60"
+                      >location_on</span
+                    >
+                    <input
+                      class="w-32 border-none focus:ring-0 bg-transparent text-slate-900 dark:text-white placeholder:text-slate-400"
+                      placeholder="City"
+                      type="text"
+                    />
+                  </div>
+                  <button
+                    class="bg-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-primary/90 transition-all"
+                  >
+                    Search
+                  </button>
+                </div>
+                <div class="flex flex-wrap gap-4">
+                  <button
+                    class="px-8 py-4 bg-primary text-white rounded-lg font-bold shadow-lg shadow-primary/20 flex items-center gap-2"
+                  >
+                    Start Exploring
+                    <span class="material-symbols-outlined text-sm"
+                      >arrow_forward</span
+                    >
+                  </button>
+                  <button
+                    class="px-8 py-4 bg-white dark:bg-slate-800 text-primary dark:text-white border border-primary/20 rounded-lg font-bold hover:bg-slate-50 transition-all"
+                  >
+                    Promote Your Business
+                  </button>
+                </div>
+              </div>
+              <div class="relative">
+                <div
+                  class="absolute -inset-4 bg-primary/5 rounded-3xl blur-2xl"
+                ></div>
+                <div
+                  class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"
+                >
+                  <div
+                    class="bg-slate-50 dark:bg-slate-900 px-4 py-3 border-b border-slate-200 dark:border-slate-700 flex items-center gap-2"
+                  >
+                    <div class="flex gap-1.5">
+                      <div class="size-3 rounded-full bg-red-400"></div>
+                      <div class="size-3 rounded-full bg-amber-400"></div>
+                      <div class="size-3 rounded-full bg-emerald-400"></div>
+                    </div>
+                    <div
+                      class="ml-4 h-6 w-64 bg-slate-200 dark:bg-slate-800 rounded-full"
+                    ></div>
+                  </div>
+                  <img
+                    class="w-full h-auto"
+                    data-alt="Dashboard showing business search results and marketing analytics"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuACIJLblip2ufDsnYWoYc07K-L6TCWkat2Ijv9_XRdMEtA3srwIWT56BSERNNr5u81K_ww-srpK8qmhS61YH45ZEFpqwbD714lktrcTwvk9scyLujTqb9IeoIfnnFjBBUzZXJetJhEOM3P1c9AZJ1ebqjVTc_3kVrhTXU4mfQc-YNMka137RAemdFLwILSp8DxqM5z6C7GkEMDPFtnnPXzFkk2DSZllFK5Z_-53n75zQVv4mmXyIW6aO3eCISwREcI6wz9U5aJJ5Gs"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section
+          class="py-12 bg-white dark:bg-slate-900 border-y border-slate-100 dark:border-slate-800"
+        >
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div class="flex flex-col items-center text-center p-6">
+                <span
+                  class="text-4xl font-black text-primary dark:text-white mb-2"
+                  >Lakhs</span
+                >
+                <span
+                  class="text-sm font-medium text-slate-500 uppercase tracking-widest"
+                  >MSME Businesses Listed</span
+                >
+              </div>
+              <div
+                class="flex flex-col items-center text-center p-6 border-x border-slate-100 dark:border-slate-800"
+              >
+                <span
+                  class="text-4xl font-black text-primary dark:text-white mb-2"
+                  >10,000+</span
+                >
+                <span
+                  class="text-sm font-medium text-slate-500 uppercase tracking-widest"
+                  >Industries &amp; Categories</span
+                >
+              </div>
+              <div class="flex flex-col items-center text-center p-6">
+                <span
+                  class="text-4xl font-black text-primary dark:text-white mb-2"
+                  >Thousands</span
+                >
+                <span
+                  class="text-sm font-medium text-slate-500 uppercase tracking-widest"
+                  >Daily Business Searches</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+        <section
+          class="py-24 bg-background-light dark:bg-background-dark"
+          id="features"
+        >
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+              <h2
+                class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-4"
+              >
+                Core Platform Features
+              </h2>
+              <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                Comprehensive tools designed to bridge the gap between India's
+                growing MSMEs and potential customers.
+              </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div
+                class="p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-lg transition-all group"
+              >
+                <div
+                  class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors"
+                >
+                  <span
+                    class="material-symbols-outlined text-primary group-hover:text-white transition-colors"
+                    >database</span
+                  >
+                </div>
+                <h3 class="text-xl font-bold mb-3">MSME Database</h3>
+                <p class="text-slate-600 dark:text-slate-400">
+                  Access a verified, massive database of manufacturers, traders,
+                  and service providers.
+                </p>
+              </div>
+              <div
+                class="p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-lg transition-all group"
+              >
+                <div
+                  class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors"
+                >
+                  <span
+                    class="material-symbols-outlined text-primary group-hover:text-white transition-colors"
+                    >search_insights</span
+                  >
+                </div>
+                <h3 class="text-xl font-bold mb-3">Smart Discovery</h3>
+                <p class="text-slate-600 dark:text-slate-400">
+                  Advanced filters allowing you to find businesses by city,
+                  name, category, or specific niche.
+                </p>
+              </div>
+              <div
+                class="p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-lg transition-all group"
+              >
+                <div
+                  class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors"
+                >
+                  <span
+                    class="material-symbols-outlined text-primary group-hover:text-white transition-colors"
+                    >grid_view</span
+                  >
+                </div>
+                <h3 class="text-xl font-bold mb-3">10,000+ Categories</h3>
+                <p class="text-slate-600 dark:text-slate-400">
+                  Deep classification ensuring every business finds its perfect
+                  spot in the ecosystem.
+                </p>
+              </div>
+              <div
+                class="p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-lg transition-all group"
+              >
+                <div
+                  class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors"
+                >
+                  <span
+                    class="material-symbols-outlined text-primary group-hover:text-white transition-colors"
+                    >devices</span
+                  >
+                </div>
+                <h3 class="text-xl font-bold mb-3">Omnichannel Access</h3>
+                <p class="text-slate-600 dark:text-slate-400">
+                  Optimized for smartphones, desktops, and legacy feature phones
+                  for maximum reach.
+                </p>
+              </div>
+              <div
+                class="p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-lg transition-all group"
+              >
+                <div
+                  class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors"
+                >
+                  <span
+                    class="material-symbols-outlined text-primary group-hover:text-white transition-colors"
+                    >update</span
+                  >
+                </div>
+                <h3 class="text-xl font-bold mb-3">Daily Updates</h3>
+                <p class="text-slate-600 dark:text-slate-400">
+                  New businesses are verified and listed daily, keeping our
+                  directory fresh and relevant.
+                </p>
+              </div>
+              <div
+                class="p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-lg transition-all group"
+              >
+                <div
+                  class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors"
+                >
+                  <span
+                    class="material-symbols-outlined text-primary group-hover:text-white transition-colors"
+                    >handshake</span
+                  >
+                </div>
+                <h3 class="text-xl font-bold mb-3">B2B &amp; B2C</h3>
+                <p class="text-slate-600 dark:text-slate-400">
+                  The perfect bridge connecting businesses with other
+                  enterprises and end consumers.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="py-24 bg-white dark:bg-slate-900">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+              <div>
+                <h2 class="text-3xl lg:text-4xl font-bold mb-6">
+                  Powerful Marketing Tools
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 mb-8">
+                  Reach your customers wherever they are with our integrated
+                  marketing suite designed for small businesses.
+                </p>
+                <ul class="space-y-6">
+                  <li class="flex gap-4">
+                    <div
+                      class="flex-shrink-0 size-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center text-emerald-600"
+                    >
+                      <span class="material-symbols-outlined">chat</span>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-lg">Bulk SMS &amp; WhatsApp</h4>
+                      <p class="text-slate-600 dark:text-slate-400">
+                        Send personalized messages and offers directly to your
+                        customers' mobile phones.
+                      </p>
+                    </div>
+                  </li>
+                  <li class="flex gap-4">
+                    <div
+                      class="flex-shrink-0 size-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600"
+                    >
+                      <span class="material-symbols-outlined">mail</span>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-lg">Email Marketing</h4>
+                      <p class="text-slate-600 dark:text-slate-400">
+                        Professional email campaigns to keep your subscribers
+                        engaged and informed.
+                      </p>
+                    </div>
+                  </li>
+                  <li class="flex gap-4">
+                    <div
+                      class="flex-shrink-0 size-12 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center text-amber-600"
+                    >
+                      <span class="material-symbols-outlined">near_me</span>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-lg">Nearby Marketing</h4>
+                      <p class="text-slate-600 dark:text-slate-400">
+                        Target local area customers within specific radius for
+                        high-impact store visits.
+                      </p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="bg-primary/5 p-8 rounded-3xl">
+                <img
+                  class="w-full h-auto"
+                  data-alt="Illustration of mobile marketing tools and customer engagement"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0GHx_2yAv8uGRGYZMKKh14aQ3x637m5OC3O6SLhCty8ATBS2ndKMHL8H84pplX-t9eF44vkExRcv9EWLa1RsbZ9AzpEZDitQYod_4rsIk-5FYtERcEmOdEu1Hoco0OWI3hM0xYnLjo1TaQWaANB6F8VIw67uQO7oymTKRK1lWZREQOilP49Oxz8m1tDjsgGpZSu-yD4Gebc7-Uyzua537g91HhJiyFDFp9_aQxYuEloRvs7MGgxb_JuKO4etZSESlE2KfKpsrCb8"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="py-24 bg-primary text-white overflow-hidden relative">
+          <div class="absolute inset-0 opacity-10">
+            <svg
+              class="w-full h-full"
+              preserveaspectratio="none"
+              viewbox="0 0 100 100"
+            >
+              <path
+                d="M0 0 L100 0 L100 100 L0 100 Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-dasharray="2,2"
+                stroke-width="0.1"
+              ></path>
+            </svg>
+          </div>
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+              <h2 class="text-3xl lg:text-4xl font-bold mb-4">How it Works</h2>
+              <p class="text-white/70">
+                Three simple steps to grow your business presence.
+              </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-12 text-center">
+              <div class="relative">
+                <div
+                  class="size-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-black"
+                >
+                  1
+                </div>
+                <h3 class="text-xl font-bold mb-2">Search</h3>
+                <p class="text-white/70">
+                  Identify your target business category or specific services
+                  needed.
+                </p>
+              </div>
+              <div class="relative">
+                <div
+                  class="size-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-black"
+                >
+                  2
+                </div>
+                <h3 class="text-xl font-bold mb-2">Find</h3>
+                <p class="text-white/70">
+                  Filter through lakhs of verified listings to find the perfect
+                  match.
+                </p>
+              </div>
+              <div class="relative">
+                <div
+                  class="size-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-black"
+                >
+                  3
+                </div>
+                <h3 class="text-xl font-bold mb-2">Connect</h3>
+                <p class="text-white/70">
+                  Engage directly via call, message, or our integrated marketing
+                  tools.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section
+          class="py-24 bg-background-light dark:bg-background-dark"
+          id="pricing"
+        >
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+              <h2
+                class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-4"
+              >
+                Affordable Growth Plans
+              </h2>
+              <p class="text-slate-600 dark:text-slate-400">
+                Scale your business with pricing that fits your size.
+              </p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <div
+                class="bg-white dark:bg-slate-800 p-10 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all"
+              >
+                <div class="mb-8">
+                  <h3 class="text-xl font-bold mb-2">Tiny &amp; Micro</h3>
+                  <p class="text-slate-500 text-sm">
+                    Perfect for individual artisans and startups.
+                  </p>
+                </div>
+                <div class="mb-8">
+                  <span class="text-4xl font-black text-primary dark:text-white"
+                    >₹2,500</span
+                  >
+                  <span class="text-slate-500">/Year</span>
+                </div>
+                <ul class="space-y-4 mb-10 text-slate-600 dark:text-slate-400">
+                  <li class="flex items-center gap-2">
+                    <span
+                      class="material-symbols-outlined text-emerald-500 text-sm"
+                      >check_circle</span
+                    >
+                    Basic Directory Listing
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span
+                      class="material-symbols-outlined text-emerald-500 text-sm"
+                      >check_circle</span
+                    >
+                    Search Result Visibility
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span
+                      class="material-symbols-outlined text-emerald-500 text-sm"
+                      >check_circle</span
+                    >
+                    Mobile Optimization
+                  </li>
+                </ul>
+                <button
+                  class="w-full py-3 bg-primary/10 text-primary font-bold rounded-lg hover:bg-primary hover:text-white transition-all"
+                >
+                  Subscribe Now
+                </button>
+              </div>
+              <div
+                class="bg-primary text-white p-10 rounded-2xl shadow-xl scale-105 relative"
+              >
+                <div
+                  class="absolute top-4 right-4 bg-white/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                >
+                  Popular
+                </div>
+                <div class="mb-8">
+                  <h3 class="text-xl font-bold mb-2">Small Business</h3>
+                  <p class="text-white/70 text-sm">
+                    Advanced tools for growing enterprises.
+                  </p>
+                </div>
+                <div class="mb-8">
+                  <span class="text-4xl font-black">₹4,500</span>
+                  <span class="text-white/60">/Year</span>
+                </div>
+                <ul class="space-y-4 mb-10 text-white/80">
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-white text-sm"
+                      >check_circle</span
+                    >
+                    Featured Directory Listing
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-white text-sm"
+                      >check_circle</span
+                    >
+                    Advanced Marketing Suite
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-white text-sm"
+                      >check_circle</span
+                    >
+                    Priority Support
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-white text-sm"
+                      >check_circle</span
+                    >
+                    Analytics Dashboard
+                  </li>
+                </ul>
+                <button
+                  class="w-full py-3 bg-white text-primary font-bold rounded-lg hover:bg-white/90 transition-all"
+                >
+                  Subscribe Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="py-24 bg-white dark:bg-slate-900" id="about">
+          <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-8">Empowering India's MSMEs</h2>
+            <p
+              class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed italic"
+            >
+              "Signpost Phone Book is dedicated to the backbone of our
+              economy—the Micro, Small, and Medium Enterprises. We believe that
+              every business, regardless of its size, deserves a professional
+              digital footprint and the tools to reach its maximum potential.
+              Our platform bridges the digital divide, providing visibility to
+              those who need it most."
+            </p>
+          </div>
+        </section>
+      </main>
+     
+    </div>
+  </body>
+</html>

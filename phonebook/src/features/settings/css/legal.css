@@ -1,0 +1,121 @@
+:root {
+  --lg2-primary: #2563eb;
+  --lg2-primary-soft: #eff6ff;
+  --lg2-bg: #f8fafc;
+  --lg2-card-bg: #ffffff;
+  --lg2-text-main: #0f172a;
+  --lg2-text-muted: #475569;
+  --lg2-border: #e2e8f0;
+}
+
+.lg2-wrapper {
+  background-color: var(--lg2-bg);
+  background-image: radial-gradient(#e2e8f0 0.5px, transparent 0.5px);
+  background-size: 24px 24px; /* Subtle grid background */
+  min-height: 100vh;
+  padding: 80px 24px;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--lg2-text-main);
+}
+
+.lg2-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Header Section */
+.lg2-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.lg2-badge {
+  display: inline-block;
+  background: var(--lg2-primary-soft);
+  color: var(--lg2-primary);
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.lg2-title {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 12px;
+}
+
+.lg2-subtitle {
+  color: var(--lg2-text-muted);
+  font-size: 14px;
+}
+
+/* Grid Layout */
+.lg2-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.lg2-card-item {
+  background: var(--lg2-card-bg);
+  padding: 32px;
+  border-radius: 20px;
+  border: 1px solid var(--lg2-border);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lg2-card-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+  border-color: var(--lg2-primary);
+}
+
+.lg2-icon-box {
+  width: 44px;
+  height: 44px;
+  background: var(--lg2-primary-soft);
+  color: var(--lg2-primary);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lg2-content h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.lg2-content p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--lg2-text-muted);
+  margin: 0;
+}
+
+/* Footer */
+.lg2-footer-area {
+  margin-top: 60px;
+  padding-top: 30px;
+  border-top: 1px solid var(--lg2-border);
+  text-align: center;
+  color: var(--lg2-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Responsive fixes */
+@media (max-width: 640px) {
+  .lg2-wrapper { padding: 40px 16px; }
+  .lg2-grid { grid-template-columns: 1fr; }
+  .lg2-card-item { padding: 24px; }
+}

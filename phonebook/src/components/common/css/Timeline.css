@@ -1,0 +1,130 @@
+.timeline-section {
+  padding: 80px 0;
+  background: #fff;
+}
+
+.timeline-title {
+  font-weight: 700;
+  margin-bottom: 70px;
+  color: #d94f00;
+}
+
+/* wrapper */
+
+.timeline-wrapper {
+  position: relative;
+}
+
+/* main line */
+
+.timeline-line {
+  position: absolute;
+  top: 42px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #eee;
+  z-index: 0;
+}
+
+/* animated progress */
+
+.timeline-progress {
+  height: 4px;
+  background: #ec6b2c;
+  width: 0%;
+}
+
+/* swiper */
+
+.timeline-swiper {
+  padding-top: 70px;
+  padding-bottom: 50px;
+}
+
+/* item */
+
+.timeline-item {
+  text-align: center;
+  position: relative;
+}
+
+/* dot */
+
+.timeline-dot {
+  width: 20px;
+  height: 20px;
+  background: #ec6b2c;
+  border-radius: 50%;
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid white;
+  z-index: 2;
+}
+
+/* card */
+
+.timeline-card {
+  background: white;
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  min-height: 120px;
+}
+
+/* year */
+
+.timeline-year {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  color: #0b2d4d;
+}
+
+/* text */
+
+.timeline-text {
+  font-size: 0.95rem;
+  color: #444;
+}
+
+/* image */
+
+.timeline-img {
+  width: 90px;
+  margin-top: 10px;
+}
+
+/* arrows */
+
+.timeline-swiper .swiper-button-next,
+.timeline-swiper .swiper-button-prev {
+  color: #ec6b2c;
+}
+
+/* pagination */
+
+.timeline-swiper .swiper-pagination-bullet {
+  background: #ccc;
+  opacity: 1;
+}
+
+.timeline-swiper .swiper-pagination-bullet-active {
+  background: #ec6b2c;
+}
+
+/* responsive */
+
+@media (max-width: 768px) {
+
+  .timeline-line {
+    top: 38px;
+  }
+
+  .timeline-dot {
+    top: -28px;
+  }
+
+}

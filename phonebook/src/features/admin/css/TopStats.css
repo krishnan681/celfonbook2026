@@ -1,0 +1,122 @@
+.adm-dashboard {
+  padding: 28px 28px;
+  max-width: 960px;
+}
+
+.adm-page-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  margin-bottom: 4px;
+  color: #1e2937;
+}
+
+.adm-page-sub {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 28px;
+}
+
+.adm-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.adm-stat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.adm-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.adm-stat-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 30px;
+  font-weight: 500;
+  color: #1e2937;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.adm-stat-value.green { color: #14b8a6; }
+.adm-stat-value.amber { color: #f59e0b; }
+
+.adm-stat-note {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.adm-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 14px;
+}
+
+.adm-recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.adm-recent-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.adm-recent-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #ccfbf1;
+  color: #14b8a6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.adm-recent-name { 
+  font-size: 13px; 
+  font-weight: 500; 
+  color: #1e2937; 
+}
+
+.adm-recent-sub { 
+  font-size: 11px; 
+  color: #64748b; 
+  margin-top: 2px; 
+}
+
+.adm-recent-time {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+@media (max-width: 768px) {
+  .adm-dashboard { padding: 16px; }
+}

@@ -1,0 +1,198 @@
+.products-section {
+  width: 100%;
+  background: #f8f9fb;
+}
+
+/* TITLE */
+
+.products-title {
+  text-align: center;
+  font-size: 38px;
+  font-weight: 700;
+  padding: 80px 0 60px;
+}
+
+/* ================= APP SECTION ================= */
+
+.app-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 100vh;
+  padding: 0 8%;
+
+  background: linear-gradient(135deg,#fff7f1,#ffe6d9);
+}
+
+/* LEFT PHONE */
+
+.app-image {
+  width: 45%;
+  display: flex;
+  justify-content: center;
+}
+
+/* PHONE MOCKUP */
+
+.phone-mockup {
+  width: 260px;
+  height: 520px;
+  background: black;
+  border-radius: 40px;
+  padding: 14px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+}
+
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 28px;
+  object-fit: cover;
+  animation: fadeSlide 0.5s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RIGHT TEXT */
+
+.app-text {
+  width: 45%;
+}
+
+.app-badge {
+  display: inline-block;
+  background: #ff6a00;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.app-text h3 {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.app-text p {
+  font-size: 18px;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+/* PLAYSTORE BUTTON */
+
+.playstore-btn {
+  display: inline-block;
+  background: black;
+  color: white;
+  padding: 14px 30px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ================= PLAYBOOK SECTIONS ================= */
+
+.product-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 100vh;
+  padding: 0 8%;
+
+  border-bottom: 1px solid #eee;
+}
+
+/* IMAGE */
+
+.product-image {
+  width: 35%;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+}
+
+.product-image img {
+  width: 100%;
+  /* max-width: 600px; */
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+/* TEXT */
+
+.product-text {
+  width: 45%;
+  position: sticky;
+  top: 120px;
+}
+
+.product-text h3 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.product-text p {
+  font-size: 18px;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
+/* BUTTON */
+
+.product-btn {
+  background: #ff6a00;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 992px) {
+
+  .app-section,
+  .product-row {
+    flex-direction: column;
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .app-image,
+  .product-image {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .app-text,
+  .product-text {
+    width: 100%;
+    position: static;
+  }
+
+  .app-text h3,
+  .product-text h3 {
+    font-size: 28px;
+  }
+
+}

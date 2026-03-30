@@ -1,0 +1,153 @@
+/* SECTION */
+
+.features-section {
+  padding: 100px 20px;
+  background: #f5f7f8;
+}
+
+/* CONTAINER */
+
+.features-container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* TITLE */
+
+.features-title {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.features-title-for-card {
+ 
+  font-size: 36px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.features-subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 60px;
+  font-size: 16px;
+}
+
+/* GRID */
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+/* CARD */
+
+.feature-card {
+  background: white;
+  padding: 35px 30px;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* ICON */
+
+/* Update these specific parts in features.css */
+
+.feature-icon {
+  width: 60px;
+  height: 60px;
+  /* background: #003366;  <-- REMOVE THIS LINE */
+  color: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Adds depth to the colored icon */
+}
+
+/* Optional: Make the card hover feel more dynamic */
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  border-color: rgba(0,0,0,0.05);
+}
+
+.feature-icon span {
+  font-size: 28px;
+}
+
+/* TEXT */
+
+.feature-card h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  color: #666;
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+/* ============================ */
+/* TABLET RESPONSIVE */
+/* ============================ */
+
+@media (max-width: 992px) {
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .features-title {
+    font-size: 32px;
+  }
+
+}
+
+/* ============================ */
+/* MOBILE RESPONSIVE */
+/* ============================ */
+
+@media (max-width: 600px) {
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .features-section {
+    padding: 70px 20px;
+  }
+
+  .features-title {
+    font-size: 28px;
+  }
+
+  .features-subtitle {
+    margin-bottom: 40px;
+  }
+
+  .feature-card {
+    padding: 28px 22px;
+  }
+
+  .feature-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .feature-icon span {
+    font-size: 24px;
+  }
+
+}

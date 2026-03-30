@@ -1,0 +1,59 @@
+@import './DetailedProfileAbout.css';
+@import './DetailedProfileProducts.css';
+@import './DetailedProfileMap.css';
+@import './DetailedQuickEnquiryForm.css';
+@import './DetailedRelatedProfiles.css';
+
+
+
+
+
+
+/* ===== PAGE WRAPPER ===== */
+.pd-page {
+  background: #f8fafc;
+}
+
+/* ===== MAIN LAYOUT ===== */
+.pd-main-layout {
+  display: flex;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.pd-left-content {
+  flex: 3;
+  min-width: 0;
+}
+
+.pd-right-sidebar {
+  flex: 1;
+  min-width: 280px;
+}
+
+/* Sticky only on desktop */
+@media (min-width: 1024px) {
+  .pd-right-sidebar {
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+  }
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+  .pd-main-layout {
+    flex-direction: column;
+  }
+
+  .pd-right-sidebar {
+    width: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .pd-main-layout {
+    margin-top: 20px;
+  }
+}

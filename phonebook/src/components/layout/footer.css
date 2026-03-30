@@ -1,0 +1,92 @@
+.celfon-footer{
+  background:#0f172a;
+  color:#d1d5db;
+  margin-top:60px;
+}
+
+.celfon-footer-container{
+  max-width:1300px;
+  margin:auto;
+  padding:50px 20px;
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:40px;
+}
+
+.celfon-footer-col h4{
+  margin-bottom:14px;
+  font-size:16px;
+  color:white;
+}
+
+.celfon-footer-col ul{
+  list-style:none;
+  padding:0;
+}
+
+.celfon-footer-col li{
+  margin-bottom:8px;
+}
+
+.celfon-footer-col a{
+  text-decoration:none;
+  color:#d1d5db;
+  font-size:14px;
+}
+
+.celfon-footer-col a:hover{
+  color:white;
+}
+
+.celfon-footer-brand h3{
+  color:white;
+  margin-bottom:10px;
+}
+
+.celfon-footer-brand p{
+  font-size:14px;
+  line-height:1.6;
+}
+
+.celfon-footer-bottom{
+  border-top:1px solid #1e293b;
+  padding:15px 0;
+}
+
+.celfon-footer-bottom-container{
+  max-width:1300px;
+  margin:auto;
+  padding:0 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.celfon-footer-legal{
+  display:flex;
+  gap:20px;
+}
+
+.celfon-footer-legal a{
+  font-size:13px;
+  text-decoration:none;
+  color:#9ca3af;
+}
+
+.celfon-footer-legal a:hover{
+  color:white;
+}
+
+/* Mobile */
+@media (max-width:900px){
+
+.celfon-footer-container{
+  grid-template-columns:1fr 1fr;
+}
+
+.celfon-footer-bottom-container{
+  flex-direction:column;
+  gap:10px;
+}
+
+}

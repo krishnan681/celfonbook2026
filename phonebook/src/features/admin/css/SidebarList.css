@@ -1,0 +1,231 @@
+.adm-profiles-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  background: #ffffff;
+}
+
+.adm-profiles-scroll::-webkit-scrollbar { width: 4px; }
+.adm-profiles-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+.adm-profiles-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+.adm-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+  margin-bottom: 4px;
+}
+
+.adm-profile-row:hover { 
+  background: #f8fafc; 
+  border-color: #e2e8f0;
+}
+
+.adm-profile-row.active {
+  background: #ccfbf1;
+  border-color: #14b8a6;
+}
+
+.adm-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #ccfbf1;
+  color: #14b8a6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.adm-profile-row.active .adm-avatar { 
+  background: #5eead4; 
+  color: #0f766e;
+}
+
+.adm-profile-info { flex: 1; min-width: 0; }
+
+.adm-pname {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1e2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.adm-pbiz {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.adm-pmob {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.adm-list-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-top: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.adm-pg-btn {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  border-radius: 7px;
+  padding: 4px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.adm-pg-btn:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.adm-pg-btn:disabled { 
+  opacity: 0.4; 
+  cursor: default; 
+}
+
+.adm-pg-info {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #64748b;
+}
+
+
+.adm-list-panel {
+  width: 300px;
+  flex-shrink: 0;
+  border-right: 1px solid #e2e8f0;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.adm-mobile-list-btn {
+  display: none;
+  margin: 12px 16px 0;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #1e2937;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .adm-list-panel {
+    position: fixed;
+    left: 0;
+    top: 53px;
+    bottom: 0;
+    z-index: 150;
+    width: 280px;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    border-right: none;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  }
+  .adm-list-panel.open { 
+    transform: translateX(0); 
+  }
+
+  .adm-list-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: 53px;
+    background: rgba(0,0,0,0.5);
+    z-index: 149;
+  }
+  .adm-list-overlay.open { display: block; }
+
+  .adm-mobile-list-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .adm-edit-layout {
+    flex-direction: column;
+  }
+}
+
+
+
+/* Make sure the list panel has proper z-index and transition */
+.adm-list-panel {
+  width: 300px;
+  flex-shrink: 0;
+  border-right: 1px solid #e2e8f0;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.25s ease;
+}
+
+@media (max-width: 768px) {
+  .adm-list-panel {
+    position: fixed;
+    left: 0;
+    top: 53px;
+    bottom: 0;
+    z-index: 150;
+    width: 280px;
+    transform: translateX(-100%);
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.12);
+  }
+  
+  .adm-list-panel.open { 
+    transform: translateX(0); 
+  }
+
+  .adm-list-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: 53px;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 149;
+  }
+  .adm-list-overlay.open { 
+    display: block; 
+  }
+
+  .adm-mobile-list-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 16px 8px;
+  }
+
+  .adm-edit-layout {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+.adm-root {
+  font-family: 'Sora', sans-serif;
+  min-height: 100vh;
+  background: #f8fafc;
+  color: #1e2937;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top bar */
+.adm-topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.adm-logo {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: #1e2937;
+}
+
+.adm-logo span { 
+  color: #14b8a6; 
+}
+
+.adm-topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.adm-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #14b8a6;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+/* Mobile Tabs */
+.adm-mobile-tabs {
+  display: none;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 8px 12px;
+  gap: 8px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.adm-mobile-tab {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  background: #f8fafc;
+  color: #64748b;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.adm-mobile-tab.active {
+  background: #ccfbf1;
+  color: #14b8a6;
+  font-weight: 600;
+}
+
+.adm-mobile-tab-icon {
+  font-size: 16px;
+}
+
+/* Layout */
+.adm-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100vh - 53px);
+}
+
+.adm-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  border-right: 1px solid #e2e8f0;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 12px;
+  gap: 4px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
+}
+
+.adm-nav-section {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: #64748b;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  margin-top: 8px;
+}
+
+.adm-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: all 0.15s;
+}
+
+.adm-nav-btn:hover { 
+  background: #f1f5f9; 
+  color: #1e2937; 
+}
+
+.adm-nav-btn.active { 
+  background: #ccfbf1; 
+  color: #14b8a6; 
+  font-weight: 600;
+}
+
+.adm-nav-icon { 
+  font-size: 15px; 
+}
+
+.adm-main {
+  flex: 1;
+  overflow-y: auto;
+  background: #f8fafc;
+}
+
+/* Edit Layout - Important */
+.adm-edit-layout {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.adm-detail-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.adm-detail-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 28px;
+  background: #f8fafc;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .adm-mobile-tabs { 
+    display: flex; 
+  }
+
+  .adm-sidebar {
+    display: none;                    /* Hide desktop sidebar on mobile */
+  }
+
+  .adm-body {
+    height: calc(100vh - 106px);      /* Topbar + Mobile tabs height */
+  }
+
+  .adm-edit-layout {
+    flex-direction: column;           /* Stack on mobile */
+  }
+
+  .adm-list-panel {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .adm-detail-panel {
+    padding: 20px 16px;
+  }
+}
+
+@media (min-width: 769px) {
+  .adm-mobile-tabs { 
+    display: none; 
+  }
+}

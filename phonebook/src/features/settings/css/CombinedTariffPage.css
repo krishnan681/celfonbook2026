@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+/* Global Wrapper Background */
+.ct-wrapper {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #f4f7fb;
+  color: #2d3748;
+}
+
+/* Header */
+.ct-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.ct-header h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+}
+
+.ct-header p {
+  font-size: 1.15rem;
+  color: #718096;
+}
+
+/* Intro banner */
+.ct-intro {
+  background: white;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(118, 75, 162, 0.05);
+  margin-bottom: 60px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid rgba(118, 75, 162, 0.1);
+  text-align: center;
+}
+
+.ct-intro p {
+  color: #4a5568;
+  line-height: 1.7;
+}
+
+/* Grid Layout using repeat(auto-fit) for responsiveness */
+.ct-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* Card Styling */
+.ct-card {
+  background: white;
+  border-radius: 24px;
+  padding: 35px 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+  border: 1px solid #edf2f7;
+  overflow: hidden;
+}
+
+.ct-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.ct-card-header h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.ct-price {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #1a202c;
+  display: block;
+}
+
+.ct-price small {
+  font-size: 0.9rem;
+  color: #718096;
+  font-weight: 400;
+}
+
+/* Feature lists & Custom bullets */
+.ct-features {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0;
+  flex-grow: 1; /* Pushes button to the bottom */
+}
+
+.ct-features li {
+  padding: 12px 0 12px 30px;
+  position: relative;
+  font-size: 0.95rem;
+  color: #4a5568;
+  border-bottom: 1px solid #f7fafc;
+}
+
+.ct-features li:last-child {
+  border-bottom: none;
+}
+
+.ct-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.ct-custom-p {
+  color: #718096;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Action Buttons */
+.ct-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #edf2f7;
+  color: #2d3748;
+}
+
+.ct-btn:hover {
+  transform: scale(1.02);
+}
+
+/* Color Palette Variations */
+.ct-platinum .ct-card-header h3 { color: #2d3748; }
+.ct-platinum .ct-features li::before { color: #2d3748; }
+.ct-platinum .ct-btn { background: #2d3748; color: white; }
+
+.ct-gold .ct-card-header h3 { color: #d69e2e; }
+.ct-gold .ct-features li::before { color: #d69e2e; }
+.ct-gold .ct-btn { background: #ecc94b; color: #1a202c; }
+
+.ct-silver .ct-card-header h3 { color: #4a5568; }
+.ct-silver .ct-features li::before { color: #4a5568; }
+.ct-silver .ct-btn { background: #cbd5e0; color: #2d3748; }
+
+.ct-custom .ct-card-header h3 { color: #e53e3e; }
+.ct-custom .ct-btn { background: #fc8181; color: white; }
+
+/* DIAMOND (Standout Most Popular Card) */
+.featured {
+  background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+  color: white;
+  border: none;
+}
+
+.featured .ct-card-header h3,
+.featured .ct-price,
+.featured .ct-price small,
+.featured .ct-features li {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.featured .ct-features li::before {
+  color: #38b2ac;
+  background: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  top: 12px;
+}
+
+.featured .ct-btn {
+  background: white;
+  color: #1a2980;
+}
+
+.featured .ct-btn:hover {
+  background: #f7fafc;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.ct-badge {
+  position: absolute;
+  top: 15px;
+  right: -30px;
+  background: #ff007f;
+  color: white;
+  padding: 5px 35px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  transform: rotate(45deg);
+  box-shadow: 0 4px 10px rgba(255, 0, 127, 0.3);
+}
+
+/* Responsiveness adjustments for Featured scaling on mobile */
+@media (max-width: 768px) {
+  .ct-header h1 { font-size: 2.2rem; }
+  .ct-grid { grid-template-columns: 1fr; }
+}

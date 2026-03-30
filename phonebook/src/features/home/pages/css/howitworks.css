@@ -1,0 +1,113 @@
+.how-section {
+  padding: 110px 20px;
+  background: #f7f9fb;
+}
+
+.how-container {
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
+
+.how-title {
+  font-size: 38px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.how-subtitle {
+  color: #666;
+  margin-bottom: 70px;
+  font-size: 17px;
+}
+
+/* STEPS LAYOUT */
+
+.how-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  position: relative;
+}
+
+/* PROGRESS CONNECTOR LINE */
+
+.how-steps::before {
+  content: "";
+  position: absolute;
+  top: 35px;
+  left: 15%;
+  right: 15%;
+  height: 3px;
+  background: linear-gradient(
+    to right,
+    #003366 0%,
+    #003366 33%,
+    #e0e6ed 33%,
+    #e0e6ed 100%
+  );
+  z-index: 0;
+}
+
+/* CARD */
+
+.how-card {
+  background: white;
+  padding: 35px 25px;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.how-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+}
+
+/* STEP NUMBER */
+
+.how-number {
+  width: 70px;
+  height: 70px;
+  background: #003366;
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* CARD TEXT */
+
+.how-card h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.how-card p {
+  color: #666;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+  .how-steps {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .how-steps::before {
+    display: none;
+  }
+
+}

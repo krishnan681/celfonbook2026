@@ -1,0 +1,70 @@
+.pd-sticky-card {
+  background: #fff;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+.pd-enquiry-title {
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.pd-enquiry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pd-enquiry-form input,
+.pd-enquiry-form textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+.pd-enquiry-form input:focus,
+.pd-enquiry-form textarea:focus {
+  border-color: #007bff;
+}
+
+.pd-submit-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.pd-submit-btn:hover {
+  background: #0056b3;
+}
+
+.pd-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.pd-success-text {
+  font-size: 13px;
+  color: green;
+  margin-top: 6px;
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .pd-sticky-card {
+    border-radius: 0;
+    box-shadow: none;
+    padding: 16px;
+  }
+}

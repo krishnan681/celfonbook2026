@@ -1,0 +1,20 @@
+.pd-map-wrapper {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+}
+
+.pd-map-wrapper iframe {
+  border-radius: 12px;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .pd-map-wrapper {
+    padding: 10px;
+  }
+
+  .pd-map-wrapper iframe {
+    height: 300px;
+  }
+}

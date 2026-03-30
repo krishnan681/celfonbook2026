@@ -1,0 +1,56 @@
+.footer {
+  width: 100%;
+  background: #111;
+  color: #ccc;
+  font-size: 14px;
+  padding: 20px 0; /* Slightly more padding for touch targets */
+  border-top: 1px solid #222;
+}
+
+.footer-container {
+  max-width: 1300px;
+  margin: auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-right {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-right a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-right a:hover {
+  color: #fff;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column; /* Stacks items vertically */
+    gap: 15px;              /* Adds space between copyright and links */
+    text-align: center;     /* Centers the text */
+  }
+
+  .footer-right {
+    flex-wrap: wrap;        /* Allows links to wrap if they are too long */
+    justify-content: center;
+    gap: 10px 20px;         /* 10px vertical gap, 20px horizontal */
+  }
+
+  .footer-left {
+    order: 2;               /* Moves copyright to the bottom on mobile */
+    font-size: 12px;
+  }
+
+  .footer-right {
+    order: 1;               /* Moves links to the top on mobile */
+  }
+}

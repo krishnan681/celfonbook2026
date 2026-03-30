@@ -1,0 +1,16 @@
+.history-page{
+  padding:40px;
+  max-width:700px;
+  margin:auto;
+}
+
+.history-list{
+  margin-top:20px;
+  list-style:none;
+  padding:0;
+}
+
+.history-list li{
+  padding:12px;
+  border-bottom:1px solid #eee;
+}

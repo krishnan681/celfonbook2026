@@ -1,0 +1,23 @@
+.results-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:24px;
+}
+
+/* tablet */
+@media (min-width:640px){
+  .results-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+/* desktop */
+@media (min-width:1280px){
+  .results-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+
+.profile-grid{
+  display:contents;
+}
