@@ -264,7 +264,7 @@ import useSignupController from "../controller/useSignupController";
 import "../../auth/Pages/css/signup.css";
 
 // CORRECTED: Default import (no curly braces)
-import SignImg from '../../../assets/images/signup-image.png'; 
+import SignImg from '../../../assets/images/Signup-image.png'; 
 
 export default function SignupPage() {
   const navigate = useNavigate();
