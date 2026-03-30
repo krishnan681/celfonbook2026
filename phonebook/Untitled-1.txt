@@ -7,9 +7,9 @@
     │   │   ├── 📁 images/
     │   │   │   ├── 🖼️ AboutPageImage.jpg
     │   │   │   ├── 🖼️ Login-image.jpg
-    │   │   │   ├── 🖼️ Signup-image.png
     │   │   │   ├── 🖼️ TimelineLogo.png
-    │   │   │   └── 🖼️ celfon5g_logo.png
+    │   │   │   ├── 🖼️ celfon5g_logo.png
+    │   │   │   └── 🖼️ signupimage.png
     │   │   └── 🖼️ react.svg
     │   ├── 📁 components/
     │   │   ├── 📁 common/
@@ -302,4 +302,5 @@
     ├── ⚙️ package-lock.json
     ├── ⚙️ package.json
     └── 📄 vite.config.js
+
  
