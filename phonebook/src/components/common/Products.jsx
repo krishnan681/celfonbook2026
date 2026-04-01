@@ -25,21 +25,24 @@ const playbooks = [
     title: "COIMBATORE 2025-26 Industrial Directory: Digital Edition",
     description:
       "Coimbatore is one of the large Industrial Cities in India. Signpost Celfon.in Technology, is publishing Industrial Directories for Coimbatore, from 1981. Since then, along with Technology. we have grown. In addition to Printed Directory, Now it is available as Digital (EBook) Edition, Web Portal, Mobile App Editions etc.22nd Edition of the Printed Directory is released for 2025-26, Containing only Premium Listings of Advertisers, Business Listings etc . This Digital Edition is a replicate of the Print Edition for 2025-26. Our Web Portal and Mobile App Editions contain numerous FREE Listings of MSME Industries and Suppliers, in addition to Premium Listings.",
-    image: "https://play.google.com/books/publisher/content/images/frontcover/sCE6EQAAQBAJ?fife=w480-h690"
+    image: "https://play.google.com/books/publisher/content/images/frontcover/sCE6EQAAQBAJ?fife=w480-h690",
+    link: "https://play.google.com/store/books/details/Lion_Dr_Er_J_Shivakumaar_COIMBATORE_2025_26_Indust?id=sCE6EQAAQBAJ"
   },
   {
     id: 2,
     title: "COIMBATORE - 2024 Industrial Directory (21st Edition): by SIGNPOST CELFON",
     description:
       "The COIMBATORE - 2024 Industrial Directory was officially released in June 2024 at the INTEC Trade Fair, featuring over 10,000 MSMEs organized into 1,800 specialized categories. The data is structured into Alphabetical White Pages and Classified Pink Pages, available across print, digital, and searchable engine formats.This digital edition mirrors the printed version, providing full access to business listings and advertisements via the celfon5g.in and hellomobiles.directory portals. Furthermore, the information integrates with the PA DMA mobile app, enabling users to conduct targeted digital marketing campaigns directly to the listed addresses.",
-    image: "https://play.google.com/books/publisher/content/images/frontcover/kwgSEQAAQBAJ?fife=w480-h690"
+    image: "https://play.google.com/books/publisher/content/images/frontcover/kwgSEQAAQBAJ?fife=w480-h690",
+     link: "https://play.google.com/store/books/details/Lion_Dr_Er_J_Shivakumaar_COIMBATORE_2024_Industria?id=kwgSEQAAQBAJ"
   },
   {
     id: 3,
     title: "COIMBATORE NORTH Industrial Directory: Mobile - Phone Directory",
     description:
       "The Coimbatore North Industrial Directory (part of the CELFON5G+ series) serves as a comprehensive resource for the long-standing industrial hub of Ganapathy and its surrounding northern neighborhoods. Originally launched digitally in 2018, the directory now includes a printed edition and a searchable mobile app covering MSMEs and professionals across areas like Saravanampatti and Avarampalayam.Each listing provides five key contact points: fixed and mobile numbers, postal addresses, emails, and websites.While the digital edition is updated monthly to ensure accuracy, a revised printed version is also slated for periodic release.",
-    image: "https://play.google.com/books/publisher/content/images/frontcover/nCpLDwAAQBAJ?fife=w480-h690"
+    image: "https://play.google.com/books/publisher/content/images/frontcover/nCpLDwAAQBAJ?fife=w480-h690",
+     link: "https://play.google.com/store/books/details/Lion_Dr_Er_J_Shivakumaar_Chief_Editor_COIMBATORE_N?id=nCpLDwAAQBAJ"
   },
 
 ];
@@ -119,7 +122,10 @@ const Products = () => {
 
             <p>{item.description}</p>
 
-            <button className="product-btn">
+            <button
+              className="product-btn"
+              onClick={() => window.open(item.link, "_blank")}
+            >
               Learn More
             </button>
 

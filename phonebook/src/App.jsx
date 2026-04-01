@@ -40,6 +40,10 @@ import { CategorywiseProvider } from "./features/promotions/categorywise/context
 
 import AdminPage from "./features/admin/pages/AdminPage";
 
+
+import CategorywiseLayout from "./features/promotions/categorywise/pages/CategorywiseLayout";
+
+
 function App() {
   return (
     <>
@@ -47,21 +51,31 @@ function App() {
 
       <Routes>
         <Route path="/" element={<MainLayout />}>
+
+          {/* Public Routes */}
           <Route index element={<HomePage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="search" element={<SearchPage />} />
           <Route path="signup" element={<SignupPage />} />
+          <Route path="verify-email" element={<VerifyEmailPage />} />
+
+          {/* Profile */}
           <Route path="profile" element={<ProfilePage />} />
           <Route path="profile/edit" element={<EditProfilePage />} />
-          <Route path="verify-email" element={<VerifyEmailPage />} />
-          <Route path="subscription" element={<SubscriptionPage />} />
           <Route path="profile/:id" element={<ProfileDetailPage />} />
+
+          {/* Features */}
+          <Route path="subscription" element={<SubscriptionPage />} />
           <Route path="favorites" element={<FavoritesPage />} />
           <Route path="partner" element={<PartnerPage />} />
           <Route path="revenue-tracker" element={<RevenueTrackerPage />} />
+
+          {/* Static */}
           <Route path="about" element={<About />} />
           <Route path="products" element={<Products />} />
+
+          {/* Settings */}
           <Route path="settings" element={<SettingsPage />} />
           <Route path="reverse-number" element={<ReverseNumberFinder />} />
           <Route path="search-history" element={<SearchHistory />} />
@@ -70,27 +84,27 @@ function App() {
           <Route path="contact" element={<ContactUs />} />
           <Route path="combined-tariff" element={<CombinedTariffPage />} />
 
-       
+          {/* Promotions */}
           <Route path="promotions" element={<PromotionsPage />} />
 
-   
+          {/* Nearby Promotion */}
           <Route path="nearby-promotion" element={<NearbyPromotionPage />} />
           <Route path="nearby-results" element={<NearbyResultsPage />} />
 
-          <Route path="/admin" element={<AdminPage />} />
-          <Route
-            path="category"
-            element={
-              <CategorywiseProvider>
-                <Outlet />
-              </CategorywiseProvider>
-            }
-          >
-            <Route path="/category" element={<CategorywisePromotionPage />} />
-            <Route path="/category/results" element={<CategorywiseResultsPage />} />
-          </Route>
+          {/* ✅ Categorywise Promotion (FIXED) */}
+      <Route
+  path="category"
+  element={
+    <CategorywiseProvider>
+      <CategorywiseLayout />
+    </CategorywiseProvider>
+  }
+/>
 
-          {/* Protected Route */}
+          {/* Admin */}
+          <Route path="admin" element={<AdminPage />} />
+
+          {/* Protected */}
           <Route
             path="verified-numbers"
             element={
@@ -99,6 +113,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+
         </Route>
       </Routes>
     </>

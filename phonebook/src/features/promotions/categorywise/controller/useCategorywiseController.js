@@ -1,83 +1,217 @@
-import { useState } from "react";
-import { categorywiseService } from "../services/categorywiseService";
+// import { useState } from "react";
+// import { categorywiseService } from "../services/categorywiseService";
+
+// export const useCategorywiseController = () => {
+//   const [isSearching, setIsSearching] = useState(false);
+//   const [hasSearched, setHasSearched] = useState(false);
+
+//   const [searchResults, setSearchResults] = useState([]);
+//   const [selectedIndices, setSelectedIndices] = useState([]);
+//   const [sentBusinessIds, setSentBusinessIds] = useState([]);
+
+//   const [message, setMessage] = useState(
+//     "I Saw Your Listing in SIGNPOST PHONE BOOK. I am Interested in your Products. Please Send Details/Call Me."
+//   );
+
+//   const [category, setCategory] = useState("");
+//   const [city, setCity] = useState("");
+
+//   const getSuggestions = (column, query) =>
+//     categorywiseService.getSuggestions(column, query);
+
+//   const search = async () => {
+//     setIsSearching(true);
+
+//     const data = await categorywiseService.searchBusinesses(category, city);
+
+//     setSearchResults(data);
+//     setSelectedIndices([]);
+//     setHasSearched(true);
+
+//     setIsSearching(false);
+//   };
+
+//   const sendSMS = () => {
+//     const numbers = selectedIndices.map(
+//       (i) => searchResults[i].mobile_number
+//     );
+
+//     const success = categorywiseService.sendSMS(numbers, message);
+
+//     if (success) {
+//       const sentIds = selectedIndices.map((i) => searchResults[i].id);
+
+//       setSentBusinessIds((prev) => [...prev, ...sentIds]);
+//       setSelectedIndices([]);
+
+//       setSearchResults((prev) =>
+//         [...prev].sort((a, b) => {
+//           const aSent = sentIds.includes(a.id);
+//           const bSent = sentIds.includes(b.id);
+
+//           if (aSent && !bSent) return 1;
+//           if (!aSent && bSent) return -1;
+//           return 0;
+//         })
+//       );
+//     }
+//   };
+
+//   const toggleSelection = (index) => {
+//     setSelectedIndices((prev) =>
+//       prev.includes(index)
+//         ? prev.filter((i) => i !== index)
+//         : [...prev, index]
+//     );
+//   };
+
+//   const selectAll = () => {
+//     if (selectedIndices.length === searchResults.length) {
+//       setSelectedIndices([]);
+//     } else {
+//       setSelectedIndices(searchResults.map((_, i) => i));
+//     }
+//   };
+
+//   const clearAll = () => {
+//     setHasSearched(false);
+//     setSearchResults([]);
+//     setSelectedIndices([]);
+//   };
+
+//   return {
+//     isSearching,
+//     hasSearched,
+//     searchResults,
+//     selectedIndices,
+//     sentBusinessIds,
+
+//     message,
+//     setMessage,
+//     category,
+//     setCategory,
+//     city,
+//     setCity,
+
+//     getSuggestions,
+//     search,
+//     sendSMS,
+//     toggleSelection,
+//     selectAll,
+//     clearAll,
+//   };
+// };
+
+// controller/useCategorywiseController.js
+import { useState, useRef, useCallback } from 'react';
+import { CategorywiseProServices } from '../services/categorywiseService';
+import { CategorywiseProModel } from '../models/categorywiseModel';
 
 export const useCategorywiseController = () => {
+  const service = new CategorywiseProServices();
+
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-
   const [searchResults, setSearchResults] = useState([]);
-  const [selectedIndices, setSelectedIndices] = useState([]);
-  const [sentBusinessIds, setSentBusinessIds] = useState([]);
+  const [selectedIndices, setSelectedIndices] = useState(new Set());
+  const [sentBusinessIds, setSentBusinessIds] = useState(new Set());
 
-  const [message, setMessage] = useState(
+  const messageRef = useRef(
     "I Saw Your Listing in SIGNPOST PHONE BOOK. I am Interested in your Products. Please Send Details/Call Me."
   );
+  const categoryRef = useRef('');
+  const cityRef = useRef('');
 
-  const [category, setCategory] = useState("");
-  const [city, setCity] = useState("");
+  const getSuggestions = useCallback(async (column, query) => {
+    return await service.getSuggestions(column, query);
+  }, []);
 
-  const getSuggestions = (column, query) =>
-    categorywiseService.getSuggestions(column, query);
+  const getKeywordSuggestions = useCallback(async (query) => {
+    if (!query?.trim()) return [];
+    const result = await service.getSuggestions('keywords', query.trim());
+    const unique = [...new Set(result)];
+    unique.sort();
+    return unique;
+  }, []);
 
-  const search = async () => {
+  const search = useCallback(async () => {
     setIsSearching(true);
+    try {
+      const data = await service.searchBusinesses(
+        categoryRef.current,
+        cityRef.current
+      );
 
-    const data = await categorywiseService.searchBusinesses(category, city);
+      const models = data.map((item) => new CategorywiseProModel(item));
 
-    setSearchResults(data);
-    setSelectedIndices([]);
-    setHasSearched(true);
+      setSearchResults(models);
+      setSelectedIndices(new Set());
+      setHasSearched(true);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsSearching(false);
+    }
+  }, []);
 
-    setIsSearching(false);
-  };
-
-  const sendSMS = () => {
-    const numbers = selectedIndices.map(
-      (i) => searchResults[i].mobile_number
+  const sendSMS = useCallback(async () => {
+    const numbers = Array.from(selectedIndices).map(
+      (i) => searchResults[i]?.mobileNumber
     );
 
-    const success = categorywiseService.sendSMS(numbers, message);
+    const success = await service.sendSMS(numbers, messageRef.current);
 
     if (success) {
-      const sentIds = selectedIndices.map((i) => searchResults[i].id);
+      const newSent = new Set(sentBusinessIds);
+      Array.from(selectedIndices).forEach((i) => {
+        if (searchResults[i]) newSent.add(searchResults[i].id);
+      });
 
-      setSentBusinessIds((prev) => [...prev, ...sentIds]);
-      setSelectedIndices([]);
+      setSentBusinessIds(newSent);
+      setSelectedIndices(new Set());
 
-      setSearchResults((prev) =>
-        [...prev].sort((a, b) => {
-          const aSent = sentIds.includes(a.id);
-          const bSent = sentIds.includes(b.id);
+      // Sort: sent items move to bottom
+      const sorted = [...searchResults].sort((a, b) => {
+        const aSent = newSent.has(a.id);
+        const bSent = newSent.has(b.id);
+        if (aSent && !bSent) return 1;
+        if (!aSent && bSent) return -1;
+        return 0;
+      });
 
-          if (aSent && !bSent) return 1;
-          if (!aSent && bSent) return -1;
-          return 0;
-        })
-      );
+      setSearchResults(sorted);
     }
-  };
 
-  const toggleSelection = (index) => {
-    setSelectedIndices((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index]
-    );
-  };
+    return success;
+  }, [selectedIndices, searchResults, sentBusinessIds]);
 
-  const selectAll = () => {
-    if (selectedIndices.length === searchResults.length) {
-      setSelectedIndices([]);
-    } else {
-      setSelectedIndices(searchResults.map((_, i) => i));
-    }
-  };
+  const toggleSelection = useCallback((index) => {
+    setSelectedIndices((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  }, []);
 
-  const clearAll = () => {
+  const selectAll = useCallback(() => {
+    setSelectedIndices((prev) => {
+      if (prev.size === searchResults.length) {
+        return new Set();
+      }
+      return new Set(searchResults.map((_, i) => i));
+    });
+  }, [searchResults]);
+
+  const clearAll = useCallback(() => {
     setHasSearched(false);
     setSearchResults([]);
-    setSelectedIndices([]);
-  };
+    setSelectedIndices(new Set());
+    setSentBusinessIds(new Set());
+  }, []);
 
   return {
     isSearching,
@@ -85,15 +219,11 @@ export const useCategorywiseController = () => {
     searchResults,
     selectedIndices,
     sentBusinessIds,
-
-    message,
-    setMessage,
-    category,
-    setCategory,
-    city,
-    setCity,
-
+    messageRef,
+    categoryRef,
+    cityRef,
     getSuggestions,
+    getKeywordSuggestions,
     search,
     sendSMS,
     toggleSelection,

@@ -1,0 +1,161 @@
+/* css/categorywiseCard.css */
+.categorywise-card {
+  margin: 12px 15px;
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 25px;
+  /* box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.3); */
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.categorywise-card.sent {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.categorywise-card:hover {
+  transform: translateY(-2px);
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.business-info h3 {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.business-info p {
+  margin: 0;
+  color: #333;
+}
+
+.selection-box {
+  width: 26px;
+  height: 26px;
+  border: 2px solid #333;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  transition: all 0.2s;
+}
+
+.selection-box.selected {
+  background-color: #4caf50;
+  border-color: #4caf50;
+}
+
+.check {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* ============================================= */
+/* IMPROVED RESPONSIVENESS (CATEGORYWISE)        */
+/* ============================================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .cw-left-panel {
+    width: 320px;
+    min-width: 280px;
+  }
+
+  .cw-results-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+/* Mobile Layout Fix */
+@media (max-width: 900px) {
+  .cw-layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Make form collapsible feel */
+  .cw-left-panel {
+    width: 100%;
+    min-width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px;
+  }
+
+  .cw-right-panel {
+    padding: 12px;
+  }
+}
+
+/* Smaller Tablets / Large Phones */
+@media (max-width: 768px) {
+  .cw-top-bar-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .cw-stats {
+    justify-content: space-between;
+    font-size: 0.95rem;
+  }
+
+  .cw-action-buttons {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .cw-green-btn {
+    flex: 1;
+    text-align: center;
+  }
+
+  .cw-results-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+}
+
+/* Mobile Phones */
+@media (max-width: 480px) {
+  .cw-results-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .cw-left-panel {
+    padding: 14px 12px;
+  }
+
+  .cw-right-panel {
+    padding: 10px;
+  }
+
+  .cw-text-field {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .cw-green-btn {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .cw-top-bar {
+    padding: 12px;
+  }
+
+  .cw-stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+}

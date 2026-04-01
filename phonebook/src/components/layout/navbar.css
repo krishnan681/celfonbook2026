@@ -164,13 +164,15 @@
   }
 
   .nav-auth-group {
-    margin-top: auto; /* Push auth section to bottom of menu */
+    margin-top: auto; 
     width: 100%;
     padding-top: 2rem;
   }
 
   /* MOBILE PROFILE PILL */
   .user-control-panel {
+    position: relative;
+    bottom: 40px;
     flex-direction: column;
     width: 100%;
     gap: 1rem;
