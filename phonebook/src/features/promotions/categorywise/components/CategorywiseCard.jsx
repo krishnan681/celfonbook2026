@@ -1,6 +1,6 @@
 // components/CategorywiseCard.jsx
 import React from 'react';
-import '../css/CategorywiseCard.css';
+import '../css/categorywiseCard.css';
 
 const CategorywiseCard = ({ item, index, selected, isSent, onToggle }) => {
   return (
