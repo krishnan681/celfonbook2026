@@ -2,8 +2,7 @@ import { usePartnerController } from "../controller/usePartnerController";
 import PartnerForm from "../components/PartnerForm";
 import { User, Briefcase, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-// import "../css/PartnerPage.css";
-
+ 
 import "../css/partnerPage.css"
 
 const PartnerPage = () => {
