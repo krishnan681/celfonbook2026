@@ -1,9 +1,9 @@
 :root {
   --nav-height: 72px;
-  --primary: #2563eb;
-  --text-main: #1f2937;
-  --bg-white: #ffffff;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --primary: #5a4cf4;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --transition: all 0.3s ease;
 }
 
 .navbar {
@@ -12,8 +12,8 @@
   left: 0;
   width: 100%;
   height: var(--nav-height);
-  background: var(--bg-white);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
   display: flex;
   align-items: center;
   z-index: 1000;
@@ -29,62 +29,38 @@
   align-items: center;
 }
 
-.logo-img {
-  height: 38px;
-  cursor: pointer;
-}
+.logo-img { height: 32px; cursor: pointer; }
 
-/* DESKTOP MENU */
-.nav-menu {
+.nav-desktop-actions {
   display: flex;
   align-items: center;
-  gap: 2.5rem;
-}
-
-.nav-links-group {
-  display: flex;
   gap: 1.5rem;
 }
+
+/* DESKTOP STYLES */
+.nav-links-group { display: flex; gap: 1.5rem; }
 
 .nav-link {
   text-decoration: none;
   color: var(--text-main);
   font-weight: 500;
   font-size: 0.95rem;
-  transition: var(--transition);
-}
-
-.nav-link:hover {
-  color: var(--primary);
-}
-
-/* AUTH & PROFILE */
-.btn-signin {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--primary);
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
 }
 
 .user-control-panel {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .profile-pill {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  background: #f3f4f6;
-  padding: 4px 12px 4px 4px;
-  border-radius: 30px;
+  gap: 0.75rem;
+  background: #f8fafc;
+  padding: 5px 15px 5px 5px;
+  border-radius: 50px;
+  border: 1px solid #e2e8f0;
   cursor: pointer;
 }
 
@@ -97,131 +73,119 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 800;
-}
-
-.logout-text {
-  display: none; /* Hidden on desktop */
+  font-weight: bold;
 }
 
 .btn-icon-logout {
   background: none;
   border: none;
-  color: #dc2626;
+  color: #94a3b8;
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 5px;
+  transition: var(--transition);
 }
 
-/* MOBILE TOGGLE */
+.btn-icon-logout:hover { color: #ef4444; }
+
+/* MOBILE SIDEBAR */
+.mobile-sidebar {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 300px;
+  height: 100vh;
+  background: white;
+  z-index: 1100;
+  transition: var(--transition);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+}
+
+.mobile-sidebar.is-open { right: 0; }
+
+.sidebar-user-section {
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+
+.sidebar-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.avatar-large {
+  width: 44px;
+  height: 44px;
+  background: var(--primary);
+  color: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.user-name { display: block; font-weight: 700; color: var(--text-main); }
+.user-email { font-size: 0.75rem; color: var(--text-muted); }
+
+.sidebar-links { display: flex; flex-direction: column; gap: 0.4rem; }
+.sidebar-label { text-transform: uppercase; font-size: 0.7rem; font-weight: 700; color: #cbd5e1; margin: 1rem 0 0.5rem 0.5rem; }
+
+.sidebar-link {
+  text-decoration: none;
+  color: var(--text-main);
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.sidebar-link:hover { background: #f1f5f9; }
+
+.sidebar-logout-btn {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  background: #fef2f2;
+  color: #ef4444;
+  border-radius: 8px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+/* RESPONSIVE TOGGLES */
 .mobile-toggle {
-  display: none;
   background: none;
   border: none;
   color: var(--text-main);
   cursor: pointer;
-  z-index: 1100;
 }
 
-/* RESPONSIVE STYLES */
 @media (max-width: 992px) {
-  .mobile-toggle {
-    display: block;
-  }
-
-  .nav-menu {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 280px;
-    height: 100vh;
-    background: white;
-    flex-direction: column;
-    padding: 90px 1.5rem 2rem 1.5rem;
-    align-items: flex-start;
-    transition: var(--transition);
-    z-index: 1050;
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
-  }
-
-  .nav-menu.is-open {
-    right: 0;
-  }
-
-  .nav-links-group {
-    flex-direction: column;
-    width: 100%;
-    gap: 0.5rem;
-  }
-
-  .nav-link {
-    font-size: 1.05rem;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid #f3f4f6;
-    width: 100%;
-  }
-
-  .nav-auth-group {
-    margin-top: auto; 
-    width: 100%;
-    padding-top: 2rem;
-  }
-
-  /* MOBILE PROFILE PILL */
-  .user-control-panel {
-    position: relative;
-    bottom: 50px;
-    flex-direction: column;
-    width: 100%;
-    gap: 1rem;
-  }
-
-  .profile-pill {
-    width: 100%;
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 12px;
-    justify-content: flex-start;
-  }
-
-  .profile-name {
-    font-size: 1rem;
-    font-weight: 600;
-  }
-
-  /* MOBILE LOGOUT BUTTON */
-  .btn-icon-logout {
-    width: 100%;
-    background: #fef2f2;
-    padding: 12px;
-    border-radius: 8px;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-
-  .logout-text {
-    display: inline; /* Show "Logout" text on mobile */
-    font-weight: 600;
-  }
-
-  .nav-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(5px);
-    z-index: 1040;
-    cursor: pointer;
-    animation: fadeIn 0.3s ease;
-  }
+  .hide-on-mobile { display: none !important; }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@media (min-width: 993px) {
+  .mobile-toggle { display: none; }
+}
+
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
 }

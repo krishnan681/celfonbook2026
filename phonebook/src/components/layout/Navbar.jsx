@@ -24,24 +24,18 @@ const Navbar = () => {
 
   // Lock scroll when menu is open
   useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isMenuOpen ? "hidden" : "auto";
     return () => (document.body.style.overflow = "auto");
   }, [isMenuOpen]);
 
-  // Auth Listener & Sync
+  // Auth Listener & Sync (Original Logic)
   useEffect(() => {
     let mounted = true;
-
     const syncAuth = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (!mounted) return;
         setUser(user);
-
         if (user) {
           const profileData = await getCurrentUser().catch(() => null);
           if (mounted) setProfile(profileData);
@@ -57,7 +51,6 @@ const Navbar = () => {
       if (!mounted) return;
       const currentUser = session?.user ?? null;
       setUser(currentUser);
-
       if (currentUser) {
         getCurrentUser()
           .then(p => mounted && setProfile(p))
@@ -95,7 +88,6 @@ const Navbar = () => {
       setUser(null);
       setProfile(null);
       navigate("/", { replace: true });
-
       Swal.fire({
         title: "Logged out",
         icon: "success",
@@ -111,12 +103,7 @@ const Navbar = () => {
 
   const getInitials = () => {
     const name = profile?.business_name || profile?.person_name || profile?.full_name || "";
-    return name
-      .split(" ")
-      .map(n => n[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 1) || "U";
+    return name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 1) || "U";
   };
 
   return (
@@ -127,72 +114,86 @@ const Navbar = () => {
           <img src={LogoImg} alt="Logo" className="logo-img" />
         </div>
 
-        {/* MOBILE TOGGLE BUTTON */}
-        <button
-          className="mobile-toggle"
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          aria-label="Toggle menu"
-        >
-          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-
-        {/* NAVIGATION MENU */}
-        <div className={`nav-menu ${isMenuOpen ? "is-open" : ""}`}>
-          <div className="nav-links-group">
+        {/* Desktop View: Actions are visible in the bar */}
+        <div className="nav-desktop-actions">
+          <div className="nav-links-group hide-on-mobile">
             <Link to="/" className="nav-link">Home</Link>
             <Link to="/about" className="nav-link">About</Link>
             <Link to="/products" className="nav-link">Products</Link>
             <Link to="/search" className="nav-link">Search</Link>
-
-            {user && (
-              <>
-                <Link to="/partner" className="nav-link partner-link">Partner</Link>
-                <Link to="/promotions" className="nav-link">Promotions</Link>
-                <Link to="/favorites" className="nav-link">Favorites</Link>
-                <Link to="/settings" className="nav-link">Settings</Link>
-              </>
-            )}
           </div>
 
-          <div className="nav-auth-group">
-            {!user ? (
-              <Link to="/login" className="btn-signin">
-                Sign in <ChevronRight size={16} />
-              </Link>
-            ) : (
-              <div className="user-control-panel">
-                <div className="profile-pill" onClick={() => navigate("/profile")}>
-                  <div className="avatar-small">{getInitials()}</div>
-                  <span className="profile-name">
-                    {(profile?.business_name || profile?.person_name || "Account").split(" ")[0]}
-                  </span>
-                </div>
-
-                <button
-                  className="btn-icon-logout"
-                  onClick={handleLogout}
-                  disabled={isLoggingOut}
-                >
-                  {isLoggingOut ? "..." : (
-                    <>
-                      <LogOut size={18} />
-                      <span className="logout-text">Logout</span>
-                    </>
-                  )}
-                </button>
+          {!user ? (
+            <Link to="/login" className="btn-signin hide-on-mobile">
+              Sign in <ChevronRight size={16} />
+            </Link>
+          ) : (
+            <div className="user-control-panel hide-on-mobile">
+              <div className="profile-pill" onClick={() => navigate("/profile")}>
+                <div className="avatar-small">{getInitials()}</div>
+                <span className="profile-name">
+                  {(profile?.business_name || profile?.person_name || "Account").split(" ")[0]}
+                </span>
               </div>
-            )}
-          </div>
+              <button className="btn-icon-logout" onClick={handleLogout} disabled={isLoggingOut}>
+                <LogOut size={20} />
+              </button>
+            </div>
+          )}
+
+          {/* MOBILE TOGGLE */}
+          <button className="mobile-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
         </div>
       </div>
 
-      {/* CLICKABLE OVERLAY FOR MOBILE */}
-      {isMenuOpen && (
-        <div
-          className="nav-overlay"
-          onClick={() => setIsMenuOpen(false)}
-        />
-      )}
+      {/* MOBILE SIDEBAR */}
+      <aside className={`mobile-sidebar ${isMenuOpen ? "is-open" : ""}`}>
+        <div className="sidebar-content">
+          {/* USER PROFILE MOVED INSIDE SIDEBAR FOR MOBILE */}
+          {user && (
+            <div className="sidebar-user-section">
+              <div className="sidebar-profile-card" onClick={() => navigate("/profile")}>
+                <div className="avatar-large">{getInitials()}</div>
+                <div className="user-info">
+                  <span className="user-name">{profile?.business_name || profile?.person_name || "User"}</span>
+                  <span className="user-email">{user.email}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="sidebar-links">
+          
+            <Link to="/" className="sidebar-link">Home</Link>
+            <Link to="/about" className="sidebar-link">About</Link>
+            <Link to="/products" className="sidebar-link">Products</Link>
+            <Link to="/search" className="sidebar-link">Search</Link>
+
+            {user && (
+              <>
+                
+                <Link to="/partner" className="sidebar-link">Partner</Link>
+                <Link to="/promotions" className="sidebar-link">Promotions</Link>
+                <Link to="/favorites" className="sidebar-link">Favorites</Link>
+                <Link to="/settings" className="sidebar-link">Settings</Link>
+                
+                <button className="sidebar-logout-btn" onClick={handleLogout} disabled={isLoggingOut}>
+                  {isLoggingOut ? "..." : <><LogOut size={18} /> Logout</>}
+                </button>
+              </>
+            )}
+
+            {!user && (
+              <Link to="/login" className="sidebar-login-btn">Sign in</Link>
+            )}
+          </div>
+        </div>
+      </aside>
+
+      {/* OVERLAY */}
+      {isMenuOpen && <div className="nav-overlay" onClick={() => setIsMenuOpen(false)} />}
     </nav>
   );
 };
