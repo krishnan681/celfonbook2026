@@ -172,7 +172,7 @@
   /* MOBILE PROFILE PILL */
   .user-control-panel {
     position: relative;
-    bottom: 40px;
+    bottom: 50px;
     flex-direction: column;
     width: 100%;
     gap: 1rem;
