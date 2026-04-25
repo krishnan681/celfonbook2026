@@ -186,6 +186,7 @@
     │   │   │   │   ├── 📁 models/
     │   │   │   │   │   └── 📄 categorywiseModel.js
     │   │   │   │   ├── 📁 pages/
+    │   │   │   │   │   ├── 📄 CategorywiseLayout.jsx
     │   │   │   │   │   ├── 📄 CategorywisePromotionPage.jsx
     │   │   │   │   │   └── 📄 CategorywiseResultsPage.jsx
     │   │   │   │   └── 📁 services/
@@ -302,5 +303,4 @@
     ├── ⚙️ package-lock.json
     ├── ⚙️ package.json
     └── 📄 vite.config.js
-
  

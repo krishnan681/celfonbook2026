@@ -185,6 +185,8 @@
 //   };
 // };
 
+
+
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { supabase } from "../../../core/config/supabaseClient";
@@ -197,6 +199,21 @@ export const usePartnerController = () => {
   const [submitting, setSubmitting] = useState(false);
 
   // =========================
+  // SMS HELPER
+  // =========================
+  const isMobileDevice = () =>
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  const sendSMS = (mobile, message) => {
+    if (!mobile) return;
+
+    const encodedMessage = encodeURIComponent(message);
+    const smsUrl = `sms:${mobile}?body=${encodedMessage}`;
+
+    window.open(smsUrl, "_self");
+  };
+
+  // =========================
   // INITIAL STATE
   // =========================
   const getInitialState = (type) => {
@@ -204,21 +221,17 @@ export const usePartnerController = () => {
       return {
         user_type: "business",
         is_business: true,
-
         mobile_number: "",
         business_name: "",
         business_prefix: "M/s.",
         keywords: "",
         description: "",
-
         landline_code: "",
         landline: "",
-
         city: "",
         pincode: "",
         email: "",
         promo_code: "",
-
         address: "",
         bussiness_address: "",
       };
@@ -227,19 +240,15 @@ export const usePartnerController = () => {
     return {
       user_type: "person",
       is_business: false,
-
       mobile_number: "",
       person_name: "",
       person_prefix: "",
-
       landline_code: "",
       landline: "",
-
       city: "",
       pincode: "",
       email: "",
       promo_code: "",
-
       address: "",
     };
   };
@@ -330,7 +339,7 @@ export const usePartnerController = () => {
   };
 
   // =========================
-  // SUBMIT (FULL FLUTTER LOGIC)
+  // SUBMIT
   // =========================
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -340,7 +349,6 @@ export const usePartnerController = () => {
     setSubmitting(true);
 
     try {
-      // 1. AUTH USER
       const { data: userData, error: userError } =
         await supabase.auth.getUser();
 
@@ -350,19 +358,15 @@ export const usePartnerController = () => {
         throw new Error("User not authenticated");
       }
 
-      // 2. INSERT PROFILE
       const payload = {
         user_type: formData.user_type,
         is_business: formData.is_business,
-
+    
         mobile_number: formData.mobile_number,
-
         person_name: formData.person_name || null,
         person_prefix: formData.person_prefix || null,
-
         business_name: formData.business_name || null,
         business_prefix: formData.business_prefix || "M/s.",
-
         keywords: formData.keywords
           ? formData.keywords
               .split(",")
@@ -370,20 +374,15 @@ export const usePartnerController = () => {
               .filter(Boolean)
               .join(", ")
           : null,
-
         description: formData.description || null,
-
         city: formData.city || null,
         pincode: formData.pincode || null,
         email: formData.email || null,
         promo_code: formData.promo_code || null,
-
         landline_code: formData.landline_code || null,
         landline: formData.landline || null,
-
         address: formData.address || null,
         bussiness_address: formData.bussiness_address || null,
-
         updated_at: new Date().toISOString(),
       };
 
@@ -393,101 +392,85 @@ export const usePartnerController = () => {
 
       if (profileError) throw profileError;
 
-      // 3. GET s_profile
-      const { data: sProfile, error: sProfileError } = await supabase
+      const { data: sProfile } = await supabase
         .from("s_profiles")
         .select("id, full_name")
         .eq("user_id", user.id)
         .single();
 
-      if (sProfileError || !sProfile) {
-        throw new Error("Failed to fetch s_profile");
-      }
-
-      const sProfileId = sProfile.id;
-      const sProfileName = sProfile.full_name;
-
-      // 4. DATE CALCULATION
       const now = new Date();
 
-      const startOfDay = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        0, 0, 0
-      );
+      await supabase.from("data_entry_name").insert([
+        {
+          user_id: sProfile.id,
+          user_name: sProfile.full_name,
+          entryname:
+            formData.person_name ||
+            formData.business_name ||
+            "Entry",
+          entry_type: formData.is_business
+            ? "Business Profile Entry"
+            : "Person Profile Entry",
+          created_at: now.toISOString(),
+          updated_at: now.toISOString(),
+        },
+      ]);
 
-      const endOfDay = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        23, 59, 59
-      );
-
-      const todayDate = startOfDay.toISOString().split("T")[0];
-
-      // 5. INSERT ACTIVITY
-      const { error: activityError } = await supabase
+      const { data: todayEntries } = await supabase
         .from("data_entry_name")
-        .insert([
-          {
-            user_id: sProfileId,
-            user_name: sProfileName,
-            entryname:
-              formData.person_name ||
-              formData.business_name ||
-              "Entry",
-
-            entry_type: formData.is_business
-              ? "Business Profile Entry"
-              : "Person Profile Entry",
-
-            created_at: now.toISOString(),
-            updated_at: now.toISOString(),
-          },
-        ]);
-
-      if (activityError) throw activityError;
-
-      // 6. GET TODAY COUNT
-      const { data: todayEntries, error: countError } =
-        await supabase
-          .from("data_entry_name")
-          .select("id")
-          .eq("user_id", sProfileId)
-          .gte("created_at", startOfDay.toISOString())
-          .lte("created_at", endOfDay.toISOString());
-
-      if (countError) throw countError;
+        .select("id")
+        .eq("user_id", sProfile.id);
 
       const todayCount = todayEntries?.length || 0;
-      const todayEarnings = todayCount * 2;
 
-      // 7. UPSERT REVENUE
-      const { error: upsertError } = await supabase
-        .from("data_entry_table")
-        .upsert(
-          {
-            user_id: sProfileId,
-            user_name: sProfileName,
-            count: todayCount,
-            earnings: todayEarnings,
-            entry_date: todayDate,
-            updated_at: now.toISOString(),
-          },
-          { onConflict: "user_id,entry_date" }
-        );
+      await supabase.from("data_entry_table").upsert({
+        user_id: sProfile.id,
+        user_name: sProfile.full_name,
+        count: todayCount,
+        earnings: todayCount * 2,
+        entry_date: now.toISOString().split("T")[0],
+        updated_at: now.toISOString(),
+      });
 
-      if (upsertError) throw upsertError;
+      // =========================
+      // SUCCESS + SMS
+      // =========================
+      Swal.fire({
+        title: "Success",
+        text: "Profile saved successfully",
+        icon: "success",
+        confirmButtonText: "Send SMS",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (!isMobileDevice()) {
+            Swal.fire(
+              "Not Supported",
+              "SMS works only on mobile devices",
+              "info"
+            );
+            return;
+          }
 
-      // SUCCESS
-      Swal.fire("Success", "Profile saved successfully", "success");
+          const nameText = formData.is_business
+            ? `M/s. ${formData.business_name}`
+            : `${formData.person_prefix || ""} ${formData.person_name}`;
+
+          const link =
+            "https://play.google.com/store/apps/details?id=com.celfonphonebookapp&pcampaignid=web_share";
+
+          const message = formData.is_business
+            ? `Dear ${nameText}, CELFON BOOK app. Your firm ${formData.business_name} is listed under ${formData.keywords}. Verify here: ${link}`
+            : `Dear ${nameText}, CELFON BOOK app. You are listed under ${formData.keywords || ""}. Verify here: ${link}`;
+
+          sendSMS(formData.mobile_number, message);
+        }
+      });
 
       setProfileType(null);
       setFormData({});
       setTouched({});
     } catch (err) {
-      console.error("Submit Error:", err);
+      console.error(err);
       Swal.fire("Error", err.message || "Something went wrong", "error");
     } finally {
       setSubmitting(false);

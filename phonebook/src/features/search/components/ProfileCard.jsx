@@ -274,16 +274,10 @@ const ProfileCard = ({ profile, isKeywordFocused }) => {
       : "96857xxxxx";
 
   /* ---------------- BORDER TYPE ---------------- */
+/* ---------------- BORDER TYPE ---------------- */
 
-  let borderClass = "card-default";
-
-  if (profile.is_prime) {
-    borderClass = "card-prime";
-  } else if (profile.is_business) {
-    borderClass = "card-business";
-  } else if (profile.normal_list) {
-    borderClass = "card-normal";
-  }
+// Force ALL cards to be grey
+let borderClass = "card-default";
 
   /* ---------------- LOGIN CHECK ---------------- */
 
