@@ -33,7 +33,6 @@
     │   ├── 📁 core/
     │   │   ├── 📁 config/
     │   │   │   └── 📄 supabaseClient.js
-    │   │   ├── 📁 constants/
     │   │   ├── 📁 context/
     │   │   │   ├── 📄 AuthProvider.jsx
     │   │   │   └── 📄 FavoritesContext.jsx
@@ -104,11 +103,10 @@
     │   │   │   │   ├── 📄 NetworkErrorView.jsx
     │   │   │   │   ├── 📄 ProtectedRoute.jsx
     │   │   │   │   └── 📄 ToggleSwitch.jsx
-    │   │   │   ├── 📁 controller/
-    │   │   │   │   ├── 📄 useForgotPasswordController.js
-    │   │   │   │   ├── 📄 useLoginController.js
-    │   │   │   │   └── 📄 useSignupController.js
-    │   │   │   └── 📁 models/
+    │   │   │   └── 📁 controller/
+    │   │   │       ├── 📄 useForgotPasswordController.js
+    │   │   │       ├── 📄 useLoginController.js
+    │   │   │       └── 📄 useSignupController.js
     │   │   ├── 📁 favorites/
     │   │   │   ├── 📁 components/
     │   │   │   │   └── 📄 FavoritesView.jsx
@@ -303,4 +301,5 @@
     ├── ⚙️ package-lock.json
     ├── ⚙️ package.json
     └── 📄 vite.config.js
+
  

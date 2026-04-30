@@ -51,8 +51,8 @@
 // export default SearchPage;
 
 
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useSearchController } from "../controller/useSearchController";
 import SearchBar from "../components/SearchBar";
 import SearchFilters from "../components/SearchFilters";
@@ -62,6 +62,8 @@ import { SlidersHorizontal } from "lucide-react";
 import { FaFire } from "react-icons/fa";
 import { MdAddBusiness } from "react-icons/md";
 import "./css/search.css";
+
+
 
 const SearchPage = () => {
 
@@ -81,6 +83,7 @@ const SearchPage = () => {
 
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchParams] = useSearchParams();
 
   const popularKeywords = [
     "CNC Machine",
@@ -92,6 +95,15 @@ const SearchPage = () => {
     "Consultants",
     "Automation"
   ];
+
+
+  useEffect(() => {
+    const q = searchParams.get("q");
+
+    if (q) {
+      setSelectedCategory(q);
+    }
+  }, [searchParams]);
 
   return (
     <div className="search-wrapper">
@@ -170,35 +182,35 @@ const SearchPage = () => {
                 <FaFire color="#f97316" /> Popular Categories
               </h4>
 
-             <div className="keywords-grid">
-  {popularKeywords.map((k, idx) => (
-    <div key={idx} className="popular-chip-wrapper">
-      <button
-        className={`popular-chip ${selectedCategory === k ? "active" : ""}`}
-        disabled={selectedCategory && selectedCategory !== k}
-        onClick={() => {
-          setFilters({ ...filters, keywords: k });
-          setSelectedCategory(k);
-        }}
-      >
-        {k}
-      </button>
+              <div className="keywords-grid">
+                {popularKeywords.map((k, idx) => (
+                  <div key={idx} className="popular-chip-wrapper">
+                    <button
+                      className={`popular-chip ${selectedCategory === k ? "active" : ""}`}
+                      disabled={selectedCategory && selectedCategory !== k}
+                      onClick={() => {
+                        setFilters({ ...filters, keywords: k });
+                        setSelectedCategory(k);
+                      }}
+                    >
+                      {k}
+                    </button>
 
-      {/* Show close button if this is the selected category */}
-      {selectedCategory === k && (
-        <button
-          className="chip-close-btn"
-          onClick={() => {
-            setSelectedCategory(null);
-            setFilters({ ...filters, keywords: "" });
-          }}
-        >
-          ×
-        </button>
-      )}
-    </div>
-  ))}
-</div>
+                    {/* Show close button if this is the selected category */}
+                    {selectedCategory === k && (
+                      <button
+                        className="chip-close-btn"
+                        onClick={() => {
+                          setSelectedCategory(null);
+                          setFilters({ ...filters, keywords: "" });
+                        }}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
 
             </div>
 

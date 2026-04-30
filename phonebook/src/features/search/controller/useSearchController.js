@@ -65,17 +65,13 @@ export const useSearchController = () => {
       searchType = "business";
     }
 
-    else if (filters.keywords?.trim()) {
-      const term = filters.keywords.trim();
+   else if (filters.keywords?.trim()) {
+  const term = filters.keywords.trim();
 
-      queryBuilder = queryBuilder.ilike(
-        "keywords",
-        `%${term}%`
-      );
-
-      searchQuery = term;
-      searchType = "keywords";
-    }
+  queryBuilder = queryBuilder.or(
+    `business_name.ilike.%${term}%,person_name.ilike.%${term}%,keywords.ilike.%${term}%`
+  );
+}
 
     else if (filters.city?.trim()) {
       const term = filters.city.trim();
@@ -157,21 +153,27 @@ export const useSearchController = () => {
     return () => clearTimeout(delay);
   }, [fetchResults]);
 
-  useEffect(() => {
-    const letter = searchParams.get("letter");
-    const service = searchParams.get("service");
+ useEffect(() => {
+  const q = searchParams.get("q");
+  const loc = searchParams.get("loc");
+  const letter = searchParams.get("letter");
+  const service = searchParams.get("service");
 
-    if (letter) {
-      setFilters(prev => ({ ...prev, letter }));
-    }
+  setFilters(prev => ({
+    ...prev,
 
-    if (service) {
-      setFilters(prev => ({
-        ...prev,
-        keywords: service
-      }));
-    }
-  }, [searchParams]);
+    // 🔥 MAIN FIX
+    businessName: q || "",
+    keywords: service || q || "",
+
+    // 🔥 LOCATION FIX
+    city: loc || "",
+
+    // existing
+    letter: letter || ""
+  }));
+
+}, [searchParams]);
 
   return {
     results,
