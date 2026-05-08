@@ -735,13 +735,32 @@
 
 
 
-
-
-
-
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+
+import {
+  Hospital,
+  Hotel,
+  GraduationCap,
+  Stethoscope,
+  ShoppingBag,
+  Building2,
+  Briefcase,
+  Wrench,
+  FlaskConical,
+  Zap,
+  Factory,
+  Cpu,
+  Plug,
+  Plane,
+  Truck,
+} from "lucide-react";
+
 import "../pages/css/hero.css";
+
+/* ─────────────────────────────
+   MAIN CATEGORY GRID
+───────────────────────────── */
 
 const CATEGORIES = [
   { icon: "🍽️", label: "Restaurants" },
@@ -766,170 +785,362 @@ const CATEGORIES = [
   { icon: "🔧", label: "Plumbers" },
 ];
 
-const SERVICE_CARDS = [
-  { bg: "#1a3a8f", label: "B2B", sub: "Quick Quotes", emoji: "🤝" },
-  { bg: "#7c1fa0", label: "Repairs &\nServices", sub: "Get Nearest Vendor", emoji: "🔧" },
-  { bg: "#1244a0", label: "Real Estate", sub: "Finest Agents", emoji: "🏢" },
-  { bg: "#0f7a45", label: "Doctors", sub: "Book Now", emoji: "👨‍⚕️" },
+/* ─────────────────────────────
+   B2C
+───────────────────────────── */
+
+const DIRECTORY_CATEGORIES_B2C = [
+  { title: "Hospital", icon: <Hospital size={22} />, keywords: "hospital" },
+  { title: "Hotels", icon: <Hotel size={22} />, keywords: "hotel" },
+  { title: "Colleges", icon: <GraduationCap size={22} />, keywords: "college" },
+  { title: "Doctors", icon: <Stethoscope size={22} />, keywords: "doctor" },
+  { title: "Parlour", icon: <ShoppingBag size={22} />, keywords: "parlour" },
+  { title: "Real Estate", icon: <Building2 size={22} />, keywords: "real estate" },
+  { title: "Consultants", icon: <Briefcase size={22} />, keywords: "consultant" },
+  { title: "Repair Services", icon: <Wrench size={22} />, keywords: "service" },
 ];
 
-const BANNERS = [
-  {
-    bg: "linear-gradient(120deg,#0f2176 55%,#1a3a8f 100%)",
-    title: "Discover Lakhs of",
-    highlight: "MSME Businesses!",
-    sub: "Search across India's largest MSME directory",
-    cta: "Explore Now",
-  },
-  {
-    bg: "linear-gradient(120deg,#6b1a9a 55%,#9c3dd4 100%)",
-    title: "Grow Your Business",
-    highlight: "List for FREE!",
-    sub: "Reach crores of buyers in minutes",
-    cta: "Get Started",
-  },
-  {
-    bg: "linear-gradient(120deg,#0a5e3a 55%,#0f8c57 100%)",
-    title: "Find Verified",
-    highlight: "Suppliers & Vendors",
-    sub: "India's B2B marketplace for MSMEs",
-    cta: "Browse Now",
-  },
+/* ─────────────────────────────
+   B2B
+───────────────────────────── */
+
+const DIRECTORY_CATEGORIES_B2B = [
+  { title: "Chemical", icon: <FlaskConical size={22} />, keywords: "chemical" },
+  { title: "Electrical", icon: <Zap size={22} />, keywords: "electrical" },
+  { title: "Steel", icon: <Factory size={22} />, keywords: "steel" },
+  { title: "CNC", icon: <Cpu size={22} />, keywords: "cnc" },
+  { title: "Hydraulic", icon: <Cpu size={22} />, keywords: "hydraulic" },
+  { title: "Electronics", icon: <Plug size={22} />, keywords: "electronics" },
+  { title: "Exporters", icon: <Plane size={22} />, keywords: "export" },
+  { title: "Logistics", icon: <Truck size={22} />, keywords: "logistics" },
 ];
+
+
+const BANNERS = {
+  b2b: [
+    {
+      bg: "linear-gradient(120deg,#0f2176 55%,#1a3a8f 100%)",
+      title: "India's Industrial Directory",
+      highlight: "Find Manufacturers & Suppliers",
+      sub: "Search verified MSME manufacturers, exporters and vendors",
+    },
+    {
+      bg: "linear-gradient(120deg,#6b1a9a 55%,#9c3dd4 100%)",
+      title: "Grow Your Business",
+      highlight: "Connect with Bulk Buyers",
+      sub: "Discover wholesalers, distributors and exporters",
+    },
+    {
+      bg: "linear-gradient(120deg,#0f4c81 55%,#2563eb 100%)",
+      title: "Industrial Marketplace",
+      highlight: "Source Products Faster",
+      sub: "Explore thousands of industrial categories",
+    },
+  ],
+
+  b2c: [
+    {
+      bg: "linear-gradient(120deg,#0a5e3a 55%,#0f8c57 100%)",
+      title: "Trusted Local Services",
+      highlight: "Discover Nearby Businesses",
+      sub: "Find restaurants, hospitals, hotels and more",
+    },
+    {
+      bg: "linear-gradient(120deg,#c2410c 55%,#f97316 100%)",
+      title: "Everything Around You",
+      highlight: "Search Local Categories",
+      sub: "Explore services in your city instantly",
+    },
+    {
+      bg: "linear-gradient(120deg,#7c2d12 55%,#ea580c 100%)",
+      title: "Find Verified Services",
+      highlight: "Book Trusted Businesses",
+      sub: "Discover top-rated local businesses near you",
+    },
+  ],
+};
+
+
+
+
+
+
+
+
 
 export default function HeroSection() {
   const navigate = useNavigate();
+
   const [query, setQuery] = useState("");
   const [location, setLocation] = useState("");
-  const [activeBanner, setActiveBanner] = useState(0);
+  const [mode, setMode] = useState("b2b");
+const [activeBanner, setActiveBanner] = useState(0);
+
+  const goToSearch = (q = query, loc = location) => {
+    const cleanQ = q.replace(/\n/g, " ").trim();
+
+    navigate(
+      `/search?q=${encodeURIComponent(
+        cleanQ
+      )}&loc=${encodeURIComponent(loc.trim())}`
+    );
+  };
+
+  const handleKey = (e) => {
+    if (e.key === "Enter") goToSearch();
+  };
 
   useEffect(() => {
-    const t = setInterval(() => setActiveBanner((p) => (p + 1) % BANNERS.length), 3800);
-    return () => clearInterval(t);
-  }, []);
+  const interval = setInterval(() => {
+    const currentBanners = BANNERS[mode];
 
-const goToSearch = (q = query, loc = location) => {
-  const cleanQ = q.replace(/\n/g, " ").trim();
+    setActiveBanner((prev) => (
+      (prev + 1) % currentBanners.length
+    ));
+  }, 3500);
 
-  navigate(`/search?q=${encodeURIComponent(cleanQ)}&loc=${encodeURIComponent(loc.trim())}`);
-};
+  return () => clearInterval(interval);
+}, [mode]);
 
-  const handleKey = (e) => { if (e.key === "Enter") goToSearch(); };
-  const banner = BANNERS[activeBanner];
+const currentBanner = BANNERS[mode][activeBanner];
+
+  const activeCategories =
+    mode === "b2b"
+      ? DIRECTORY_CATEGORIES_B2B
+      : DIRECTORY_CATEGORIES_B2C;
 
   return (
-    <>
+    <div className="jd-outer">
 
-      <div className="jd-outer">
+      {/* SEARCH */}
+      <div className="jd-search-area">
 
-        {/* SEARCH */}
-        <div className="jd-search-area">
-          <p className="jd-search-headline">
-            Find Anyone Anywhere
-          </p>
-          <div className="jd-search-bar">
-            <div className="jd-loc-wrap">
-              <span className="jd-loc-pin">📍</span>
-              <input
-                className="jd-loc-inp"
-                type="text"
-                placeholder="City / Area"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                onKeyDown={handleKey}
-              />
-            </div>
-            <div className="jd-query-wrap">
-              <input
-                className="jd-query-inp"
-                type="text"
-                placeholder="Search for Businesses, Services..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={handleKey}
-              />
-            </div>
-            <button className="jd-search-go" onClick={() => goToSearch()}>
-              <svg viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="7" />
-                <line x1="16.5" y1="16.5" x2="22" y2="22" />
-              </svg>
-            </button>
-          </div>
-        </div>
+        <p className="jd-search-headline">
+          Find Anyone Anywhere
+        </p>
 
-        {/* BANNER + CARDS */}
-        <div className="jd-content-row">
-          {/* Animated banner */}
-          <div className="jd-hero-banner" onClick={() => navigate("/search")}>
-            <div className="jd-banner-bg" style={{ background: banner.bg }} />
-            <div className="jd-banner-body">
-              <div className="jd-b-title">{banner.title}</div>
-              <div className="jd-b-highlight">{banner.highlight}</div>
-              <div className="jd-b-sub">{banner.sub}</div>
-              <button className="jd-b-cta" onClick={(e) => { e.stopPropagation(); navigate("/search"); }}>
-                {banner.cta}
-              </button>
-            </div>
-            <div className="jd-banner-dots">
-              {BANNERS.map((_, i) => (
-                <div
-                  key={i}
-                  className={`jd-bdot${i === activeBanner ? " on" : ""}`}
-                  onClick={(e) => { e.stopPropagation(); setActiveBanner(i); }}
-                />
-              ))}
-            </div>
+        <div className="jd-search-bar">
+
+          <div className="jd-loc-wrap">
+            <span className="jd-loc-pin"></span>
+
+            <input
+              className="jd-loc-inp"
+              type="text"
+              placeholder="Search by Firms/Persons"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              onKeyDown={handleKey}
+            />
           </div>
 
-          {/* Service cards 2×2 */}
-          <div className="jd-scards-grid">
-            {SERVICE_CARDS.map((c) => (
-              <div
-                key={c.label}
-                className="jd-scard"
-                style={{ background: c.bg }}
-                onClick={() => goToSearch(c.label.replace("\n", " "), location)}
-              >
-                <div>
-                  <div className="jd-scard-label">{c.label}</div>
-                  <div className="jd-scard-sub">{c.sub}</div>
-                </div>
-                <div className="jd-scard-arr">›</div>
-                <div className="jd-scard-emoji">{c.emoji}</div>
-              </div>
-            ))}
+          <div className="jd-query-wrap">
+            <input
+              className="jd-query-inp"
+              type="text"
+              placeholder="Search by Products/Services"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKey}
+            />
           </div>
-        </div>
 
-        {/* CATEGORIES */}
-        <div className="jd-cats">
-          <div className="jd-cats-grid">
-            {CATEGORIES.map((cat) => (
-              <div
-                key={cat.label}
-                className="jd-citem"
-                onClick={() => goToSearch(cat.label, location)}
-              >
-                <span className="jd-citem-icon">{cat.icon}</span>
-                <span className="jd-citem-label">{cat.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* LIST YOUR BIZ */}
-        <div className="jd-listbiz">
-          <div className="jd-listbiz-text">
-            <h3>Connect with <span>18 Lakh+ Buyers</span></h3>
-            <p>Grow your business in 3 easy steps</p>
-          </div>
-          <button className="jd-listbiz-btn" onClick={() => navigate("/partner")}>
-            List your Business for FREE
+          <button
+            className="jd-search-go"
+            onClick={() => goToSearch()}
+          >
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="16.5" y1="16.5" x2="22" y2="22" />
+            </svg>
           </button>
+
+        </div>
+      </div>
+
+      {/* BANNER + B2B/B2C */}
+      <div className="jd-content-row">
+
+        {/* LEFT BANNER */}
+       {/* LEFT BANNER */}
+<div
+  className="jd-hero-banner"
+  onClick={() => navigate("/search")}
+>
+
+  <div
+    className="jd-banner-bg"
+    style={{
+      background: currentBanner.bg,
+    }}
+  />
+
+  <div className="jd-banner-body">
+
+    <div className="jd-b-title">
+      {currentBanner.title}
+    </div>
+
+    <div className="jd-b-highlight">
+      {currentBanner.highlight}
+    </div>
+
+    <div className="jd-b-sub">
+      {currentBanner.sub}
+    </div>
+
+    <button
+      className="jd-b-cta"
+      onClick={(e) => {
+        e.stopPropagation();
+        navigate("/search");
+      }}
+    >
+      Explore Now
+    </button>
+
+  </div>
+
+  {/* DOTS */}
+  <div className="jd-banner-dots">
+
+    {BANNERS[mode].map((_, i) => (
+      <div
+        key={i}
+        className={`jd-bdot ${
+          i === activeBanner ? "on" : ""
+        }`}
+        onClick={(e) => {
+          e.stopPropagation();
+          setActiveBanner(i);
+        }}
+      />
+    ))}
+
+  </div>
+
+</div>
+
+        {/* RIGHT SIDE */}
+        <div className="jd-mode-box">
+
+          {/* HEADER */}
+          <div className="jd-mode-header">
+
+            <div>
+
+              <p className="jd-mode-small">
+                Explore Categories
+              </p>
+
+              <h2 className="jd-mode-title">
+                {mode === "b2b"
+                  ? "Industrial & Manufacturing"
+                  : "Local & Consumer Services"}
+              </h2>
+
+            </div>
+
+            {/* SWITCH */}
+            <div className="jd-mode-switch">
+
+              <button
+                className={mode === "b2b" ? "active" : ""}
+                onClick={() => setMode("b2b")}
+              >
+                B2B
+              </button>
+
+              <button
+                className={mode === "b2c" ? "active" : ""}
+                onClick={() => setMode("b2c")}
+              >
+                B2C
+              </button>
+
+            </div>
+
+          </div>
+
+          {/* CATEGORY GRID */}
+          <div className="jd-mode-cards">
+
+            {activeCategories.map((item) => (
+              <div
+                key={item.title}
+                className="jd-mini-card"
+                onClick={() =>
+                  goToSearch(item.keywords, location)
+                }
+              >
+
+                <div className="jd-mini-icon">
+                  {item.icon}
+                </div>
+
+                <div className="jd-mini-title">
+                  {item.title}
+                </div>
+
+              </div>
+            ))}
+
+          </div>
+
         </div>
 
       </div>
-    </>
+
+      {/* CATEGORIES */}
+      <div className="jd-cats">
+
+        <div className="jd-cats-grid">
+
+          {CATEGORIES.map((cat) => (
+            <div
+              key={cat.label}
+              className="jd-citem"
+              onClick={() =>
+                goToSearch(cat.label, location)
+              }
+            >
+              <span className="jd-citem-icon">
+                {cat.icon}
+              </span>
+
+              <span className="jd-citem-label">
+                {cat.label}
+              </span>
+            </div>
+          ))}
+
+        </div>
+      </div>
+
+      {/* LIST YOUR BUSINESS */}
+      <div className="jd-listbiz">
+
+        <div className="jd-listbiz-text">
+
+          <h3>
+            Connect with <span>18 Lakh+ Buyers</span>
+          </h3>
+
+          <p>
+            Grow your business in 3 easy steps
+          </p>
+
+        </div>
+
+        <button
+          className="jd-listbiz-btn"
+          onClick={() => navigate("/partner")}
+        >
+          List your Business for FREE
+        </button>
+
+      </div>
+
+    </div>
   );
 }
