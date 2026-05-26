@@ -1,4 +1,4 @@
- 
+
 └── 📁 phonebook/
     ├── 📁 public/
     │   └── 🖼️ vite.svg
@@ -96,6 +96,7 @@
     │   │   │   │   │   └── 🎨 verify.css
     │   │   │   │   ├── 📄 ForgotPassword.jsx
     │   │   │   │   ├── 📄 LoginPage.jsx
+    │   │   │   │   ├── 📄 OtpVerificationPage.jsx
     │   │   │   │   ├── 📄 SignupPage.jsx
     │   │   │   │   └── 📄 VerifyEmailPage.jsx
     │   │   │   ├── 📁 components/
@@ -301,5 +302,3 @@
     ├── ⚙️ package-lock.json
     ├── ⚙️ package.json
     └── 📄 vite.config.js
-
- 

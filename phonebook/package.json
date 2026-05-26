@@ -7,13 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "node server.cjs"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.2.0",
     "@supabase/supabase-js": "^2.95.3",
     "aos": "^2.3.4",
+    "axios": "^1.16.1",
     "bootstrap": "^5.3.8",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "framer-motion": "^12.35.0",
     "lucide-react": "^0.564.0",
     "react": "^19.2.0",

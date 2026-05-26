@@ -1,4 +1,4 @@
-.verify-container{
+/* .verify-container{
   min-height:100vh;
   display:flex;
   flex-direction:column;
@@ -31,9 +31,7 @@
   background:#4f46e5;
 }
 
-
-/* LOADING DOTS */
-
+ 
 .dots{
   display:flex;
   gap:6px;
@@ -56,4 +54,43 @@
 @keyframes dotPulse{
   0%,100%{opacity:0.3;transform:scale(0.8)}
   50%{opacity:1;transform:scale(1.2)}
+}
+
+
+
+
+
+ */
+
+
+
+
+
+
+
+
+ .auth-page {
+  min-height: 100vh;
+  display: flex;
+}
+
+.auth-left,
+.auth-right {
+  flex: 1;
+}
+
+.auth-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.glass-card {
+  width: 100%;
+  max-width: 460px;
+}
+
+.modern-input-group input {
+  width: 100%;
 }

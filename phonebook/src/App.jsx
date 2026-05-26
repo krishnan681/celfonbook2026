@@ -39,10 +39,9 @@ import CategorywiseResultsPage from "./features/promotions/categorywise/pages/Ca
 import { CategorywiseProvider } from "./features/promotions/categorywise/context/CategorywiseContext";
 
 import AdminPage from "./features/admin/pages/AdminPage";
-
+import OtpVerificationPage from "./features/auth/Pages/OtpVerificationPage";
 
 import CategorywiseLayout from "./features/promotions/categorywise/pages/CategorywiseLayout";
-
 
 function App() {
   return (
@@ -51,7 +50,6 @@ function App() {
 
       <Routes>
         <Route path="/" element={<MainLayout />}>
-
           {/* Public Routes */}
           <Route index element={<HomePage />} />
           <Route path="login" element={<LoginPage />} />
@@ -92,14 +90,14 @@ function App() {
           <Route path="nearby-results" element={<NearbyResultsPage />} />
 
           {/* ✅ Categorywise Promotion (FIXED) */}
-      <Route
-  path="category"
-  element={
-    <CategorywiseProvider>
-      <CategorywiseLayout />
-    </CategorywiseProvider>
-  }
-/>
+          <Route
+            path="category"
+            element={
+              <CategorywiseProvider>
+                <CategorywiseLayout />
+              </CategorywiseProvider>
+            }
+          />
 
           {/* Admin */}
           <Route path="admin" element={<AdminPage />} />
@@ -114,6 +112,8 @@ function App() {
             }
           />
 
+          {/* OTP Verification */}
+          <Route path="/otp_verification" element={<OtpVerificationPage />} />
         </Route>
       </Routes>
     </>
