@@ -48,7 +48,7 @@ export default function OtpVerificationPage() {
       const newOtp = generateOtp();
 
       // API CALL
-      const response = await fetch("http://localhost:5000/send-otp", {
+      const response = await fetch("/api/send-otp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
