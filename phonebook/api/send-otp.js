@@ -71,8 +71,6 @@
 //   }
 // }
 
-
-
 export default async function handler(req, res) {
   try {
     console.log("==================================");
@@ -111,24 +109,14 @@ export default async function handler(req, res) {
     console.log("📞 Original Phone:", phone);
     console.log("📞 Formatted Phone:", formattedPhone);
 
-    const smsText =
-      `Your OTP is ${otp} for verification in Celfon Book account. Do not share OTP with anyone.`;
-
+  const smsText =
+  `Your OTP for Signpost Celfon5G is:${otp}. Use this OTP to verify your account. Do not share OTP with anyone.`;
     console.log("📝 SMS Text:", smsText);
 
     console.log("🔐 ENV CHECK");
-    console.log(
-      "BHASHSMS_USER Exists:",
-      !!process.env.BHASHSMS_USER
-    );
-    console.log(
-      "BHASHSMS_PASS Exists:",
-      !!process.env.BHASHSMS_PASS
-    );
-    console.log(
-      "BHASHSMS_SENDER Exists:",
-      !!process.env.BHASHSMS_SENDER
-    );
+    console.log("BHASHSMS_USER Exists:", !!process.env.BHASHSMS_USER);
+    console.log("BHASHSMS_PASS Exists:", !!process.env.BHASHSMS_PASS);
+    console.log("BHASHSMS_SENDER Exists:", !!process.env.BHASHSMS_SENDER);
 
     const smsUrl =
       `http://bhashsms.com/api/sendmsg.php` +
@@ -143,15 +131,18 @@ export default async function handler(req, res) {
     console.log("🚀 Sending SMS...");
     console.log(
       "SMS URL (Hidden Credentials):",
-      `http://bhashsms.com/api/sendmsg.php?...&phone=${formattedPhone}`
+      `http://bhashsms.com/api/sendmsg.php?...&phone=${formattedPhone}`,
     );
 
     const response = await fetch(smsUrl);
 
-    console.log("📡 BhashSMS Status:", response.status);
+    console.log("HTTP STATUS:", response.status);
+    console.log("HTTP OK:", response.ok);
+    console.log("HEADERS:", [...response.headers.entries()]);
 
     const data = await response.text();
 
+    console.log("RAW SMS RESPONSE:", JSON.stringify(data));
     console.log("✅ SMS Response:");
     console.log(data);
 
@@ -164,7 +155,6 @@ export default async function handler(req, res) {
       message: "OTP sent successfully",
       apiResponse: data,
     });
-
   } catch (error) {
     console.log("==================================");
     console.log("❌ OTP API ERROR");
