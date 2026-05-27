@@ -166,7 +166,7 @@ export default function OtpVerificationPage() {
               Enter the 4-digit code sent to
             </p>
 
-          <strong>+91 {phone}</strong>
+          <strong>{phone}</strong>
           </div>
 
           <div className="auth-form modern-form">
