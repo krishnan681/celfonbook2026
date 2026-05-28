@@ -87,9 +87,6 @@
 //   };
 // }
 
-
-
-
 import { useState } from "react";
 import { supabase } from "../../../core/config/supabaseClient";
 import { useNavigate } from "react-router-dom";
@@ -173,68 +170,64 @@ export default function useSignupController() {
     }
   };
 
-const signup = async () => {
-  if (!phone.trim()) {
-    setError("Phone number is required");
-    return;
-  }
+  const signup = async () => {
+    if (!phone.trim()) {
+      setError("Phone number is required");
+      return;
+    }
 
-  if (!validateIndianMobile(phone.trim())) {
-    setError("Enter valid mobile number");
-    return;
-  }
+    if (!validateIndianMobile(phone.trim())) {
+      setError("Enter valid mobile number");
+      return;
+    }
 
-  if (!name.trim()) {
-    setError("Full name is required");
-    return;
-  }
+    if (!name.trim()) {
+      setError("Full name is required");
+      return;
+    }
 
-  setLoading(true);
-  setError(null);
+    setLoading(true);
+    setError(null);
 
-  try {
-    const mobileNumber = phone.trim();  
-    const supabasePhone = `+91${mobileNumber}`;  
-    const cleanName = name.trim();
+    try {
+      const mobileNumber = phone.trim();
+      const supabasePhone = mobileNumber;
+      const cleanName = name.trim();
 
-    const defaultPassword = "celfonbook";
+      const defaultPassword = "celfonbook";
 
-    // 🔐 Supabase Signup
-    const { data, error: authError } =
-      await supabase.auth.signUp({
+      // 🔐 Supabase Signup
+      const { data, error: authError } = await supabase.auth.signUp({
         phone: supabasePhone,
         password: defaultPassword,
       });
 
-    if (authError) throw authError;
+      if (authError) throw authError;
 
-    const user = data.user;
+      const user = data.user;
 
-    if (!user) {
-      throw new Error("User not created");
-    }
+      if (!user) {
+        throw new Error("User not created");
+      }
 
-    // 🔥 Save Profile
-    const { error: profileError } = await supabase
-      .from("s_profiles")
-      .insert({
+      // 🔥 Save Profile
+      const { error: profileError } = await supabase.from("s_profiles").insert({
         id: user.id,
         full_name: cleanName,
         phone: mobileNumber, // save only 10 digit number
         promo_code: promo.trim(),
       });
 
-    if (profileError) throw profileError;
+      if (profileError) throw profileError;
 
-    // 🔥 Send OTP (10 digit only)
-    await sendOtp(mobileNumber);
-
-  } catch (err) {
-    setError(err.message || "Signup failed");
-  } finally {
-    setLoading(false);
-  }
-};
+      // 🔥 Send OTP (10 digit only)
+      await sendOtp(mobileNumber);
+    } catch (err) {
+      setError(err.message || "Signup failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return {
     phone,
@@ -248,13 +241,6 @@ const signup = async () => {
     signup,
   };
 }
-
-
-
-
-
-
-
 
 // import { useState } from "react";
 // import { supabase } from "../../../core/config/supabaseClient";
