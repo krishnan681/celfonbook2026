@@ -92,13 +92,13 @@ export default function DetailedProfileHeader({
 
               {/* Action Buttons */}
               <div className="pd-action-group">
-                <button
+                {/* <button
                   className="pd-circle-btn"
                   onClick={onShare}
                   title="Share"
                 >
                   <FaShareAlt />
-                </button>
+                </button> */}
 
                 <button
                   className={`pd-circle-btn ${isFavorite ? "active" : ""}`}

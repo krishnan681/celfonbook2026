@@ -238,6 +238,9 @@ import Swal from "sweetalert2";
 import { supabase } from "../../../core/config/supabaseClient";
 import "../components/css/profilecard.css";
 
+import { ViewService } from "../Service/viewService";
+import { LeadService } from "../Service/leadService";
+
 import DiscountModal from "./DiscountModal";
 import { DiscountService } from "../Service/discountService";
 
@@ -262,7 +265,7 @@ const ProfileCard = ({ profile, isKeywordFocused }) => {
       : "96857xxxxx";
 
   /* ---------------- BORDER TYPE ---------------- */
-  /* ---------------- BORDER TYPE ---------------- */
+ 
 
   let borderClass = "card-default";
 
@@ -274,11 +277,11 @@ const ProfileCard = ({ profile, isKeywordFocused }) => {
     borderClass = "card-normal";
   }
 
-  console.log("PROFILE:", profile);
-  console.log("is_prime:", profile.is_prime);
-  console.log("is_business:", profile.is_business);
-  console.log("normal_list:", profile.normal_list);
-  console.log("Applied Border:", borderClass);
+  // console.log("PROFILE:", profile);
+  // console.log("is_prime:", profile.is_prime);
+  // console.log("is_business:", profile.is_business);
+  // console.log("normal_list:", profile.normal_list);
+  // console.log("Applied Border:", borderClass);
 
   /* ---------------- LOGIN CHECK ---------------- */
 
@@ -360,12 +363,26 @@ const ProfileCard = ({ profile, isKeywordFocused }) => {
 
   /* ---------------- CARD CLICK ---------------- */
 
-  const handleCardClick = async () => {
-    const loggedIn = await checkLogin();
-    if (!loggedIn) return;
+const handleCardClick = async () => {
+  console.log("CARD CLICKED", profile.id);
+
+  const loggedIn = await checkLogin();
+  if (!loggedIn) return;
+
+  try {
+    console.log("CALLING SAVE VIEW");
+
+    await ViewService.saveView(profile);
+
+    console.log("VIEW SAVED");
 
     navigate(`/profile/${profile.id}`);
-  };
+
+    await LeadService.createLead(profile);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   /* ---------------- DISCOUNT CLICK ---------------- */
 
