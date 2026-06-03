@@ -434,6 +434,14 @@ const ProfileCard = ({ profile, isKeywordFocused }) => {
                 ))}
             </p>
           )}
+
+          {profile.expo_id &&
+            profile.expo?.expo_edition &&
+            profile.stall_no && (
+              <p className="expo-info">
+                🏪 {profile.expo.expo_edition} • Stall No: {profile.stall_no}
+              </p>
+            )}
         </div>
 
         <div className="card-actions">

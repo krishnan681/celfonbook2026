@@ -238,3 +238,15 @@
   border-radius: 4px;
   font-weight: 600;
 }
+
+
+
+.expo-info {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #e65100;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
