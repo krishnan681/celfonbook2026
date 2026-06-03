@@ -70,11 +70,13 @@ import MarketingSection from "../components/MarketingSection";
 import HowItWorks from "../components/HowItWorks";
 import PricingSection from "../components/PricingSection";
 import AboutSection from "../components/AboutSection";
+import DirectorySection from "../components/DirectorySection";
 
 export default function HomePage() {
   return (
     <main>
       <HeroSection />
+      <DirectorySection />
       <StatsSection />
       <FeaturesSection />
       <MarketingSection />

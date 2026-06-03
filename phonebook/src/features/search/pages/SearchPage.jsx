@@ -50,7 +50,6 @@
 
 // export default SearchPage;
 
-
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSearchController } from "../controller/useSearchController";
@@ -63,10 +62,7 @@ import { FaFire } from "react-icons/fa";
 import { MdAddBusiness } from "react-icons/md";
 import "./css/search.css";
 
-
-
 const SearchPage = () => {
-
   const navigate = useNavigate();
 
   const {
@@ -78,12 +74,15 @@ const SearchPage = () => {
     setPage,
     totalPages,
     isKeywordFocused,
-    setIsKeywordFocused
+    setIsKeywordFocused,
   } = useSearchController();
 
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchParams] = useSearchParams();
+  const expoId = searchParams.get("expo_id");
+
+  const cityFromUrl = searchParams.get("city");
 
   const popularKeywords = [
     "CNC Machine",
@@ -93,21 +92,27 @@ const SearchPage = () => {
     "Polymers",
     "Industrial Suppliers",
     "Consultants",
-    "Automation"
+    "Automation",
   ];
-
 
   useEffect(() => {
     const q = searchParams.get("q");
+    const loc = searchParams.get("loc");
+    const city = searchParams.get("city");
+    const letter = searchParams.get("letter");
+    const service = searchParams.get("service");
 
-    if (q) {
-      setSelectedCategory(q);
-    }
+    setFilters((prev) => ({
+      ...prev,
+      businessName: q || "",
+      keywords: service || q || "",
+      city: city || loc || "",
+      letter: letter || "",
+    }));
   }, [searchParams]);
 
   return (
     <div className="search-wrapper">
-
       {/* HEADER */}
       <header className="header-layout">
         <SearchBar
@@ -121,17 +126,16 @@ const SearchPage = () => {
       </header>
 
       <div className="search-layout-grid">
-
         {/* LEFT COLUMN */}
         <main className="search-results-column">
-
           {/* RESULTS HEADER */}
           <div className="results-label">
-
             <h3>
-              {selectedCategory
-                ? `Search results for ${selectedCategory}:`
-                : "Search results"}
+              {expoId
+                ? "Expo Participants"
+                : selectedCategory
+                  ? `Search results for ${selectedCategory}:`
+                  : "Search results"}
             </h3>
 
             <button
@@ -140,7 +144,6 @@ const SearchPage = () => {
             >
               <SlidersHorizontal size={18} />
             </button>
-
           </div>
 
           {/* FILTER DROPDOWN */}
@@ -167,17 +170,13 @@ const SearchPage = () => {
               />
             </div>
           )}
-
         </main>
 
         {/* RIGHT SIDEBAR */}
         <aside className="directory-sidebar">
-
           <div className="sidebar-sticky-container">
-
             {/* POPULAR CATEGORIES */}
             <div className="sidebar-box popular-keywords">
-
               <h4>
                 <FaFire color="#f97316" /> Popular Categories
               </h4>
@@ -211,12 +210,10 @@ const SearchPage = () => {
                   </div>
                 ))}
               </div>
-
             </div>
 
             {/* PROMO BOX */}
             <div className="sidebar-box promo-box">
-
               <div className="promo-icon">
                 <MdAddBusiness />
               </div>
@@ -224,7 +221,8 @@ const SearchPage = () => {
               <h4>Grow Your Network</h4>
 
               <p>
-                Reach more buyers and sellers. List your business today and get verified.
+                Reach more buyers and sellers. List your business today and get
+                verified.
               </p>
 
               <button
@@ -233,15 +231,10 @@ const SearchPage = () => {
               >
                 List Your Business
               </button>
-
             </div>
-
           </div>
-
         </aside>
-
       </div>
-
     </div>
   );
 };

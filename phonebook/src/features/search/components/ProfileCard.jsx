@@ -19,7 +19,6 @@
 //   window.location.href = `tel:${phone}`;
 // };
 
-
 //   const handleEnquire = () => {
 //     alert(`Enquiry for ${name}`);
 //     // Later: open modal / WhatsApp / form
@@ -87,9 +86,6 @@
 // };
 
 // export default ProfileCard;
-
-
-
 
 // import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
@@ -232,14 +228,6 @@
 
 // export default ProfileCard;
 
-
-
-
-
-
-
-
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Phone, MessageSquare, MapPin } from "lucide-react";
@@ -274,10 +262,23 @@ const ProfileCard = ({ profile, isKeywordFocused }) => {
       : "96857xxxxx";
 
   /* ---------------- BORDER TYPE ---------------- */
-/* ---------------- BORDER TYPE ---------------- */
+  /* ---------------- BORDER TYPE ---------------- */
 
-// Force ALL cards to be grey
-let borderClass = "card-default";
+  let borderClass = "card-default";
+
+  if (profile.is_prime === true) {
+    borderClass = "card-prime";
+  } else if (profile.is_business === true) {
+    borderClass = "card-business";
+  } else if (profile.normal_list === true) {
+    borderClass = "card-normal";
+  }
+
+  console.log("PROFILE:", profile);
+  console.log("is_prime:", profile.is_prime);
+  console.log("is_business:", profile.is_business);
+  console.log("normal_list:", profile.normal_list);
+  console.log("Applied Border:", borderClass);
 
   /* ---------------- LOGIN CHECK ---------------- */
 
@@ -421,9 +422,7 @@ let borderClass = "card-default";
             <MapPin size={14} /> {city}
           </p>
 
-          {!isKeywordFocused && (
-            <p className="mobile">📞 {mobile}</p>
-          )}
+          {!isKeywordFocused && <p className="mobile">📞 {mobile}</p>}
 
           {isKeywordFocused && keywords.length > 0 && (
             <p className="keywords">
@@ -453,9 +452,7 @@ let borderClass = "card-default";
         show={isFavoriteOpen}
         onClose={() => setIsFavoriteOpen(false)}
         selectedItem={profile}
-        onSaved={() =>
-          window.dispatchEvent(new Event("favorites-updated"))
-        }
+        onSaved={() => window.dispatchEvent(new Event("favorites-updated"))}
       />
 
       {/* ENQUIRY */}
@@ -477,10 +474,5 @@ let borderClass = "card-default";
 };
 
 export default ProfileCard;
-
-
-
-
-
 
 // 9791955157

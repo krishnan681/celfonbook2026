@@ -7,7 +7,7 @@ export const useSearchController = () => {
   const [searchParams] = useSearchParams();
 
   const [isKeywordFocused, setIsKeywordFocused] = useState(false);
-
+  const [selectedCity, setSelectedCity] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
@@ -22,7 +22,8 @@ export const useSearchController = () => {
     userType: "",
     primeOnly: false,
     sort: "priority",
-    letter: ""
+    letter: "",
+    expoId: "", // NEW
   });
 
   const totalPages = Math.ceil(totalCount / pageSize);
@@ -39,7 +40,17 @@ export const useSearchController = () => {
 
     let queryBuilder = supabase
       .from("profiles")
-      .select("*", { count: "exact" })
+      .select(
+        `
+  *,
+  expo (
+    id,
+    expo_name,
+    expo_edition
+  )
+`,
+        { count: "exact" },
+      )
       .eq("is_admin", false);
 
     let searchQuery = "";
@@ -48,44 +59,33 @@ export const useSearchController = () => {
     if (filters.letter) {
       queryBuilder = queryBuilder.ilike(
         "business_name",
-        `${filters.letter.toUpperCase()}%`
+        `${filters.letter.toUpperCase()}%`,
       );
       searchQuery = filters.letter;
       searchType = "letter";
-    }
-
-    else if (filters.businessName?.trim()) {
+    } else if (filters.businessName?.trim()) {
       const term = filters.businessName.trim();
 
       queryBuilder = queryBuilder.or(
-        `business_name.ilike.%${term}%,person_name.ilike.%${term}%,keywords.ilike.%${term}%`
+        `business_name.ilike.%${term}%,person_name.ilike.%${term}%,keywords.ilike.%${term}%`,
       );
 
       searchQuery = term;
       searchType = "business";
-    }
+    } else if (filters.keywords?.trim()) {
+      const term = filters.keywords.trim();
 
-   else if (filters.keywords?.trim()) {
-  const term = filters.keywords.trim();
-
-  queryBuilder = queryBuilder.or(
-    `business_name.ilike.%${term}%,person_name.ilike.%${term}%,keywords.ilike.%${term}%`
-  );
-}
-
-    else if (filters.city?.trim()) {
+      queryBuilder = queryBuilder.or(
+        `business_name.ilike.%${term}%,person_name.ilike.%${term}%,keywords.ilike.%${term}%`,
+      );
+    } else if (filters.city?.trim()) {
       const term = filters.city.trim();
 
-      queryBuilder = queryBuilder.ilike(
-        "city",
-        `%${term}%`
-      );
+      queryBuilder = queryBuilder.ilike("city", `%${term}%`);
 
       searchQuery = term;
       searchType = "city";
-    }
-
-    else {
+    } else {
       queryBuilder = queryBuilder.order("created_at", { ascending: false });
     }
 
@@ -95,6 +95,9 @@ export const useSearchController = () => {
 
     if (filters.primeOnly) {
       queryBuilder = queryBuilder.eq("is_prime", true);
+    }
+    if (filters.expoId) {
+      queryBuilder = queryBuilder.eq("expo_id", filters.expoId);
     }
 
     if (filters.sort === "priority") {
@@ -153,27 +156,22 @@ export const useSearchController = () => {
     return () => clearTimeout(delay);
   }, [fetchResults]);
 
- useEffect(() => {
-  const q = searchParams.get("q");
-  const loc = searchParams.get("loc");
-  const letter = searchParams.get("letter");
-  const service = searchParams.get("service");
+  useEffect(() => {
+    const q = searchParams.get("q");
+    const loc = searchParams.get("loc");
+    const letter = searchParams.get("letter");
+    const service = searchParams.get("service");
+    const expoId = searchParams.get("expo_id");
 
-  setFilters(prev => ({
-    ...prev,
-
-    // 🔥 MAIN FIX
-    businessName: q || "",
-    keywords: service || q || "",
-
-    // 🔥 LOCATION FIX
-    city: loc || "",
-
-    // existing
-    letter: letter || ""
-  }));
-
-}, [searchParams]);
+    setFilters((prev) => ({
+      ...prev,
+      businessName: q || "",
+      keywords: service || q || "",
+      city: loc || "",
+      letter: letter || "",
+      expoId: expoId || "",
+    }));
+  }, [searchParams]);
 
   return {
     results,
@@ -185,6 +183,8 @@ export const useSearchController = () => {
     totalPages,
     totalCount,
     isKeywordFocused,
-    setIsKeywordFocused
+    setIsKeywordFocused,
+    selectedCity,
+    setSelectedCity,
   };
 };

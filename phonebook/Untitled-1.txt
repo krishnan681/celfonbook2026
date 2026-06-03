@@ -1,308 +1,321 @@
  
-└── 📁 phonebook/
-    ├── 📁 api/
-    │   └── 📄 send-otp.js
-    ├── 📁 public/
-    │   └── 🖼️ vite.svg
-    ├── 📁 src/
-    │   ├── 📁 assets/
-    │   │   ├── 📁 images/
-    │   │   │   ├── 🖼️ AboutPageImage.jpg
-    │   │   │   ├── 🖼️ Login-image.jpg
-    │   │   │   ├── 🖼️ TimelineLogo.png
-    │   │   │   ├── 🖼️ celfon5g_logo.png
-    │   │   │   └── 🖼️ signupimage.png
-    │   │   └── 🖼️ react.svg
-    │   ├── 📁 components/
-    │   │   ├── 📁 common/
-    │   │   │   ├── 📁 css/
-    │   │   │   │   ├── 🎨 Timeline.css
-    │   │   │   │   ├── 🎨 about.css
-    │   │   │   │   └── 🎨 product.css
-    │   │   │   ├── 📄 Products.jsx
-    │   │   │   ├── 📄 Timeline.jsx
-    │   │   │   ├── 📄 Toast.jsx
-    │   │   │   └── 📄 about.jsx
-    │   │   └── 📁 layout/
-    │   │       ├── 📄 Footer.jsx
-    │   │       ├── 📄 MainLayout.jsx
-    │   │       ├── 📄 Navbar.jsx
-    │   │       ├── 📄 SearchFooter.jsx
-    │   │       ├── 🎨 footer.css
-    │   │       ├── 🎨 layout.css
-    │   │       ├── 🎨 navbar.css
-    │   │       └── 🎨 searchfooter.css
-    │   ├── 📁 core/
-    │   │   ├── 📁 config/
-    │   │   │   └── 📄 supabaseClient.js
-    │   │   ├── 📁 context/
-    │   │   │   ├── 📄 AuthProvider.jsx
-    │   │   │   └── 📄 FavoritesContext.jsx
-    │   │   ├── 📁 services/
-    │   │   │   ├── 📄 authService.js
-    │   │   │   └── 📄 profileService.js
-    │   │   └── 📁 utils/
-    │   │       └── 📄 urlFormatter.js
-    │   ├── 📁 features/
-    │   │   ├── 📁 DetailedProfile/
-    │   │   │   ├── 📁 components/
-    │   │   │   │   ├── 📄 DetailedProfileAbout.jsx
-    │   │   │   │   ├── 📄 DetailedProfileCard.jsx
-    │   │   │   │   ├── 📄 DetailedProfileGrid.jsx
-    │   │   │   │   ├── 📄 DetailedProfileHeader.jsx
-    │   │   │   │   ├── 📄 DetailedProfileMap.jsx
-    │   │   │   │   ├── 📄 DetailedProfileProducts.jsx
-    │   │   │   │   ├── 📄 DetailedProfileTabs.jsx
-    │   │   │   │   ├── 📄 DetailedQuickEnquiryForm.jsx
-    │   │   │   │   └── 📄 DetailedRelatedProfiles.jsx
-    │   │   │   ├── 📁 controller/
-    │   │   │   │   ├── 📄 useProfileCard.js
-    │   │   │   │   ├── 📄 useProfileDetail.js
-    │   │   │   │   └── 📄 useRelatedProfiles.js
-    │   │   │   ├── 📁 css/
-    │   │   │   │   ├── 🎨 DetailedProfileAbout.css
-    │   │   │   │   ├── 🎨 DetailedProfileHeader.css
-    │   │   │   │   ├── 🎨 DetailedProfileMap.css
-    │   │   │   │   ├── 🎨 DetailedProfileProducts.css
-    │   │   │   │   ├── 🎨 DetailedProfileTabs.css
-    │   │   │   │   ├── 🎨 DetailedQuickEnquiryForm.css
-    │   │   │   │   ├── 🎨 DetailedRelatedProfiles.css
-    │   │   │   │   └── 🎨 ProfileDetailPage.css
-    │   │   │   ├── 📁 models/
-    │   │   │   │   ├── 📄 productModel.js
-    │   │   │   │   └── 📄 profileModel.js
-    │   │   │   └── 📁 pages/
-    │   │   │       └── 📄 ProfileDetailPage.jsx
-    │   │   ├── 📁 admin/
-    │   │   │   ├── 📁 components/
-    │   │   │   │   ├── 📄 ProfileDetail.jsx
-    │   │   │   │   ├── 📄 SearchBar.jsx
-    │   │   │   │   ├── 📄 SidebarList.jsx
-    │   │   │   │   └── 📄 TopStats.jsx
-    │   │   │   ├── 📁 controller/
-    │   │   │   │   └── 📄 useAdminController.js
-    │   │   │   ├── 📁 css/
-    │   │   │   │   ├── 🎨 ProfileDetail.css
-    │   │   │   │   ├── 🎨 SearchBar.css
-    │   │   │   │   ├── 🎨 SidebarList.css
-    │   │   │   │   ├── 🎨 TopStats.css
-    │   │   │   │   └── 🎨 admin.css
-    │   │   │   └── 📁 pages/
-    │   │   │       └── 📄 AdminPage.jsx
-    │   │   ├── 📁 auth/
-    │   │   │   ├── 📁 Pages/
-    │   │   │   │   ├── 📁 css/
-    │   │   │   │   │   ├── 🎨 ForgotPassword.css
-    │   │   │   │   │   ├── 🎨 login.css
-    │   │   │   │   │   ├── 🎨 signup.css
-    │   │   │   │   │   └── 🎨 verify.css
-    │   │   │   │   ├── 📄 ForgotPassword.jsx
-    │   │   │   │   ├── 📄 LoginPage.jsx
-    │   │   │   │   ├── 📄 OtpVerificationPage.jsx
-    │   │   │   │   ├── 📄 SignupPage.jsx
-    │   │   │   │   └── 📄 VerifyEmailPage.jsx
-    │   │   │   ├── 📁 components/
-    │   │   │   │   ├── 📄 InputField.jsx
-    │   │   │   │   ├── 📄 NetworkErrorView.jsx
-    │   │   │   │   ├── 📄 ProtectedRoute.jsx
-    │   │   │   │   └── 📄 ToggleSwitch.jsx
-    │   │   │   └── 📁 controller/
-    │   │   │       ├── 📄 useForgotPasswordController.js
-    │   │   │       ├── 📄 useLoginController.js
-    │   │   │       └── 📄 useSignupController.js
-    │   │   ├── 📁 favorites/
-    │   │   │   ├── 📁 components/
-    │   │   │   │   └── 📄 FavoritesView.jsx
-    │   │   │   ├── 📁 controller/
-    │   │   │   │   └── 📄 useFavoritesController.js
-    │   │   │   ├── 📁 css/
-    │   │   │   │   └── 🎨 favorites.css
-    │   │   │   └── 📁 pages/
-    │   │   │       └── 📄 FavoritesPage.jsx
-    │   │   ├── 📁 home/
-    │   │   │   ├── 📁 components/
-    │   │   │   │   ├── 📄 AboutSection.jsx
-    │   │   │   │   ├── 📄 FeaturesSection.jsx
-    │   │   │   │   ├── 📄 HeroSection.jsx
-    │   │   │   │   ├── 📄 HowItWorks.jsx
-    │   │   │   │   ├── 📄 MarketingSection.jsx
-    │   │   │   │   ├── 📄 PricingSection.jsx
-    │   │   │   │   └── 📄 StatsSection.jsx
-    │   │   │   ├── 📁 controller/
-    │   │   │   │   └── 📄 useHomeController.js
-    │   │   │   └── 📁 pages/
-    │   │   │       ├── 📁 css/
-    │   │   │       │   ├── 🎨 about.css
-    │   │   │       │   ├── 🎨 features.css
-    │   │   │       │   ├── 🎨 hero.css
-    │   │   │       │   ├── 🎨 home.css
-    │   │   │       │   ├── 🎨 howitworks.css
-    │   │   │       │   ├── 🎨 marketing.css
-    │   │   │       │   ├── 🎨 pricing.css
-    │   │   │       │   └── 🎨 stats.css
-    │   │   │       └── 📄 HomePage.jsx
-    │   │   ├── 📁 partner/
-    │   │   │   ├── 📁 components/
-    │   │   │   │   └── 📄 PartnerForm.jsx
-    │   │   │   ├── 📁 controller/
-    │   │   │   │   ├── 📄 usePartnerController.js
-    │   │   │   │   └── 📄 useRevenueTrackerController.js
-    │   │   │   ├── 📁 css/
-    │   │   │   │   ├── 🎨 PartnerForm.css
-    │   │   │   │   ├── 🎨 partner.css
-    │   │   │   │   ├── 🎨 partnerPage.css
-    │   │   │   │   └── 🎨 revenueTracker.css
-    │   │   │   ├── 📁 models/
-    │   │   │   │   ├── 📄 partnerModel.js
-    │   │   │   │   └── 📄 revenueModel.js
-    │   │   │   ├── 📁 pages/
-    │   │   │   │   ├── 📄 PartnerPage.jsx
-    │   │   │   │   └── 📄 RevenueTracker.jsx
-    │   │   │   └── 📁 services/
-    │   │   │       └── 📄 partnerService.js
-    │   │   ├── 📁 profile/
-    │   │   │   ├── 📁 components/
-    │   │   │   │   └── 📄 ProfileForm.jsx
-    │   │   │   ├── 📁 controller/
-    │   │   │   │   └── 📄 useProfileController.js
-    │   │   │   ├── 📁 css/
-    │   │   │   │   ├── 🎨 EditProfilePage.css
-    │   │   │   │   └── 🎨 profile.css
-    │   │   │   ├── 📁 models/
-    │   │   │   │   └── 📄 profileModel.js
-    │   │   │   └── 📁 pages/
-    │   │   │       ├── 📄 EditProfilePage.jsx
-    │   │   │       └── 📄 ProfilePage.jsx
-    │   │   ├── 📁 promotions/
-    │   │   │   ├── 📁 categorywise/
-    │   │   │   │   ├── 📁 components/
-    │   │   │   │   │   └── 📄 CategorywiseCard.jsx
-    │   │   │   │   ├── 📁 context/
-    │   │   │   │   │   └── 📄 CategorywiseContext.jsx
-    │   │   │   │   ├── 📁 controller/
-    │   │   │   │   │   └── 📄 useCategorywiseController.js
-    │   │   │   │   ├── 📁 css/
-    │   │   │   │   │   ├── 🎨 categorywiseCard.css
-    │   │   │   │   │   └── 🎨 categorywisePage.css
-    │   │   │   │   ├── 📁 models/
-    │   │   │   │   │   └── 📄 categorywiseModel.js
-    │   │   │   │   ├── 📁 pages/
-    │   │   │   │   │   ├── 📄 CategorywiseLayout.jsx
-    │   │   │   │   │   ├── 📄 CategorywisePromotionPage.jsx
-    │   │   │   │   │   └── 📄 CategorywiseResultsPage.jsx
-    │   │   │   │   └── 📁 services/
-    │   │   │   │       └── 📄 categorywiseService.js
-    │   │   │   ├── 📁 components/
-    │   │   │   │   └── 📄 PromotionCard.jsx
-    │   │   │   ├── 📁 controller/
-    │   │   │   │   └── 📄 usePromotionController.js
-    │   │   │   ├── 📁 css/
-    │   │   │   │   ├── 🎨 promotionCard.css
-    │   │   │   │   ├── 🎨 promotions.css
-    │   │   │   │   └── 🎨 promotionsPage.css
-    │   │   │   ├── 📁 models/
-    │   │   │   │   └── 📄 promotionModel.js
-    │   │   │   ├── 📁 nearby/
-    │   │   │   │   ├── 📁 components/
-    │   │   │   │   │   └── 📄 NearbyCard.jsx
-    │   │   │   │   ├── 📁 controller/
-    │   │   │   │   │   └── 📄 useNearbyController.js
-    │   │   │   │   ├── 📁 css/
-    │   │   │   │   │   ├── 🎨 nearbyCard.css
-    │   │   │   │   │   ├── 🎨 nearbyPage.css
-    │   │   │   │   │   └── 🎨 nearbyResults.css
-    │   │   │   │   ├── 📁 models/
-    │   │   │   │   │   └── 📄 nearbyModel.js
-    │   │   │   │   ├── 📁 pages/
-    │   │   │   │   │   ├── 📄 NearbyPromotionPage.jsx
-    │   │   │   │   │   └── 📄 NearbyResultsPage.jsx
-    │   │   │   │   └── 📁 services/
-    │   │   │   │       └── 📄 nearbyService.js
-    │   │   │   ├── 📁 pages/
-    │   │   │   │   └── 📄 PromotionsPage.jsx
-    │   │   │   └── 📁 services/
-    │   │   │       └── 📄 promotionService.js
-    │   │   ├── 📁 search/
-    │   │   │   ├── 📁 Service/
-    │   │   │   │   ├── 📄 discountService.js
-    │   │   │   │   └── 📄 searchService.js
-    │   │   │   ├── 📁 components/
-    │   │   │   │   ├── 📁 css/
-    │   │   │   │   │   ├── 🎨 EnquiryModal.css
-    │   │   │   │   │   ├── 🎨 FavoriteModal.css
-    │   │   │   │   │   ├── 🎨 SearchBar.css
-    │   │   │   │   │   ├── 🎨 SearchFilters.css
-    │   │   │   │   │   ├── 🎨 SearchResults.css
-    │   │   │   │   │   ├── 🎨 SkeletonCard.css
-    │   │   │   │   │   ├── 🎨 discount.css
-    │   │   │   │   │   ├── 🎨 pagination.css
-    │   │   │   │   │   └── 🎨 profilecard.css
-    │   │   │   │   ├── 📄 DiscountModal.jsx
-    │   │   │   │   ├── 📄 EnquiryModal.jsx
-    │   │   │   │   ├── 📄 FavoriteButton.jsx
-    │   │   │   │   ├── 📄 FavoriteModal.jsx
-    │   │   │   │   ├── 📄 Pagination.jsx
-    │   │   │   │   ├── 📄 ProfileCard.jsx
-    │   │   │   │   ├── 📄 ProfileGrid.jsx
-    │   │   │   │   ├── 📄 SearchBar.jsx
-    │   │   │   │   ├── 📄 SearchFilters.jsx
-    │   │   │   │   ├── 📄 SearchResults.jsx
-    │   │   │   │   └── 📄 SkeletonCard.jsx
-    │   │   │   ├── 📁 controller/
-    │   │   │   │   └── 📄 useSearchController.js
-    │   │   │   ├── 📁 models/
-    │   │   │   │   ├── 📄 discountModel.js
-    │   │   │   │   └── 📄 searchModel.js
-    │   │   │   └── 📁 pages/
-    │   │   │       ├── 📁 css/
-    │   │   │       │   └── 🎨 search.css
-    │   │   │       └── 📄 SearchPage.jsx
-    │   │   ├── 📁 settings/
-    │   │   │   ├── 📁 components/
-    │   │   │   │   ├── 📄 CombinedTariffPage.jsx
-    │   │   │   │   ├── 📄 ContactUs.jsx
-    │   │   │   │   ├── 📄 LogoutButton.jsx
-    │   │   │   │   ├── 📄 ReverseNumberFinder.jsx
-    │   │   │   │   ├── 📄 SearchHistory.jsx
-    │   │   │   │   └── 📄 SettingsMenu.jsx
-    │   │   │   ├── 📁 css/
-    │   │   │   │   ├── 🎨 CombinedTariffPage.css
-    │   │   │   │   ├── 🎨 ContactUs.css
-    │   │   │   │   ├── 🎨 T&C.css
-    │   │   │   │   ├── 🎨 history.css
-    │   │   │   │   ├── 🎨 legal.css
-    │   │   │   │   ├── 🎨 reverseFinder.css
-    │   │   │   │   └── 🎨 settings.css
-    │   │   │   └── 📁 pages/
-    │   │   │       ├── 📄 PrivacyPolicyPage.jsx
-    │   │   │       ├── 📄 SettingsPage.jsx
-    │   │   │       └── 📄 TermsPage.jsx
-    │   │   ├── 📁 subscription/
-    │   │   │   ├── 📁 css/
-    │   │   │   │   └── 🎨 subscription.css
-    │   │   │   └── 📁 pages/
-    │   │   │       └── 📄 SubscriptionPage.jsx
-    │   │   └── 📁 verifiedNumbers/
-    │   │       ├── 📁 css/
-    │   │       │   └── 🎨 verifiedNumbers.css
-    │   │       └── 📁 pages/
-    │   │           └── 📄 VerifiedNumbersPage.jsx
-    │   ├── 📁 styles/
-    │   │   └── 🎨 globals.css
-    │   ├── 🎨 App.css
-    │   ├── 📄 App.jsx
-    │   ├── 🎨 index.css
-    │   └── 📄 main.jsx
-    ├── ⚙️ .gitignore
-    ├── 📝 README.md
-    ├── 📄 Untitled-1.txt
-    ├── 📄 eslint.config.js
-    ├── 🌐 example.html
-    ├── 📄 example.txt
-    ├── 🌐 index.html
-    ├── 🌐 landing_example.html
-    ├── ⚙️ package-lock.json
-    ├── ⚙️ package.json
-    ├── 📄 server.cjs
-    └── 📄 vite.config.js
+├── 📁 phonebook/
+│   ├── 📁 .vercel/
+│   │   ├── 📄 README.txt
+│   │   └── ⚙️ project.json
+│   ├── 📁 api/
+│   │   └── 📄 send-otp.js
+│   ├── 📁 public/
+│   │   └── 🖼️ vite.svg
+│   ├── 📁 src/
+│   │   ├── 📁 assets/
+│   │   │   ├── 📁 images/
+│   │   │   │   ├── 🖼️ AboutPageImage.jpg
+│   │   │   │   ├── 🖼️ Login-image.jpg
+│   │   │   │   ├── 🖼️ TimelineLogo.png
+│   │   │   │   ├── 🖼️ celfon5g_logo.png
+│   │   │   │   └── 🖼️ signupimage.png
+│   │   │   └── 🖼️ react.svg
+│   │   ├── 📁 components/
+│   │   │   ├── 📁 common/
+│   │   │   │   ├── 📁 css/
+│   │   │   │   │   ├── 🎨 Timeline.css
+│   │   │   │   │   ├── 🎨 about.css
+│   │   │   │   │   └── 🎨 product.css
+│   │   │   │   ├── 📄 Products.jsx
+│   │   │   │   ├── 📄 Timeline.jsx
+│   │   │   │   ├── 📄 Toast.jsx
+│   │   │   │   └── 📄 about.jsx
+│   │   │   └── 📁 layout/
+│   │   │       ├── 📄 Footer.jsx
+│   │   │       ├── 📄 MainLayout.jsx
+│   │   │       ├── 📄 Navbar.jsx
+│   │   │       ├── 📄 SearchFooter.jsx
+│   │   │       ├── 🎨 footer.css
+│   │   │       ├── 🎨 layout.css
+│   │   │       ├── 🎨 navbar.css
+│   │   │       └── 🎨 searchfooter.css
+│   │   ├── 📁 core/
+│   │   │   ├── 📁 config/
+│   │   │   │   └── 📄 supabaseClient.js
+│   │   │   ├── 📁 context/
+│   │   │   │   ├── 📄 AuthProvider.jsx
+│   │   │   │   └── 📄 FavoritesContext.jsx
+│   │   │   ├── 📁 services/
+│   │   │   │   ├── 📄 authService.js
+│   │   │   │   └── 📄 profileService.js
+│   │   │   └── 📁 utils/
+│   │   │       └── 📄 urlFormatter.js
+│   │   ├── 📁 features/
+│   │   │   ├── 📁 DetailedProfile/
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   ├── 📄 DetailedProfileAbout.jsx
+│   │   │   │   │   ├── 📄 DetailedProfileCard.jsx
+│   │   │   │   │   ├── 📄 DetailedProfileGrid.jsx
+│   │   │   │   │   ├── 📄 DetailedProfileHeader.jsx
+│   │   │   │   │   ├── 📄 DetailedProfileMap.jsx
+│   │   │   │   │   ├── 📄 DetailedProfileProducts.jsx
+│   │   │   │   │   ├── 📄 DetailedProfileTabs.jsx
+│   │   │   │   │   ├── 📄 DetailedQuickEnquiryForm.jsx
+│   │   │   │   │   └── 📄 DetailedRelatedProfiles.jsx
+│   │   │   │   ├── 📁 controller/
+│   │   │   │   │   ├── 📄 useProfileCard.js
+│   │   │   │   │   ├── 📄 useProfileDetail.js
+│   │   │   │   │   └── 📄 useRelatedProfiles.js
+│   │   │   │   ├── 📁 css/
+│   │   │   │   │   ├── 🎨 DetailedProfileAbout.css
+│   │   │   │   │   ├── 🎨 DetailedProfileHeader.css
+│   │   │   │   │   ├── 🎨 DetailedProfileMap.css
+│   │   │   │   │   ├── 🎨 DetailedProfileProducts.css
+│   │   │   │   │   ├── 🎨 DetailedProfileTabs.css
+│   │   │   │   │   ├── 🎨 DetailedQuickEnquiryForm.css
+│   │   │   │   │   ├── 🎨 DetailedRelatedProfiles.css
+│   │   │   │   │   └── 🎨 ProfileDetailPage.css
+│   │   │   │   ├── 📁 models/
+│   │   │   │   │   ├── 📄 productModel.js
+│   │   │   │   │   └── 📄 profileModel.js
+│   │   │   │   └── 📁 pages/
+│   │   │   │       └── 📄 ProfileDetailPage.jsx
+│   │   │   ├── 📁 admin/
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   ├── 📄 ProfileDetail.jsx
+│   │   │   │   │   ├── 📄 SearchBar.jsx
+│   │   │   │   │   ├── 📄 SidebarList.jsx
+│   │   │   │   │   └── 📄 TopStats.jsx
+│   │   │   │   ├── 📁 controller/
+│   │   │   │   │   └── 📄 useAdminController.js
+│   │   │   │   ├── 📁 css/
+│   │   │   │   │   ├── 🎨 ProfileDetail.css
+│   │   │   │   │   ├── 🎨 SearchBar.css
+│   │   │   │   │   ├── 🎨 SidebarList.css
+│   │   │   │   │   ├── 🎨 TopStats.css
+│   │   │   │   │   └── 🎨 admin.css
+│   │   │   │   └── 📁 pages/
+│   │   │   │       └── 📄 AdminPage.jsx
+│   │   │   ├── 📁 auth/
+│   │   │   │   ├── 📁 Pages/
+│   │   │   │   │   ├── 📁 css/
+│   │   │   │   │   │   ├── 🎨 ForgotPassword.css
+│   │   │   │   │   │   ├── 🎨 login.css
+│   │   │   │   │   │   ├── 🎨 signup.css
+│   │   │   │   │   │   └── 🎨 verify.css
+│   │   │   │   │   ├── 📄 ForgotPassword.jsx
+│   │   │   │   │   ├── 📄 LoginPage.jsx
+│   │   │   │   │   ├── 📄 OtpVerificationPage.jsx
+│   │   │   │   │   ├── 📄 SignupPage.jsx
+│   │   │   │   │   └── 📄 VerifyEmailPage.jsx
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   ├── 📄 InputField.jsx
+│   │   │   │   │   ├── 📄 NetworkErrorView.jsx
+│   │   │   │   │   ├── 📄 ProtectedRoute.jsx
+│   │   │   │   │   └── 📄 ToggleSwitch.jsx
+│   │   │   │   └── 📁 controller/
+│   │   │   │       ├── 📄 useForgotPasswordController.js
+│   │   │   │       ├── 📄 useLoginController.js
+│   │   │   │       └── 📄 useSignupController.js
+│   │   │   ├── 📁 favorites/
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   └── 📄 FavoritesView.jsx
+│   │   │   │   ├── 📁 controller/
+│   │   │   │   │   └── 📄 useFavoritesController.js
+│   │   │   │   ├── 📁 css/
+│   │   │   │   │   └── 🎨 favorites.css
+│   │   │   │   └── 📁 pages/
+│   │   │   │       └── 📄 FavoritesPage.jsx
+│   │   │   ├── 📁 home/
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   ├── 📄 AboutSection.jsx
+│   │   │   │   │   ├── 📄 DirectorySection.jsx
+│   │   │   │   │   ├── 📄 FeaturesSection.jsx
+│   │   │   │   │   ├── 📄 HeroSection.jsx
+│   │   │   │   │   ├── 📄 HowItWorks.jsx
+│   │   │   │   │   ├── 📄 MarketingSection.jsx
+│   │   │   │   │   ├── 📄 PricingSection.jsx
+│   │   │   │   │   └── 📄 StatsSection.jsx
+│   │   │   │   ├── 📁 controller/
+│   │   │   │   │   └── 📄 useHomeController.js
+│   │   │   │   ├── 📁 models/
+│   │   │   │   │   ├── 📄 expoModel.js
+│   │   │   │   │   ├── 📄 onlineDirectoryModel.js
+│   │   │   │   │   └── 📄 popularFirmModel.js
+│   │   │   │   ├── 📁 pages/
+│   │   │   │   │   ├── 📁 css/
+│   │   │   │   │   │   ├── 🎨 DirectorySection.css
+│   │   │   │   │   │   ├── 🎨 about.css
+│   │   │   │   │   │   ├── 🎨 features.css
+│   │   │   │   │   │   ├── 🎨 hero.css
+│   │   │   │   │   │   ├── 🎨 home.css
+│   │   │   │   │   │   ├── 🎨 howitworks.css
+│   │   │   │   │   │   ├── 🎨 marketing.css
+│   │   │   │   │   │   ├── 🎨 pricing.css
+│   │   │   │   │   │   └── 🎨 stats.css
+│   │   │   │   │   └── 📄 HomePage.jsx
+│   │   │   │   └── 📁 services/
+│   │   │   │       └── 📄 homeService.js
+│   │   │   ├── 📁 partner/
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   ├── 📄 PartnerForm.jsx
+│   │   │   │   │   └── 📄 PartnerOtpVerification.jsx
+│   │   │   │   ├── 📁 controller/
+│   │   │   │   │   ├── 📄 usePartnerController.js
+│   │   │   │   │   └── 📄 useRevenueTrackerController.js
+│   │   │   │   ├── 📁 css/
+│   │   │   │   │   ├── 🎨 PartnerForm.css
+│   │   │   │   │   ├── 🎨 partner.css
+│   │   │   │   │   ├── 🎨 partnerPage.css
+│   │   │   │   │   └── 🎨 revenueTracker.css
+│   │   │   │   ├── 📁 models/
+│   │   │   │   │   ├── 📄 partnerModel.js
+│   │   │   │   │   └── 📄 revenueModel.js
+│   │   │   │   ├── 📁 pages/
+│   │   │   │   │   ├── 📄 PartnerPage.jsx
+│   │   │   │   │   └── 📄 RevenueTracker.jsx
+│   │   │   │   └── 📁 services/
+│   │   │   │       └── 📄 partnerService.js
+│   │   │   ├── 📁 profile/
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   └── 📄 ProfileForm.jsx
+│   │   │   │   ├── 📁 controller/
+│   │   │   │   │   └── 📄 useProfileController.js
+│   │   │   │   ├── 📁 css/
+│   │   │   │   │   ├── 🎨 EditProfilePage.css
+│   │   │   │   │   └── 🎨 profile.css
+│   │   │   │   ├── 📁 models/
+│   │   │   │   │   └── 📄 profileModel.js
+│   │   │   │   └── 📁 pages/
+│   │   │   │       ├── 📄 EditProfilePage.jsx
+│   │   │   │       └── 📄 ProfilePage.jsx
+│   │   │   ├── 📁 promotions/
+│   │   │   │   ├── 📁 categorywise/
+│   │   │   │   │   ├── 📁 components/
+│   │   │   │   │   │   └── 📄 CategorywiseCard.jsx
+│   │   │   │   │   ├── 📁 context/
+│   │   │   │   │   │   └── 📄 CategorywiseContext.jsx
+│   │   │   │   │   ├── 📁 controller/
+│   │   │   │   │   │   └── 📄 useCategorywiseController.js
+│   │   │   │   │   ├── 📁 css/
+│   │   │   │   │   │   ├── 🎨 categorywiseCard.css
+│   │   │   │   │   │   └── 🎨 categorywisePage.css
+│   │   │   │   │   ├── 📁 models/
+│   │   │   │   │   │   └── 📄 categorywiseModel.js
+│   │   │   │   │   ├── 📁 pages/
+│   │   │   │   │   │   ├── 📄 CategorywiseLayout.jsx
+│   │   │   │   │   │   ├── 📄 CategorywisePromotionPage.jsx
+│   │   │   │   │   │   └── 📄 CategorywiseResultsPage.jsx
+│   │   │   │   │   └── 📁 services/
+│   │   │   │   │       └── 📄 categorywiseService.js
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   └── 📄 PromotionCard.jsx
+│   │   │   │   ├── 📁 controller/
+│   │   │   │   │   └── 📄 usePromotionController.js
+│   │   │   │   ├── 📁 css/
+│   │   │   │   │   ├── 🎨 promotionCard.css
+│   │   │   │   │   ├── 🎨 promotions.css
+│   │   │   │   │   └── 🎨 promotionsPage.css
+│   │   │   │   ├── 📁 models/
+│   │   │   │   │   └── 📄 promotionModel.js
+│   │   │   │   ├── 📁 nearby/
+│   │   │   │   │   ├── 📁 components/
+│   │   │   │   │   │   └── 📄 NearbyCard.jsx
+│   │   │   │   │   ├── 📁 controller/
+│   │   │   │   │   │   └── 📄 useNearbyController.js
+│   │   │   │   │   ├── 📁 css/
+│   │   │   │   │   │   ├── 🎨 nearbyCard.css
+│   │   │   │   │   │   ├── 🎨 nearbyPage.css
+│   │   │   │   │   │   └── 🎨 nearbyResults.css
+│   │   │   │   │   ├── 📁 models/
+│   │   │   │   │   │   └── 📄 nearbyModel.js
+│   │   │   │   │   ├── 📁 pages/
+│   │   │   │   │   │   ├── 📄 NearbyPromotionPage.jsx
+│   │   │   │   │   │   └── 📄 NearbyResultsPage.jsx
+│   │   │   │   │   └── 📁 services/
+│   │   │   │   │       └── 📄 nearbyService.js
+│   │   │   │   ├── 📁 pages/
+│   │   │   │   │   └── 📄 PromotionsPage.jsx
+│   │   │   │   └── 📁 services/
+│   │   │   │       └── 📄 promotionService.js
+│   │   │   ├── 📁 search/
+│   │   │   │   ├── 📁 Service/
+│   │   │   │   │   ├── 📄 discountService.js
+│   │   │   │   │   └── 📄 searchService.js
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   ├── 📁 css/
+│   │   │   │   │   │   ├── 🎨 EnquiryModal.css
+│   │   │   │   │   │   ├── 🎨 FavoriteModal.css
+│   │   │   │   │   │   ├── 🎨 SearchBar.css
+│   │   │   │   │   │   ├── 🎨 SearchFilters.css
+│   │   │   │   │   │   ├── 🎨 SearchResults.css
+│   │   │   │   │   │   ├── 🎨 SkeletonCard.css
+│   │   │   │   │   │   ├── 🎨 discount.css
+│   │   │   │   │   │   ├── 🎨 pagination.css
+│   │   │   │   │   │   └── 🎨 profilecard.css
+│   │   │   │   │   ├── 📄 DiscountModal.jsx
+│   │   │   │   │   ├── 📄 EnquiryModal.jsx
+│   │   │   │   │   ├── 📄 FavoriteButton.jsx
+│   │   │   │   │   ├── 📄 FavoriteModal.jsx
+│   │   │   │   │   ├── 📄 Pagination.jsx
+│   │   │   │   │   ├── 📄 ProfileCard.jsx
+│   │   │   │   │   ├── 📄 ProfileGrid.jsx
+│   │   │   │   │   ├── 📄 SearchBar.jsx
+│   │   │   │   │   ├── 📄 SearchFilters.jsx
+│   │   │   │   │   ├── 📄 SearchResults.jsx
+│   │   │   │   │   └── 📄 SkeletonCard.jsx
+│   │   │   │   ├── 📁 controller/
+│   │   │   │   │   └── 📄 useSearchController.js
+│   │   │   │   ├── 📁 models/
+│   │   │   │   │   ├── 📄 discountModel.js
+│   │   │   │   │   └── 📄 searchModel.js
+│   │   │   │   └── 📁 pages/
+│   │   │   │       ├── 📁 css/
+│   │   │   │       │   └── 🎨 search.css
+│   │   │   │       └── 📄 SearchPage.jsx
+│   │   │   ├── 📁 settings/
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   ├── 📄 CombinedTariffPage.jsx
+│   │   │   │   │   ├── 📄 ContactUs.jsx
+│   │   │   │   │   ├── 📄 LogoutButton.jsx
+│   │   │   │   │   ├── 📄 ReverseNumberFinder.jsx
+│   │   │   │   │   ├── 📄 SearchHistory.jsx
+│   │   │   │   │   └── 📄 SettingsMenu.jsx
+│   │   │   │   ├── 📁 css/
+│   │   │   │   │   ├── 🎨 CombinedTariffPage.css
+│   │   │   │   │   ├── 🎨 ContactUs.css
+│   │   │   │   │   ├── 🎨 T&C.css
+│   │   │   │   │   ├── 🎨 history.css
+│   │   │   │   │   ├── 🎨 legal.css
+│   │   │   │   │   ├── 🎨 reverseFinder.css
+│   │   │   │   │   └── 🎨 settings.css
+│   │   │   │   └── 📁 pages/
+│   │   │   │       ├── 📄 PrivacyPolicyPage.jsx
+│   │   │   │       ├── 📄 SettingsPage.jsx
+│   │   │   │       └── 📄 TermsPage.jsx
+│   │   │   ├── 📁 subscription/
+│   │   │   │   ├── 📁 css/
+│   │   │   │   │   └── 🎨 subscription.css
+│   │   │   │   └── 📁 pages/
+│   │   │   │       └── 📄 SubscriptionPage.jsx
+│   │   │   └── 📁 verifiedNumbers/
+│   │   │       ├── 📁 css/
+│   │   │       │   └── 🎨 verifiedNumbers.css
+│   │   │       └── 📁 pages/
+│   │   │           └── 📄 VerifiedNumbersPage.jsx
+│   │   ├── 📁 styles/
+│   │   │   └── 🎨 globals.css
+│   │   ├── 🎨 App.css
+│   │   ├── 📄 App.jsx
+│   │   ├── 🎨 index.css
+│   │   └── 📄 main.jsx
+│   ├── ⚙️ .gitignore
+│   ├── 📝 README.md
+│   ├── 📄 Untitled-1.txt
+│   ├── 📄 eslint.config.js
+│   ├── 🌐 example.html
+│   ├── 📄 example.txt
+│   ├── 🌐 index.html
+│   ├── 🌐 landing_example.html
+│   ├── ⚙️ package-lock.json
+│   ├── ⚙️ package.json
+│   └── 📄 vite.config.js
+└── ⚙️ vercel.json
+
  

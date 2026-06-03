@@ -21,9 +21,9 @@ export default function DetailedRelatedProfiles({ items }) {
               navigate(`/profile/${rel.id}`);
             }}
           >
-            <div className={`pd-rel-badge ${rel.subscription || "free"}`}>
-              {(rel.subscription || "free").toUpperCase()}
-            </div>
+            {/* <div className={`pd-rel-badge ${rel.subscription || ""}`}>
+              {(rel.subscription || "").toUpperCase()}
+            </div> */}
 
             <h4>
               {rel.business_name ||
