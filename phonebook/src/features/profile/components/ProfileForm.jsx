@@ -287,6 +287,205 @@
 
 
 
+// import { useState, useEffect } from "react";
+// import "../css/profile.css";
+
+// export default function ProfileForm({
+//   profile,
+//   isBusiness,
+//   setIsBusiness,
+//   saveProfile,
+//   uploadProfileImage
+// }) {
+
+//   const [form, setForm] = useState(profile || {});
+//   const [editMode, setEditMode] = useState(false);
+
+//   useEffect(() => {
+//     setForm(profile || {});
+//   }, [profile]);
+
+//   function handleChange(e) {
+//     setForm({ ...form, [e.target.name]: e.target.value });
+//   }
+
+//   function handleSubmit(e) {
+//     e.preventDefault();
+//     saveProfile(form);
+//     setEditMode(false);
+//   }
+
+//   function handleCancel() {
+//     setForm(profile);
+//     setEditMode(false);
+//   }
+
+//   function handleImage(e) {
+//     if (!editMode) return;
+//     const file = e.target.files[0];
+//     if (file) uploadProfileImage(file);
+//   }
+
+//   return (
+//     <div className="profile-container">
+
+//       {/* HEADER */}
+
+//       <div className="profile-header">
+
+//         <img
+//           src={profile?.profile_image || "/vite.svg"}
+//           className="profile-avatar"
+//         />
+
+//         {editMode && (
+//           <input type="file" onChange={handleImage} />
+//         )}
+
+//         <h2>{profile?.person_name || "Your Name"}</h2>
+//         <p>{profile?.mobile_number}</p>
+
+//         {!editMode && (
+//           <button
+//             className="edit-btn"
+//             onClick={() => setEditMode(true)}
+//           >
+//             Edit Profile
+//           </button>
+//         )}
+
+//       </div>
+
+//       {/* TABS */}
+
+//       <div className="profile-tabs">
+
+//         <button
+//           className={!isBusiness ? "active" : ""}
+//           disabled={!editMode}
+//           onClick={() => setIsBusiness(false)}
+//         >
+//           Individual
+//         </button>
+
+//         <button
+//           className={isBusiness ? "active" : ""}
+//           disabled={!editMode}
+//           onClick={() => setIsBusiness(true)}
+//         >
+//           Business
+//         </button>
+
+//       </div>
+
+//       {/* FORM */}
+
+//       <form onSubmit={handleSubmit} className="profile-form">
+
+//         {!isBusiness && (
+//           <>
+//             <input
+//               name="person_name"
+//               placeholder="Person Name"
+//               value={form.person_name || ""}
+//               onChange={handleChange}
+//               disabled={!editMode}
+//             />
+
+//             <input
+//               name="keywords"
+//               placeholder="Profession"
+//               value={form.keywords || ""}
+//               onChange={handleChange}
+//               disabled={!editMode}
+//             />
+
+//             <input
+//               name="city"
+//               placeholder="City"
+//               value={form.city || ""}
+//               onChange={handleChange}
+//               disabled={!editMode}
+//             />
+
+//             <input
+//               name="pincode"
+//               placeholder="Pincode"
+//               value={form.pincode || ""}
+//               onChange={handleChange}
+//               disabled={!editMode}
+//             />
+//           </>
+//         )}
+
+//         {isBusiness && (
+//           <>
+//             <input
+//               name="person_name"
+//               placeholder="Owner Name"
+//               value={form.person_name || ""}
+//               onChange={handleChange}
+//               disabled={!editMode}
+//             />
+
+//             <input
+//               name="business_name"
+//               placeholder="Business Name"
+//               value={form.business_name || ""}
+//               onChange={handleChange}
+//               disabled={!editMode}
+//             />
+
+//             <textarea
+//               name="description"
+//               placeholder="Description"
+//               value={form.description || ""}
+//               onChange={handleChange}
+//               disabled={!editMode}
+//             />
+
+//             <input
+//               name="web_site"
+//               placeholder="Website"
+//               value={form.web_site || ""}
+//               onChange={handleChange}
+//               disabled={!editMode}
+//             />
+//           </>
+//         )}
+
+//         {editMode && (
+//           <div className="profile-buttons">
+
+//             <button type="submit" className="save-btn">
+//               Save
+//             </button>
+
+//             <button
+//               type="button"
+//               className="cancel-btn"
+//               onClick={handleCancel}
+//             >
+//               Cancel
+//             </button>
+
+//           </div>
+//         )}
+
+//       </form>
+
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
 import { useState, useEffect } from "react";
 import "../css/profile.css";
 
@@ -295,184 +494,230 @@ export default function ProfileForm({
   isBusiness,
   setIsBusiness,
   saveProfile,
-  uploadProfileImage
+  uploadProfileImage,
 }) {
-
   const [form, setForm] = useState(profile || {});
-  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     setForm(profile || {});
   }, [profile]);
 
-  function handleChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    saveProfile(form);
-    setEditMode(false);
-  }
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-  function handleCancel() {
-    setForm(profile);
-    setEditMode(false);
-  }
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
 
-  function handleImage(e) {
-    if (!editMode) return;
-    const file = e.target.files[0];
-    if (file) uploadProfileImage(file);
-  }
+    if (!file) return;
+
+    const imageUrl = await uploadProfileImage(file);
+
+    if (imageUrl) {
+      setForm((prev) => ({
+        ...prev,
+        profile_image: imageUrl,
+      }));
+    }
+  };
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  console.log("FORM SUBMIT");
+  console.log(form);
+
+  await saveProfile(form);
+};
 
   return (
-    <div className="profile-container">
+    <div className="profile-edit-container">
 
-      {/* HEADER */}
+      <div className="profile-edit-card">
 
-      <div className="profile-header">
+        <div className="profile-image-section">
 
-        <img
-          src={profile?.profile_image || "/vite.svg"}
-          className="profile-avatar"
-        />
+          <img
+            src={
+              form.profile_image ||
+              "https://placehold.co/200x200"
+            }
+            alt="Profile"
+            className="profile-image"
+          />
 
-        {editMode && (
-          <input type="file" onChange={handleImage} />
-        )}
+          <label className="upload-btn">
+            Change Photo
+            <input
+              type="file"
+              hidden
+              onChange={handleImageUpload}
+            />
+          </label>
 
-        <h2>{profile?.person_name || "Your Name"}</h2>
-        <p>{profile?.mobile_number}</p>
+        </div>
 
-        {!editMode && (
-          <button
-            className="edit-btn"
-            onClick={() => setEditMode(true)}
-          >
-            Edit Profile
-          </button>
-        )}
-
-      </div>
-
-      {/* TABS */}
-
-      <div className="profile-tabs">
-
-        <button
-          className={!isBusiness ? "active" : ""}
-          disabled={!editMode}
-          onClick={() => setIsBusiness(false)}
+        <form
+          onSubmit={handleSubmit}
+          className="profile-form-grid"
         >
-          Individual
-        </button>
 
-        <button
-          className={isBusiness ? "active" : ""}
-          disabled={!editMode}
-          onClick={() => setIsBusiness(true)}
-        >
-          Business
-        </button>
+                    <div className="full-width">
 
-      </div>
+            <label>Profile Type</label>
 
-      {/* FORM */}
+            <div className="type-switch">
 
-      <form onSubmit={handleSubmit} className="profile-form">
+              <button
+                type="button"
+                className={!isBusiness ? "active" : ""}
+                onClick={() => setIsBusiness(false)}
+              >
+                Individual
+              </button>
 
-        {!isBusiness && (
-          <>
+              <button
+                type="button"
+                className={isBusiness ? "active" : ""}
+                onClick={() => setIsBusiness(true)}
+              >
+                Business
+              </button>
+
+            </div>
+
+          </div>
+
+          <div>
+            <label>Prefix</label>
+
+            <input
+              name="person_prefix"
+              value={form.person_prefix || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>Full Name</label>
+
             <input
               name="person_name"
-              placeholder="Person Name"
               value={form.person_name || ""}
               onChange={handleChange}
-              disabled={!editMode}
             />
+          </div>
+
+          <div>
+            <label>Mobile</label>
 
             <input
-              name="keywords"
-              placeholder="Profession"
-              value={form.keywords || ""}
+              name="mobile_number"
+              value={form.mobile_number || ""}
               onChange={handleChange}
-              disabled={!editMode}
             />
+          </div>
+
+          <div>
+            <label>Email</label>
+
+            <input
+              name="email"
+              value={form.email || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>City</label>
 
             <input
               name="city"
-              placeholder="City"
               value={form.city || ""}
               onChange={handleChange}
-              disabled={!editMode}
             />
+          </div>
+
+          <div>
+            <label>Pincode</label>
 
             <input
               name="pincode"
-              placeholder="Pincode"
               value={form.pincode || ""}
               onChange={handleChange}
-              disabled={!editMode}
             />
-          </>
-        )}
+          </div>
 
-        {isBusiness && (
-          <>
-            <input
-              name="person_name"
-              placeholder="Owner Name"
-              value={form.person_name || ""}
-              onChange={handleChange}
-              disabled={!editMode}
-            />
 
-            <input
-              name="business_name"
-              placeholder="Business Name"
-              value={form.business_name || ""}
-              onChange={handleChange}
-              disabled={!editMode}
-            />
 
-            <textarea
-              name="description"
-              placeholder="Description"
-              value={form.description || ""}
-              onChange={handleChange}
-              disabled={!editMode}
-            />
+          {isBusiness ? (
+            <>
+              <div>
+                <label>Business Name</label>
 
-            <input
-              name="web_site"
-              placeholder="Website"
-              value={form.web_site || ""}
-              onChange={handleChange}
-              disabled={!editMode}
-            />
-          </>
-        )}
+                <input
+                  name="business_name"
+                  value={form.business_name || ""}
+                  onChange={handleChange}
+                />
+              </div>
 
-        {editMode && (
-          <div className="profile-buttons">
+              <div>
+                <label>Website</label>
 
-            <button type="submit" className="save-btn">
-              Save
-            </button>
+                <input
+                  name="web_site"
+                  value={form.web_site || ""}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="full-width">
+
+                <label>Description</label>
+
+                <textarea
+                  rows="5"
+                  name="description"
+                  value={form.description || ""}
+                  onChange={handleChange}
+                />
+
+              </div>
+            </>
+          ) : (
+            <div className="full-width">
+
+              <label>Profession</label>
+
+              <input
+                name="keywords"
+                value={form.keywords || ""}
+                onChange={handleChange}
+              />
+
+            </div>
+          )}
+
+          <div className="full-width save-wrap">
 
             <button
-              type="button"
-              className="cancel-btn"
-              onClick={handleCancel}
+              type="submit"
+              className="save-btn"
             >
-              Cancel
+              Save Profile
             </button>
 
           </div>
-        )}
 
-      </form>
+        </form>
+
+      </div>
 
     </div>
   );

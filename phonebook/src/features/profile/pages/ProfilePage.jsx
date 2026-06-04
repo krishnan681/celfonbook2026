@@ -154,11 +154,7 @@
 
 // export default ProfilePage;
 
-
 // ProfilePage.jsx
-
-
-
 
 // import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
@@ -270,9 +266,6 @@
 //                   </p>
 //                 </div>
 
-
-
-
 //                 <div className="info-row">
 //                   <p>
 //                     <Phone size={14} /> <span>Mobile:</span> {mobile}
@@ -281,7 +274,6 @@
 //                     <Briefcase size={14} /> <span>Business:</span>{" "}
 //                     {data.business_name || "None"}
 //                   </p>
-
 
 //                 </div>
 //               </div>
@@ -331,8 +323,6 @@
 //           </section>
 //         </div>
 
-
-
 //         {/* SIDEBAR */}
 //         <div className={`grid-sidebar ${data.is_prime ? "prime-gold" : ""}`}>
 //           <section className="card premium-promo">
@@ -349,7 +339,6 @@
 //               {data.is_prime ? "Subscribed" : "Upgrade Now"}
 //             </button>
 //           </section>
-
 
 //           {/* MAP SECTION */}
 //           <section className="card map-card">
@@ -378,246 +367,274 @@
 
 // export default ProfilePage;
 
+// import React, { useState } from "react";
+// import useProfileController from "../controller/useProfileController";
+// import "../css/profile.css";
 
-import React, { useState } from "react";
+// export default function ProfilePage() {
+
+//   const {
+//     form,
+//     handleChange,
+//     saveProfile,
+//     loading,
+//     isBusiness,
+//     setIsBusiness,
+//   } = useProfileController();
+
+//   const [editMode, setEditMode] = useState(false);
+
+//   if (loading) {
+//     return (
+//       <div className="pxr-load-wrap">
+//         <div className="spinner-border text-primary"></div>
+//         <p>Loading profile...</p>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="pxr-container container">
+
+//       <div className="pxr-header shadow-sm">
+
+//         <div className="pxr-banner"></div>
+
+//         <div className="pxr-header-body">
+
+//           <div className="pxr-avatar">
+//             {form.person_name?.charAt(0)?.toUpperCase() || "U"}
+//           </div>
+
+//           <div className="pxr-user-info">
+//             <h3>
+//               {form.person_prefix} {form.person_name || "User"}
+//             </h3>
+
+//             <p>
+//               {isBusiness
+//                 ? form.business_name || "Business Owner"
+//                 : form.keywords || "No profession added"}
+//             </p>
+
+//             <span>
+//               {form.city || "Location"} {form.pincode && `(${form.pincode})`}
+//             </span>
+//           </div>
+
+//           {!editMode && (
+//             <button
+//               className="pxr-edit-btn"
+//               onClick={() => setEditMode(true)}
+//             >
+//               Edit Profile
+//             </button>
+//           )}
+//         </div>
+//       </div>
+
+//       {!editMode ? (
+//         <div className="row pxr-main-wrap">
+
+//           <div className="col-lg-8">
+
+//             <div className="pxr-card shadow-sm">
+//               <h5>Personal Information</h5>
+
+//               <div className="pxr-grid">
+
+//                 <div>
+//                   <label>Full Name</label>
+//                   <p>{form.person_prefix} {form.person_name || "-"}</p>
+//                 </div>
+
+//                 <div>
+//                   <label>{isBusiness ? "Business Name" : "Profession"}</label>
+//                   <p>{isBusiness ? form.business_name : form.keywords || "-"}</p>
+//                 </div>
+
+//                 <div>
+//                   <label>City</label>
+//                   <p>{form.city || "-"}</p>
+//                 </div>
+
+//                 <div>
+//                   <label>Mobile</label>
+//                   <p>{form.mobile_number || "Not added"}</p>
+//                 </div>
+
+//               </div>
+//             </div>
+
+//             {isBusiness && (
+//               <div className="pxr-card shadow-sm">
+//                 <h5>Business Description</h5>
+
+//                 <p className="pxr-desc">
+//                   {form.description || "No description added."}
+//                 </p>
+//               </div>
+//             )}
+//           </div>
+
+//           <div className="col-lg-4">
+
+//             <div className="pxr-card shadow-sm pxr-strength">
+
+//               <h6>Profile Strength</h6>
+
+//               <div className="pxr-progress">
+//                 <div
+//                   className="pxr-progress-bar"
+//                   style={{ width: "75%" }}
+//                 ></div>
+//               </div>
+
+//               <p className="pxr-strength-text">
+//                 75% Complete
+//               </p>
+
+//               <small>
+//                 Add description and profile photo to improve ranking.
+//               </small>
+
+//             </div>
+
+//           </div>
+//         </div>
+
+//       ) : (
+
+//         <div className="pxr-card shadow-sm pxr-edit-wrap">
+
+//           <div className="pxr-edit-title">Edit Profile</div>
+
+//           <div className="pxr-type-toggle">
+
+//             <button
+//               className={!isBusiness ? "active" : ""}
+//               onClick={() => setIsBusiness(false)}
+//             >
+//               Individual
+//             </button>
+
+//             <button
+//               className={isBusiness ? "active" : ""}
+//               onClick={() => setIsBusiness(true)}
+//             >
+//               Business
+//             </button>
+
+//           </div>
+
+//           <div className="row">
+
+//             <div className="col-md-3">
+//               <label>Prefix</label>
+//               <input
+//                 className="form-control"
+//                 name="person_prefix"
+//                 value={form.person_prefix || ""}
+//                 onChange={handleChange}
+//               />
+//             </div>
+
+//             <div className="col-md-9">
+//               <label>Full Name</label>
+//               <input
+//                 className="form-control"
+//                 name="person_name"
+//                 value={form.person_name || ""}
+//                 onChange={handleChange}
+//               />
+//             </div>
+
+//             <div className="col-md-6">
+//               <label>{isBusiness ? "Business Name" : "Profession"}</label>
+//               <input
+//                 className="form-control"
+//                 name={isBusiness ? "business_name" : "keywords"}
+//                 value={isBusiness ? form.business_name || "" : form.keywords || ""}
+//                 onChange={handleChange}
+//               />
+//             </div>
+
+//             <div className="col-md-6">
+//               <label>City</label>
+//               <input
+//                 className="form-control"
+//                 name="city"
+//                 value={form.city || ""}
+//                 onChange={handleChange}
+//               />
+//             </div>
+
+//             {isBusiness && (
+//               <div className="col-12">
+//                 <label>Description</label>
+//                 <textarea
+//                   className="form-control"
+//                   rows="4"
+//                   name="description"
+//                   value={form.description || ""}
+//                   onChange={handleChange}
+//                 />
+//               </div>
+//             )}
+//           </div>
+
+//           <div className="pxr-actions">
+
+//             <button
+//               className="btn btn-success"
+//               onClick={async () => {
+//                 await saveProfile();
+//                 setEditMode(false);
+//               }}
+//             >
+//               Save
+//             </button>
+
+//             <button
+//               className="btn btn-outline-secondary"
+//               onClick={() => setEditMode(false)}
+//             >
+//               Cancel
+//             </button>
+
+//           </div>
+
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+import React from "react";
+
 import useProfileController from "../controller/useProfileController";
-import "../css/profile.css";
+
+import DashboardProfileCard from "../components/DashboardProfileCard";
+import DashboardStats from "../components/DashboardStats";
+import RecentLeads from "../components/RecentLeads";
+import DashboardCompletionCard from "../components/DashboardCompletionCard";
+import "../css/Dashboard.css";
 
 export default function ProfilePage() {
-
-  const {
-    form,
-    handleChange,
-    saveProfile,
-    loading,
-    isBusiness,
-    setIsBusiness,
-  } = useProfileController();
-
-  const [editMode, setEditMode] = useState(false);
+  const { profile, loading, viewsCount, leadsCount, recentLeads } =
+    useProfileController();
 
   if (loading) {
-    return (
-      <div className="pxr-load-wrap">
-        <div className="spinner-border text-primary"></div>
-        <p>Loading profile...</p>
-      </div>
-    );
+    return <div className="db-loading">Loading...</div>;
   }
 
   return (
-    <div className="pxr-container container">
+    <div className="db-dashboard">
+      <DashboardProfileCard profile={profile} />
 
-      <div className="pxr-header shadow-sm">
-
-        <div className="pxr-banner"></div>
-
-        <div className="pxr-header-body">
-
-          <div className="pxr-avatar">
-            {form.person_name?.charAt(0)?.toUpperCase() || "U"}
-          </div>
-
-          <div className="pxr-user-info">
-            <h3>
-              {form.person_prefix} {form.person_name || "User"}
-            </h3>
-
-            <p>
-              {isBusiness
-                ? form.business_name || "Business Owner"
-                : form.keywords || "No profession added"}
-            </p>
-
-            <span>
-              {form.city || "Location"} {form.pincode && `(${form.pincode})`}
-            </span>
-          </div>
-
-          {!editMode && (
-            <button
-              className="pxr-edit-btn"
-              onClick={() => setEditMode(true)}
-            >
-              Edit Profile
-            </button>
-          )}
-        </div>
-      </div>
-
-      {!editMode ? (
-        <div className="row pxr-main-wrap">
-
-          <div className="col-lg-8">
-
-            <div className="pxr-card shadow-sm">
-              <h5>Personal Information</h5>
-
-              <div className="pxr-grid">
-
-                <div>
-                  <label>Full Name</label>
-                  <p>{form.person_prefix} {form.person_name || "-"}</p>
-                </div>
-
-                <div>
-                  <label>{isBusiness ? "Business Name" : "Profession"}</label>
-                  <p>{isBusiness ? form.business_name : form.keywords || "-"}</p>
-                </div>
-
-                <div>
-                  <label>City</label>
-                  <p>{form.city || "-"}</p>
-                </div>
-
-                <div>
-                  <label>Mobile</label>
-                  <p>{form.mobile_number || "Not added"}</p>
-                </div>
-
-              </div>
-            </div>
-
-            {isBusiness && (
-              <div className="pxr-card shadow-sm">
-                <h5>Business Description</h5>
-
-                <p className="pxr-desc">
-                  {form.description || "No description added."}
-                </p>
-              </div>
-            )}
-          </div>
-
-          <div className="col-lg-4">
-
-            <div className="pxr-card shadow-sm pxr-strength">
-
-              <h6>Profile Strength</h6>
-
-              <div className="pxr-progress">
-                <div
-                  className="pxr-progress-bar"
-                  style={{ width: "75%" }}
-                ></div>
-              </div>
-
-              <p className="pxr-strength-text">
-                75% Complete
-              </p>
-
-              <small>
-                Add description and profile photo to improve ranking.
-              </small>
-
-            </div>
-
-          </div>
-        </div>
-
-      ) : (
-
-        <div className="pxr-card shadow-sm pxr-edit-wrap">
-
-          <div className="pxr-edit-title">Edit Profile</div>
-
-          <div className="pxr-type-toggle">
-
-            <button
-              className={!isBusiness ? "active" : ""}
-              onClick={() => setIsBusiness(false)}
-            >
-              Individual
-            </button>
-
-            <button
-              className={isBusiness ? "active" : ""}
-              onClick={() => setIsBusiness(true)}
-            >
-              Business
-            </button>
-
-          </div>
-
-          <div className="row">
-
-            <div className="col-md-3">
-              <label>Prefix</label>
-              <input
-                className="form-control"
-                name="person_prefix"
-                value={form.person_prefix || ""}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="col-md-9">
-              <label>Full Name</label>
-              <input
-                className="form-control"
-                name="person_name"
-                value={form.person_name || ""}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="col-md-6">
-              <label>{isBusiness ? "Business Name" : "Profession"}</label>
-              <input
-                className="form-control"
-                name={isBusiness ? "business_name" : "keywords"}
-                value={isBusiness ? form.business_name || "" : form.keywords || ""}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="col-md-6">
-              <label>City</label>
-              <input
-                className="form-control"
-                name="city"
-                value={form.city || ""}
-                onChange={handleChange}
-              />
-            </div>
-
-            {isBusiness && (
-              <div className="col-12">
-                <label>Description</label>
-                <textarea
-                  className="form-control"
-                  rows="4"
-                  name="description"
-                  value={form.description || ""}
-                  onChange={handleChange}
-                />
-              </div>
-            )}
-          </div>
-
-          <div className="pxr-actions">
-
-            <button
-              className="btn btn-success"
-              onClick={async () => {
-                await saveProfile();
-                setEditMode(false);
-              }}
-            >
-              Save
-            </button>
-
-            <button
-              className="btn btn-outline-secondary"
-              onClick={() => setEditMode(false)}
-            >
-              Cancel
-            </button>
-
-          </div>
-
-        </div>
-      )}
+      {/* <DashboardCompletionCard profile={profile} /> */}
+      <DashboardStats viewsCount={viewsCount} leadsCount={leadsCount} />
+      <RecentLeads recentLeads={recentLeads} />
     </div>
   );
 }

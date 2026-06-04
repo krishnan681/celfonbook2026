@@ -4,6 +4,7 @@
 │   │   ├── 📄 README.txt
 │   │   └── ⚙️ project.json
 │   ├── 📁 api/
+│   │   ├── 📄 create-lead.js
 │   │   └── 📄 send-otp.js
 │   ├── 📁 public/
 │   │   └── 🖼️ vite.svg
@@ -174,10 +175,14 @@
 │   │   │   │       └── 📄 partnerService.js
 │   │   │   ├── 📁 profile/
 │   │   │   │   ├── 📁 components/
-│   │   │   │   │   └── 📄 ProfileForm.jsx
+│   │   │   │   │   ├── 📄 DashboardProfileCard.jsx
+│   │   │   │   │   ├── 📄 DashboardStats.jsx
+│   │   │   │   │   ├── 📄 ProfileForm.jsx
+│   │   │   │   │   └── 📄 RecentLeads.jsx
 │   │   │   │   ├── 📁 controller/
 │   │   │   │   │   └── 📄 useProfileController.js
 │   │   │   │   ├── 📁 css/
+│   │   │   │   │   ├── 🎨 Dashboard.css
 │   │   │   │   │   ├── 🎨 EditProfilePage.css
 │   │   │   │   │   └── 🎨 profile.css
 │   │   │   │   ├── 📁 models/
@@ -319,4 +324,5 @@
 │   ├── ⚙️ package.json
 │   └── 📄 vite.config.js
 └── ⚙️ vercel.json
+
  

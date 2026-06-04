@@ -42,7 +42,7 @@ export default function ProfileDetail({ profile, onDelete, onUpdate }) {
       )
     );
 
-    console.log("Updating:", profile.id, cleanData);
+    // console.log("Updating:", profile.id, cleanData);
 
     onUpdate(profile.id, cleanData);
     setEditing(false);

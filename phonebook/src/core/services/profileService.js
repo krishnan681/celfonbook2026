@@ -255,34 +255,35 @@ export async function getCurrentUser() {
 
 /* Update profile */
 export async function updateProfileData(data) {
-
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) return;
 
-  data.id = user.id;
-  data.updated_at = new Date().toISOString();
+  const payload = { ...data };
 
-  const { data: existing } = await supabase
+  delete payload.display_name;
+  delete payload.created_at;
+  delete payload.updated_at;
+
+  payload.id = user.id;
+  payload.updated_at = new Date().toISOString();
+
+  // console.log("FINAL UPDATE PAYLOAD");
+  // console.log(payload);
+
+  const { error } = await supabase
     .from("profiles")
-    .select("id")
-    .eq("id", user.id)
-    .maybeSingle();
+    .update(payload)
+    .eq("id", user.id);
 
-  if (existing) {
-
-    await supabase
-      .from("profiles")
-      .update(data)
-      .eq("id", user.id);
-
-  } else {
-
-    await supabase
-      .from("profiles")
-      .insert([data]);
-
+  if (error) {
+    // console.error(error);
+    throw error;
   }
+
+  return true;
 }
 
 
