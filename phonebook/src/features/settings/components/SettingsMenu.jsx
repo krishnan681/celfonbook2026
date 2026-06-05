@@ -10,11 +10,11 @@ import {
   Shield,
   FileText,
   Mail,
-  BadgeCheck
+  BadgeCheck,
+  Users,
 } from "lucide-react";
 
 export default function SettingsMenu() {
-
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
 
@@ -23,8 +23,17 @@ export default function SettingsMenu() {
   }, []);
 
   return (
-
     <div className="settings-grid">
+      {/* My Referrals */}
+      <div className="settings-card" onClick={() => navigate("/my-referrals")}>
+        <div className="settings-row">
+          <Users size={20} className="settings-icon" />
+          <div>
+            <h3>My Referrals</h3>
+            <p>View all referral promo codes and members</p>
+          </div>
+        </div>
+      </div>
 
       {/* Subscription */}
       <div className="settings-card" onClick={() => navigate("/subscription")}>
@@ -38,7 +47,10 @@ export default function SettingsMenu() {
       </div>
 
       {/* Reverse Finder */}
-      <div className="settings-card" onClick={() => navigate("/reverse-number")}>
+      <div
+        className="settings-card"
+        onClick={() => navigate("/reverse-number")}
+      >
         <div className="settings-row">
           <Phone size={20} className="settings-icon" />
           <div>
@@ -65,20 +77,17 @@ export default function SettingsMenu() {
       )}
 
       {/* ADMIN PANEL */}
-{profile?.is_admin && (
-  <div
-    className="settings-card"
-    onClick={() => navigate("/admin")}
-  >
-    <div className="settings-row">
-      <Shield size={20} className="settings-icon" />
-      <div>
-        <h3>Admin Panel</h3>
-        <p>Manage system database</p>
-      </div>
-    </div>
-  </div>
-)}
+      {profile?.is_admin && (
+        <div className="settings-card" onClick={() => navigate("/admin")}>
+          <div className="settings-row">
+            <Shield size={20} className="settings-icon" />
+            <div>
+              <h3>Admin Panel</h3>
+              <p>Manage system database</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Search History */}
       {/* <div className="settings-card" onClick={() => navigate("/search-history")}>
@@ -91,7 +100,6 @@ export default function SettingsMenu() {
         </div>
       </div> */}
 
-      
       <div
         className="settings-card"
         onClick={() => navigate("/combined-tariff")}
@@ -106,7 +114,10 @@ export default function SettingsMenu() {
       </div>
 
       {/* Privacy */}
-      <div className="settings-card" onClick={() => navigate("/privacy-policy")}>
+      <div
+        className="settings-card"
+        onClick={() => navigate("/privacy-policy")}
+      >
         <div className="settings-row">
           <Shield size={20} className="settings-icon" />
           <div>
@@ -139,7 +150,6 @@ export default function SettingsMenu() {
       </div>
 
       <LogoutButton />
-
     </div>
   );
 }

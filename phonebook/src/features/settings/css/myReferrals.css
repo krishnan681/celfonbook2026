@@ -1,0 +1,216 @@
+.my-referrals-page {
+  padding: 30px;
+  background: #f4f7fb;
+  min-height: 100vh;
+}
+
+/* Page Header */
+
+.referral-page-header {
+  margin-bottom: 24px;
+}
+
+.referral-page-header h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1f36;
+}
+
+.referral-page-header p {
+  margin-top: 6px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Summary Section */
+
+.summary-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 28px;
+  background: transparent;
+}
+
+.summary-box {
+  padding: 24px;
+  border-radius: 18px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.summary-box.codes {
+  background: linear-gradient(
+    135deg,
+    #667eea,
+    #764ba2
+  );
+}
+
+.summary-box.members {
+  background: linear-gradient(
+    135deg,
+    #11998e,
+    #38ef7d
+  );
+}
+
+.summary-box h3 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.summary-box p {
+  margin-top: 8px;
+  opacity: .9;
+}
+
+/* Accordion Card */
+
+.referral-card {
+  background: white;
+  border-radius: 18px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  border: 1px solid #edf2f7;
+  box-shadow: 0 4px 20px rgba(15,23,42,.05);
+  transition: .3s;
+}
+
+.referral-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(15,23,42,.08);
+}
+
+/* Header */
+
+.referral-header {
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.promo-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #c7d2fe;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.member-count {
+  margin-left: 14px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.accordion-icon {
+  margin-left: auto;
+  color: #6366f1;
+}
+
+/* Users Section */
+
+.referral-body {
+  background: #fafbff;
+  border-top: 1px solid #eef2f7;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 22px;
+  transition: .2s;
+}
+
+.user-item:not(:last-child) {
+  border-bottom: 1px solid #edf2f7;
+}
+
+.user-item:hover {
+  background: white;
+}
+
+/* Avatar */
+
+.avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    #4f46e5,
+    #7c3aed
+  );
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  margin-right: 14px;
+}
+
+/* User Info */
+
+.user-info {
+  flex: 1;
+}
+
+.user-info h4 {
+  margin: 0;
+  color: #111827;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.user-info p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* Join Date */
+
+.join-date {
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Refresh Button */
+
+.refresh-btn {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 18px;
+  transition: .2s;
+}
+
+.refresh-btn:hover {
+  background: #4338ca;
+}
+
+/* Empty/Error */
+
+.empty-state,
+.referral-loader,
+.referral-error {
+  background: white;
+  border-radius: 18px;
+  padding: 50px;
+  text-align: center;
+  color: #64748b;
+}

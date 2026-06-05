@@ -43,6 +43,8 @@ import OtpVerificationPage from "./features/auth/Pages/OtpVerificationPage";
 
 import CategorywiseLayout from "./features/promotions/categorywise/pages/CategorywiseLayout";
 
+import MyReferralsPage from "./features/settings/pages/MyReferralsPage";
+
 function App() {
   return (
     <>
@@ -81,6 +83,7 @@ function App() {
           <Route path="terms" element={<TermsPage />} />
           <Route path="contact" element={<ContactUs />} />
           <Route path="combined-tariff" element={<CombinedTariffPage />} />
+          <Route path="/my-referrals" element={<MyReferralsPage />} />
 
           {/* Promotions */}
           <Route path="promotions" element={<PromotionsPage />} />

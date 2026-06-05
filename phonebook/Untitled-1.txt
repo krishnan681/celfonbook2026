@@ -175,6 +175,7 @@
 │   │   │   │       └── 📄 partnerService.js
 │   │   │   ├── 📁 profile/
 │   │   │   │   ├── 📁 components/
+│   │   │   │   │   ├── 📄 DashboardCompletionCard.jsx
 │   │   │   │   │   ├── 📄 DashboardProfileCard.jsx
 │   │   │   │   │   ├── 📄 DashboardStats.jsx
 │   │   │   │   │   ├── 📄 ProfileForm.jsx
@@ -324,5 +325,4 @@
 │   ├── ⚙️ package.json
 │   └── 📄 vite.config.js
 └── ⚙️ vercel.json
-
  
