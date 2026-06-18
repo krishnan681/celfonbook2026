@@ -282,21 +282,28 @@
 │   │   │   │   │   ├── 📄 CombinedTariffPage.jsx
 │   │   │   │   │   ├── 📄 ContactUs.jsx
 │   │   │   │   │   ├── 📄 LogoutButton.jsx
+│   │   │   │   │   ├── 📄 ReferralAccordion.jsx
 │   │   │   │   │   ├── 📄 ReverseNumberFinder.jsx
 │   │   │   │   │   ├── 📄 SearchHistory.jsx
 │   │   │   │   │   └── 📄 SettingsMenu.jsx
+│   │   │   │   ├── 📁 controller/
+│   │   │   │   │   └── 📄 useReferralController.js
 │   │   │   │   ├── 📁 css/
 │   │   │   │   │   ├── 🎨 CombinedTariffPage.css
 │   │   │   │   │   ├── 🎨 ContactUs.css
 │   │   │   │   │   ├── 🎨 T&C.css
 │   │   │   │   │   ├── 🎨 history.css
 │   │   │   │   │   ├── 🎨 legal.css
+│   │   │   │   │   ├── 🎨 myReferrals.css
 │   │   │   │   │   ├── 🎨 reverseFinder.css
 │   │   │   │   │   └── 🎨 settings.css
-│   │   │   │   └── 📁 pages/
-│   │   │   │       ├── 📄 PrivacyPolicyPage.jsx
-│   │   │   │       ├── 📄 SettingsPage.jsx
-│   │   │   │       └── 📄 TermsPage.jsx
+│   │   │   │   ├── 📁 pages/
+│   │   │   │   │   ├── 📄 MyReferralsPage.jsx
+│   │   │   │   │   ├── 📄 PrivacyPolicyPage.jsx
+│   │   │   │   │   ├── 📄 SettingsPage.jsx
+│   │   │   │   │   └── 📄 TermsPage.jsx
+│   │   │   │   └── 📁 services/
+│   │   │   │       └── 📄 referralService.js
 │   │   │   ├── 📁 subscription/
 │   │   │   │   ├── 📁 css/
 │   │   │   │   │   └── 🎨 subscription.css

@@ -369,3 +369,73 @@ body {
 .signup-btn {
   margin-top: 10px;
 }
+
+
+
+/* OTP BUTTONS */
+.otp-btn {
+  min-width: 120px;
+  height: 48px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.otp-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+.otp-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.otp-btn:disabled {
+  background: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* VERIFIED BUTTON */
+.otp-btn.verified {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.otp-btn.verified:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* BUTTON GROUP */
+.otp-action-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+/* OTP TIMER */
+.otp-timer {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* MOBILE INPUT + SEND OTP */
+.mobile-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.mobile-input-row input {
+  flex: 1;
+}

@@ -1404,7 +1404,7 @@ export const usePartnerController = () => {
       setLoading(true);
       const otp = generateRandomOtp();
 
-      const response = await fetch("/api/send-otp", {
+      const response = await fetch("https://celfonbook.directory/api/send-otp.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone: formData.mobile_number, otp }),

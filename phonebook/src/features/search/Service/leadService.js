@@ -45,7 +45,7 @@ export const LeadService = {
       // Same as Flutter
   if (verified) {
   try {
-    const response = await fetch("/api/create-lead", {
+    const response = await fetch("https://celfonbook.directory/api/create-lead.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
