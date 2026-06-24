@@ -77,8 +77,10 @@
 
 
 
-
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
 import { supabase } from "../../../core/config/supabaseClient";
 
 import {
@@ -90,6 +92,8 @@ import {
 import { emptyProfile } from "../models/profileModel";
 
 export default function useProfileController() {
+  const navigate = useNavigate();
+
   const [profile, setProfile] = useState(emptyProfile);
   const [loading, setLoading] = useState(true);
   const [isBusiness, setIsBusiness] = useState(false);
@@ -120,7 +124,7 @@ export default function useProfileController() {
 
       setIsBusiness(
         data.user_type === "business" ||
-          data.is_business === true
+        data.is_business === true
       );
 
       const shopId = data.id;
@@ -155,9 +159,9 @@ export default function useProfileController() {
       );
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   function handleChange(e) {
@@ -169,40 +173,37 @@ export default function useProfileController() {
     }));
   }
 
-async function saveProfile(formData) {
-  try {
-    console.log("=================================");
-    console.log("SAVE PROFILE START");
-    console.log("FORM DATA:", formData);
-    console.log("IS BUSINESS:", isBusiness);
+  async function saveProfile(formData) {
+    try {
+      const payload = {
+        ...formData,
+        user_type: isBusiness ? "business" : "person",
+        is_business: isBusiness,
+      };
 
-    const payload = {
-      ...formData,
-      user_type: isBusiness ? "business" : "person",
-      is_business: isBusiness,
-    };
+      await updateProfileData(payload);
 
-    console.log("FINAL PAYLOAD:", payload);
+      await Swal.fire({
+        icon: "success",
+        title: "Profile Saved",
+        text: "Your profile has been updated successfully.",
+        confirmButtonText: "OK",
+      });
 
-    const result = await updateProfileData(payload);
+      await loadProfile();
 
-    console.log("SAVE RESULT:", result);
-    console.log("SAVE PROFILE SUCCESS");
-    console.log("=================================");
-
-    alert("Profile Saved");
-
-    await loadProfile();
-  } catch (error) {
-    console.error("SAVE PROFILE FAILED");
-    console.error(error);
-
-    alert(
-      error?.message ||
-      "Failed to save profile"
-    );
+      // Redirect to profile page
+      navigate("/profile");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Save Failed",
+        text:
+          error?.message ||
+          "Failed to save profile",
+      });
+    }
   }
-}
 
   async function uploadProfileImage(file) {
     const url = await uploadImageService(file);

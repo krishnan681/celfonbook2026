@@ -53,14 +53,16 @@ export const useProfileDetail = () => {
   }, [id]);
 
   /* ─────────────────────────────
-     LOAD DEPENDENT DATA
-  ───────────────────────────── */
+   LOAD DEPENDENT DATA
+───────────────────────────── */
   useEffect(() => {
     if (!profile?.id) return;
 
-    if (profile.is_prime) {
-      loadPrimeCover();
+    // Prime users OR Business users use their own cover image
+    if (profile.is_prime || profile.is_business) {
+      loadCoverImages();
     } else {
+      // Normal users get shared rotating images
       loadFreeTierImages();
     }
 
@@ -69,13 +71,13 @@ export const useProfileDetail = () => {
   }, [profile]);
 
   /* ─────────────────────────────
-     PRIME COVER IMAGE (FIXED)
-  ───────────────────────────── */
-  const loadPrimeCover = () => {
-    if (profile?.cover_image) {
+   COVER IMAGES (PRIME + BUSINESS)
+───────────────────────────── */
+  const loadCoverImages = () => {
+    if (profile?.cover_image?.trim()) {
       const imgs = profile.cover_image
         .split(",")
-        .map((i) => i.trim())
+        .map((img) => img.trim())
         .filter(Boolean);
 
       setImages(imgs.length ? imgs : [fallbackImage()]);
@@ -87,7 +89,6 @@ export const useProfileDetail = () => {
   const fallbackImage = () =>
     profile?.profile_image ||
     "https://via.placeholder.com/800x450?text=Business+Cover";
-
   /* ─────────────────────────────
      FREE TIER IMAGES
   ───────────────────────────── */
@@ -112,32 +113,32 @@ export const useProfileDetail = () => {
   /* ─────────────────────────────
      PRODUCTS
   ───────────────────────────── */
-const loadProducts = async (profileId) => {
-  setLoadingProducts(true);
+  const loadProducts = async (profileId) => {
+    setLoadingProducts(true);
 
-  const { data, error } = await supabase
-    .from("product_table")
-    .select("*")
-    .eq("profile_id", profileId);
+    const { data, error } = await supabase
+      .from("product_table")
+      .select("*")
+      .eq("profile_id", profileId);
 
-  if (error) {
-    console.error("Product fetch error:", error);
+    if (error) {
+      console.error("Product fetch error:", error);
+      setLoadingProducts(false);
+      return;
+    }
+
+    const mapped = data.map((p) => ({
+      id: p.id?.toString() || p.product_id?.toString(),
+      name: p.product_name || "",
+      image: p.product_image || "",
+      description: p.product_description || "",
+      price: p.price || "",
+    }));
+
+    setPriorityProducts(mapped); // show all products
+    setSecondaryProducts([]); // not needed
     setLoadingProducts(false);
-    return;
-  }
-
-  const mapped = data.map((p) => ({
-    id: p.id?.toString() || p.product_id?.toString(),
-    name: p.product_name || "",
-    image: p.product_image || "",
-    description: p.product_description || "",
-    price: p.price || "",
-  }));
-
-  setPriorityProducts(mapped); // show all products
-  setSecondaryProducts([]); // not needed
-  setLoadingProducts(false);
-};
+  };
 
   /* ─────────────────────────────
      RELATED PROFILES

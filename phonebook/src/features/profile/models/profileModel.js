@@ -10,7 +10,6 @@ export const emptyProfile = {
   landline_number: "",
   whats_app: "",
   address: "",
-  bussiness_address: "",
   profile_image: "",
   business_name: "",
   description: "",
@@ -35,7 +34,7 @@ export default class UserProfile {
     this.landlineNumber = data.landline_number || "";
     this.whatsApp = data.whats_app || "";
     this.address = data.address || "";
-    this.businessAddress = data.bussiness_address || "";
+    
     this.profileImage = data.profile_image || "";
     this.businessName = data.business_name || "";
     this.description = data.description || "";

@@ -486,9 +486,9 @@ const PartnerForm = ({
                         <div className="col-md-12">
                           <label className="form-label">Business Address *</label>
                           <input
-                            name="bussiness_address"        // ← Must match controller & DB
+                            name="address"        // ← Must match controller & DB
                             className="form-control"
-                            value={formData.bussiness_address || ""}
+                            value={formData.address || ""}
                             onChange={handleChange}
                             required
                           />

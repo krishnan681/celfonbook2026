@@ -396,15 +396,6 @@
 //   };
 // }
 
-
-
-
-
-
-
-
-
-
 // import { useState, useEffect } from "react";
 // import { supabase } from "../../../core/config/supabaseClient";
 
@@ -635,18 +626,6 @@
 //   };
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
 import { useState, useEffect } from "react";
 import { supabase } from "../../../core/config/supabaseClient";
 
@@ -709,20 +688,15 @@ export default function useSignupController() {
       if (profile) exists = true;
 
       if (!exists) {
-        const { data } = await supabase.rpc(
-          "check_phone_exists",
-          {
-            p_phone: mobile,
-          }
-        );
+        const { data } = await supabase.rpc("check_phone_exists", {
+          p_phone: mobile,
+        });
 
         exists = data === true;
       }
 
       setUserAlreadyExists(exists);
-      setMobileError(
-        exists ? "User already registered" : ""
-      );
+      setMobileError(exists ? "User already registered" : "");
     } catch (err) {
       console.log(err);
     }
@@ -736,32 +710,30 @@ export default function useSignupController() {
 
       const generatedOtp = generateOtp();
 
-      const response = await fetch("https://celfonbook.directory/api/send-otp.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://celfonbook.directory/api/send-otp.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            phone: cleanPhone,
+            otp: generatedOtp,
+          }),
         },
-        body: JSON.stringify({
-          phone: cleanPhone,
-          otp: generatedOtp,
-        }),
-      });
+      );
 
       if (!response.ok) {
         throw new Error("Failed to send OTP");
       }
 
-      await supabase
-        .from("otp_verifications")
-        .delete()
-        .eq("phone", cleanPhone);
+      await supabase.from("otp_verifications").delete().eq("phone", cleanPhone);
 
-      const { error } = await supabase
-        .from("otp_verifications")
-        .insert({
-          phone: cleanPhone,
-          otp: generatedOtp,
-        });
+      const { error } = await supabase.from("otp_verifications").insert({
+        phone: cleanPhone,
+        otp: generatedOtp,
+      });
 
       if (error) throw error;
 
@@ -813,11 +785,10 @@ export default function useSignupController() {
     try {
       const defaultPassword = "celfonbook";
 
-      const { data, error: authError } =
-        await supabase.auth.signUp({
-          phone,
-          password: defaultPassword,
-        });
+      const { data, error: authError } = await supabase.auth.signUp({
+        phone,
+        password: defaultPassword,
+      });
 
       if (authError) throw authError;
 
@@ -827,13 +798,13 @@ export default function useSignupController() {
         throw new Error("User not created");
       }
 
-      const { error: profileError } =
-        await supabase.from("s_profiles").insert({
-          id: user.id,
-          full_name: name.trim(),
-          phone,
-          promo_code: promo.trim(),
-        });
+      const { error: profileError } = await supabase.from("s_profiles").insert({
+        id: user.id,
+        full_name: name.trim(),
+        phone,
+        promo_code: promo.trim(),
+        verified: true,
+      });
 
       if (profileError) throw profileError;
 

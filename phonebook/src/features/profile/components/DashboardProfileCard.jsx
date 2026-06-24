@@ -121,8 +121,8 @@ export default function DashboardProfileCard({ profile }) {
 
         <div className="info-grid">
           <div className="info-box">
-            <label>Business Address</label>
-            <p>{profile?.bussiness_address || "-"}</p>
+            <label> Address</label>
+            <p>{profile?.address || "-"}</p>
           </div>
 
           <div className="info-box full-width">
@@ -151,7 +151,7 @@ export default function DashboardProfileCard({ profile }) {
 
           <div className="info-box">
             <label>Landline Number</label>
-            <p>{profile?.landline_number || "-"}</p>
+            <p>{profile?.landline || "-"}</p>
           </div>
         </div>
       </section>

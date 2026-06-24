@@ -1506,7 +1506,7 @@ export const usePartnerController = () => {
 
         business_name: formData.business_name || null,
         business_prefix: formData.business_prefix || "M/s.",
-        bussiness_address: formData.bussiness_address || null,
+        // bussiness_address: formData.bussiness_address || null,
         keywords: formData.keywords
           ? formData.keywords.split(",").map(k => k.trim()).filter(Boolean).join(", ")
           : null,
@@ -1585,3 +1585,13 @@ export const usePartnerController = () => {
     otpVerified,
   };
 };
+
+
+
+
+
+
+
+
+
+// 8596321458

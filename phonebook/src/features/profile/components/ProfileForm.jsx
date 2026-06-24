@@ -284,9 +284,6 @@
 //   );
 // }
 
-
-
-
 // import { useState, useEffect } from "react";
 // import "../css/profile.css";
 
@@ -480,8 +477,257 @@
 
 
 
+// import { useState, useEffect } from "react";
+// import "../css/profile.css";
 
+// export default function ProfileForm({
+//   profile,
+//   isBusiness,
+//   setIsBusiness,
+//   saveProfile,
+//   uploadProfileImage,
+// }) {
+//   const [form, setForm] = useState(profile || {});
 
+//   useEffect(() => {
+//     setForm(profile || {});
+//   }, [profile]);
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+
+//     setForm((prev) => ({
+//       ...prev,
+//       [name]: value,
+//     }));
+//   };
+
+//   const handleImageUpload = async (e) => {
+//     const file = e.target.files?.[0];
+
+//     if (!file) return;
+
+//     const imageUrl = await uploadProfileImage(file);
+
+//     if (imageUrl) {
+//       setForm((prev) => ({
+//         ...prev,
+//         profile_image: imageUrl,
+//       }));
+//     }
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     console.log("FORM SUBMIT");
+//     console.log(form);
+
+//     await saveProfile(form);
+//   };
+
+//   return (
+//     <div className="profile-edit-container">
+//       <div className="profile-edit-card">
+//         <div className="profile-image-section">
+//           <img
+//             src={form.profile_image || "https://placehold.co/200x200"}
+//             alt="Profile"
+//             className="profile-image"
+//           />
+
+//           <label className="upload-btn">
+//             Change Photo
+//             <input type="file" hidden onChange={handleImageUpload} />
+//           </label>
+//         </div>
+
+//         <form onSubmit={handleSubmit} className="profile-form-grid">
+//           <div className="full-width">
+//             <label>Profile Type</label>
+
+//             <div className="type-switch">
+//               <button
+//                 type="button"
+//                 className={!isBusiness ? "active" : ""}
+//                 onClick={() => setIsBusiness(false)}
+//               >
+//                 Individual
+//               </button>
+
+//               <button
+//                 type="button"
+//                 className={isBusiness ? "active" : ""}
+//                 onClick={() => setIsBusiness(true)}
+//               >
+//                 Business
+//               </button>
+//             </div>
+//           </div>
+
+//           <div>
+//             <label>Prefix</label>
+
+//             <input
+//               name="person_prefix"
+//               value={form.person_prefix || ""}
+//               onChange={handleChange}
+//             />
+//           </div>
+
+//           <div>
+//             <label>Full Name</label>
+
+//             <input
+//               name="person_name"
+//               value={form.person_name || ""}
+//               onChange={handleChange}
+//             />
+//           </div>
+
+//           <div>
+//             <label>Mobile</label>
+
+//             <input
+//               name="mobile_number"
+//               value={form.mobile_number || ""}
+//               onChange={handleChange}
+//             />
+//           </div>
+
+//           <div>
+//             <label>Email</label>
+
+//             <input
+//               name="email"
+//               value={form.email || ""}
+//               onChange={handleChange}
+//             />
+//           </div>
+
+//           <div>
+//             <label>Address</label>
+
+//             <input
+//               name="address"
+//               value={form.address || ""}
+//               onChange={handleChange}
+//             />
+//           </div>
+
+//           <div>
+//             <label>City</label>
+
+//             <input
+//               name="city"
+//               value={form.city || ""}
+//               onChange={handleChange}
+//             />
+//           </div>
+
+//           <div>
+//             <label>Pincode</label>
+
+//             <input
+//               name="pincode"
+//               value={form.pincode || ""}
+//               onChange={handleChange}
+//             />
+//           </div>
+//           <div>
+//             <label>Landline</label>
+
+//             <input
+//               name="landline"
+//               value={form.landline || ""}
+//               onChange={handleChange}
+//             />
+//           </div>
+
+//           <div>
+//             <label>Landline Code</label>
+
+//             <input
+//               name="landline_code"
+//               value={form.landline_code || ""}
+//               onChange={handleChange}
+//             />
+//           </div>
+
+//           {isBusiness ? (
+//             <>
+//               <div>
+//                 <label>Business Name</label>
+
+//                 <input
+//                   name="business_name"
+//                   value={form.business_name || ""}
+//                   onChange={handleChange}
+//                 />
+//               </div>
+
+//               <div>
+//                 <label>Website</label>
+
+//                 <input
+//                   name="web_site"
+//                   value={form.web_site || ""}
+//                   onChange={handleChange}
+//                 />
+//               </div>
+
+//               <div>
+//                 <label>Address</label>
+
+//                 <input
+//                   name="address"
+//                   value={form.address || ""}
+//                   onChange={handleChange}
+//                 />
+//               </div>
+//               <div>
+//                 <label>WhatsApp</label>
+
+//                 <input
+//                   name="whats_app"
+//                   value={form.whats_app || ""}
+//                   onChange={handleChange}
+//                 />
+//               </div>
+
+//               <div className="full-width">
+//                 <label>Description</label>
+
+//                 <textarea
+//                   rows="5"
+//                   name="description"
+//                   value={form.description || ""}
+//                   onChange={handleChange}
+//                 />
+//               </div>
+//             </>
+//           ) : (
+//             <div className="full-width">
+//               <label>Profession</label>
+
+//               <input
+//                 name="keywords"
+//                 value={form.keywords || ""}
+//                 onChange={handleChange}
+//               />
+//             </div>
+//           )}
+
+//           <div className="full-width save-wrap">
+//             <button type="submit" className="save-btn">
+//               Save Profile
+//             </button>
+//           </div>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }
 
 
 
@@ -490,112 +736,167 @@ import { useState, useEffect } from "react";
 import "../css/profile.css";
 
 export default function ProfileForm({
-  profile,
-  isBusiness,
-  setIsBusiness,
-  saveProfile,
-  uploadProfileImage,
+profile,
+isBusiness,
+setIsBusiness,
+saveProfile,
+uploadProfileImage,
 }) {
-  const [form, setForm] = useState(profile || {});
+const [form, setForm] = useState(profile || {});
+const [sameAsMobile, setSameAsMobile] = useState(false);
 
-  useEffect(() => {
-    setForm(profile || {});
-  }, [profile]);
+const [keywordInput, setKeywordInput] = useState("");
+const [keywords, setKeywords] = useState([]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+const [productImages, setProductImages] = useState([]);
 
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+useEffect(() => {
+setForm(profile || {});
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files?.[0];
+if (profile?.keywords) {
+  setKeywords(
+    profile.keywords
+      .split(",")
+      .map((k) => k.trim())
+      .filter(Boolean)
+  );
+}
 
-    if (!file) return;
 
-    const imageUrl = await uploadProfileImage(file);
+}, [profile]);
 
-    if (imageUrl) {
-      setForm((prev) => ({
-        ...prev,
-        profile_image: imageUrl,
-      }));
-    }
-  };
+const handleChange = (e) => {
+const { name, value } = e.target;
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+setForm((prev) => ({
+  ...prev,
+  [name]: value,
+}));
 
-  console.log("FORM SUBMIT");
-  console.log(form);
+if (sameAsMobile && name === "mobile_number") {
+  setForm((prev) => ({
+    ...prev,
+    mobile_number: value,
+    whats_app: value,
+  }));
+}
 
-  await saveProfile(form);
+
 };
 
-  return (
-    <div className="profile-edit-container">
+const handleImageUpload = async (e) => {
+const file = e.target.files?.[0];
 
-      <div className="profile-edit-card">
 
-        <div className="profile-image-section">
+if (!file) return;
 
-          <img
-            src={
-              form.profile_image ||
-              "https://placehold.co/200x200"
+const imageUrl = await uploadProfileImage(file);
+
+if (imageUrl) {
+  setForm((prev) => ({
+    ...prev,
+    profile_image: imageUrl,
+  }));
+}
+
+
+};
+
+const addKeyword = () => {
+if (!keywordInput.trim()) return;
+
+
+if (keywords.includes(keywordInput.trim())) {
+  setKeywordInput("");
+  return;
+}
+
+setKeywords((prev) => [
+  ...prev,
+  keywordInput.trim(),
+]);
+
+setKeywordInput("");
+
+
+};
+
+const removeKeyword = (index) => {
+setKeywords((prev) =>
+prev.filter((_, i) => i !== index)
+);
+};
+
+const handleSubmit = async (e) => {
+e.preventDefault();
+
+const finalForm = {
+  ...form,
+  keywords: keywords.join(", "),
+  product_images: productImages,
+};
+
+await saveProfile(finalForm);
+
+
+};
+
+return ( <div className="profile-edit-container"> <div className="profile-edit-card">
+
+    <div className="profile-image-section">
+      <img
+        src={
+          form.profile_image ||
+          "https://placehold.co/200x200"
+        }
+        alt="Profile"
+        className="profile-image"
+      />
+
+      <label className="upload-btn">
+        Change Photo
+        <input
+          type="file"
+          hidden
+          onChange={handleImageUpload}
+        />
+      </label>
+    </div>
+
+    <form
+      onSubmit={handleSubmit}
+      className="profile-form-grid"
+    >
+      <div className="full-width">
+        <label>Profile Type</label>
+
+        <div className="type-switch">
+          <button
+            type="button"
+            className={!isBusiness ? "active" : ""}
+            onClick={() =>
+              setIsBusiness(false)
             }
-            alt="Profile"
-            className="profile-image"
-          />
+          >
+            Individual
+          </button>
 
-          <label className="upload-btn">
-            Change Photo
-            <input
-              type="file"
-              hidden
-              onChange={handleImageUpload}
-            />
-          </label>
-
+          <button
+            type="button"
+            className={isBusiness ? "active" : ""}
+            onClick={() =>
+              setIsBusiness(true)
+            }
+          >
+            Business
+          </button>
         </div>
+      </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="profile-form-grid"
-        >
-
-                    <div className="full-width">
-
-            <label>Profile Type</label>
-
-            <div className="type-switch">
-
-              <button
-                type="button"
-                className={!isBusiness ? "active" : ""}
-                onClick={() => setIsBusiness(false)}
-              >
-                Individual
-              </button>
-
-              <button
-                type="button"
-                className={isBusiness ? "active" : ""}
-                onClick={() => setIsBusiness(true)}
-              >
-                Business
-              </button>
-
-            </div>
-
-          </div>
-
+      {!isBusiness ? (
+        <>
           <div>
             <label>Prefix</label>
-
             <input
               name="person_prefix"
               value={form.person_prefix || ""}
@@ -604,8 +905,7 @@ const handleSubmit = async (e) => {
           </div>
 
           <div>
-            <label>Full Name</label>
-
+            <label>Person Name</label>
             <input
               name="person_name"
               value={form.person_name || ""}
@@ -614,8 +914,25 @@ const handleSubmit = async (e) => {
           </div>
 
           <div>
-            <label>Mobile</label>
+            <label>Profession</label>
+            <input
+              name="keywords"
+              value={form.keywords || ""}
+              onChange={handleChange}
+            />
+          </div>
 
+          <div>
+            <label>Address</label>
+            <input
+              name="address"
+              value={form.address || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>Mobile Number</label>
             <input
               name="mobile_number"
               value={form.mobile_number || ""}
@@ -624,8 +941,44 @@ const handleSubmit = async (e) => {
           </div>
 
           <div>
-            <label>Email</label>
+            <label>WhatsApp Number</label>
+            <input
+              name="whats_app"
+              value={form.whats_app || ""}
+              onChange={handleChange}
+              disabled={sameAsMobile}
+            />
+          </div>
 
+          <div className="full-width">
+            <label>
+              <input
+                type="checkbox"
+                checked={sameAsMobile}
+                onChange={(e) => {
+                  const checked =
+                    e.target.checked;
+
+                  setSameAsMobile(
+                    checked
+                  );
+
+                  if (checked) {
+                    setForm((prev) => ({
+                      ...prev,
+                      whats_app:
+                        prev.mobile_number ||
+                        "",
+                    }));
+                  }
+                }}
+              />
+              Same as Mobile Number
+            </label>
+          </div>
+
+          <div>
+            <label>Email</label>
             <input
               name="email"
               value={form.email || ""}
@@ -634,8 +987,27 @@ const handleSubmit = async (e) => {
           </div>
 
           <div>
-            <label>City</label>
+            <label>Landline Code</label>
+            <input
+              name="landline_code"
+              value={
+                form.landline_code || ""
+              }
+              onChange={handleChange}
+            />
+          </div>
 
+          <div>
+            <label>Landline</label>
+            <input
+              name="landline"
+              value={form.landline || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>City</label>
             <input
               name="city"
               value={form.city || ""}
@@ -645,80 +1017,231 @@ const handleSubmit = async (e) => {
 
           <div>
             <label>Pincode</label>
-
             <input
               name="pincode"
               value={form.pincode || ""}
               onChange={handleChange}
             />
           </div>
-
-
-
-          {isBusiness ? (
-            <>
-              <div>
-                <label>Business Name</label>
-
-                <input
-                  name="business_name"
-                  value={form.business_name || ""}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label>Website</label>
-
-                <input
-                  name="web_site"
-                  value={form.web_site || ""}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="full-width">
-
-                <label>Description</label>
-
-                <textarea
-                  rows="5"
-                  name="description"
-                  value={form.description || ""}
-                  onChange={handleChange}
-                />
-
-              </div>
-            </>
-          ) : (
-            <div className="full-width">
-
-              <label>Profession</label>
-
-              <input
-                name="keywords"
-                value={form.keywords || ""}
-                onChange={handleChange}
-              />
-
-            </div>
-          )}
-
-          <div className="full-width save-wrap">
-
-            <button
-              type="submit"
-              className="save-btn"
-            >
-              Save Profile
-            </button>
-
+        </>
+      ) : (
+        <>
+          <div>
+            <label>Person Name</label>
+            <input
+              name="person_name"
+              value={form.person_name || ""}
+              onChange={handleChange}
+            />
           </div>
 
-        </form>
+          <div>
+            <label>Business Name</label>
+            <input
+              name="business_name"
+              value={
+                form.business_name || ""
+              }
+              onChange={handleChange}
+            />
+          </div>
 
+          <div className="full-width">
+            <label>Keywords</label>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+              }}
+            >
+              <input
+                value={keywordInput}
+                onChange={(e) =>
+                  setKeywordInput(
+                    e.target.value
+                  )
+                }
+                placeholder="Enter keyword"
+              />
+
+              <button
+                type="button"
+                onClick={addKeyword}
+              >
+                Add
+              </button>
+            </div>
+
+            <div
+              style={{
+                marginTop: "10px",
+                display: "flex",
+                gap: "10px",
+                flexWrap: "wrap",
+              }}
+            >
+              {keywords.map(
+                (keyword, index) => (
+                  <span
+                    key={index}
+                    className="keyword-tag"
+                  >
+                    {keyword}
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        removeKeyword(
+                          index
+                        )
+                      }
+                    >
+                      ×
+                    </button>
+                  </span>
+                )
+              )}
+            </div>
+          </div>
+
+          <div className="full-width">
+            <label>Description</label>
+
+            <textarea
+              rows="5"
+              name="description"
+              value={
+                form.description || ""
+              }
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>Address</label>
+            <input
+              name="address"
+              value={form.address || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>Mobile Number</label>
+            <input
+              name="mobile_number"
+              value={form.mobile_number || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>WhatsApp Number</label>
+            <input
+              name="whats_app"
+              value={form.whats_app || ""}
+              onChange={handleChange}
+              disabled={sameAsMobile}
+            />
+          </div>
+
+          <div className="full-width">
+            <label>
+              <input
+                type="checkbox"
+                checked={sameAsMobile}
+                onChange={(e) => {
+                  const checked =
+                    e.target.checked;
+
+                  setSameAsMobile(
+                    checked
+                  );
+
+                  if (checked) {
+                    setForm((prev) => ({
+                      ...prev,
+                      whats_app:
+                        prev.mobile_number ||
+                        "",
+                    }));
+                  }
+                }}
+              />
+              Same as Mobile Number
+            </label>
+          </div>
+
+          <div>
+            <label>Email</label>
+            <input
+              name="email"
+              value={form.email || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>Landline Code</label>
+            <input
+              name="landline_code"
+              value={
+                form.landline_code || ""
+              }
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>Landline</label>
+            <input
+              name="landline"
+              value={form.landline || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>Website</label>
+            <input
+              name="web_site"
+              value={form.web_site || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="full-width">
+            <label>Product Images</label>
+
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={(e) =>
+                setProductImages(
+                  Array.from(
+                    e.target.files || []
+                  )
+                )
+              }
+            />
+          </div>
+        </>
+      )}
+
+      <div className="full-width save-wrap">
+        <button
+          type="submit"
+          className="save-btn"
+        >
+          Save Details
+        </button>
       </div>
+    </form>
+  </div>
+</div>
 
-    </div>
-  );
+
+);
 }

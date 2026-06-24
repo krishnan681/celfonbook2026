@@ -84,6 +84,8 @@
 // }
 
 // features/DetailedProfile/components/DetailedProfileAbout.jsx
+
+
 import { MdLocationOn } from "react-icons/md";
 import { FaPhoneAlt, FaGlobe } from "react-icons/fa";
 import "../css/DetailedProfileAbout.css";
@@ -116,6 +118,7 @@ export default function DetailedProfileAbout({ profile }) {
             </div>
           </div>
         )}
+        
 
         {/* Name */}
         {profile?.person_name && (
@@ -169,6 +172,7 @@ export default function DetailedProfileAbout({ profile }) {
             </div>
           </div>
         )}
+        
 
         {/* Address */}
         {fullAddress && (
@@ -190,6 +194,8 @@ export default function DetailedProfileAbout({ profile }) {
             </div>
           </div>
         )}
+
+        
 
         {/* Pincode */}
         {profile?.pincode && (

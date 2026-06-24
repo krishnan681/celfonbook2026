@@ -259,31 +259,29 @@ export async function updateProfileData(data) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return;
+  if (!user) throw new Error("User not found");
 
   const payload = { ...data };
 
-  delete payload.display_name;
+  delete payload.display_name; // generated column
   delete payload.created_at;
   delete payload.updated_at;
 
   payload.id = user.id;
   payload.updated_at = new Date().toISOString();
 
-  // console.log("FINAL UPDATE PAYLOAD");
-  // console.log(payload);
+  console.log(payload);
 
-  const { error } = await supabase
+  const { data: result, error } = await supabase
     .from("profiles")
-    .update(payload)
-    .eq("id", user.id);
+    .upsert(payload, {
+      onConflict: "id",
+    })
+    .select();
 
-  if (error) {
-    // console.error(error);
-    throw error;
-  }
+  if (error) throw error;
 
-  return true;
+  return result;
 }
 
 

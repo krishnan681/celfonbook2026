@@ -36,10 +36,7 @@ export default function RecentLeads({
                   {lead.viewer_name || "Unknown User"}
                 </h4>
 
-                <span>
-                  Potential Customer
-                </span>
-
+               
               </div>
 
             </div>
