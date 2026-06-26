@@ -45,7 +45,12 @@ import CategorywiseLayout from "./features/promotions/categorywise/pages/Categor
 
 import MyReferralsPage from "./features/settings/pages/MyReferralsPage";
 
+
+
+import { useRealtimeLogout } from "./core/hooks/useRealtimeLogout";
+
 function App() {
+  useRealtimeLogout();
   return (
     <>
       <Toaster position="bottom-right" />

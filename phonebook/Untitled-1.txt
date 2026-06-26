@@ -42,6 +42,8 @@
 │   │   │   ├── 📁 context/
 │   │   │   │   ├── 📄 AuthProvider.jsx
 │   │   │   │   └── 📄 FavoritesContext.jsx
+│   │   │   ├── 📁 hooks/
+│   │   │   │   └── 📄 useRealtimeLogout.js
 │   │   │   ├── 📁 services/
 │   │   │   │   ├── 📄 authService.js
 │   │   │   │   └── 📄 profileService.js
