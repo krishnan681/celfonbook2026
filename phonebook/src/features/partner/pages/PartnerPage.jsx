@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../core/config/supabaseClient";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-
+import seoConfig from "../../../core/seo/seoConfig";
 import "../css/partnerPage.css";
+import { Helmet } from "react-helmet-async";
 
 const PartnerPage = () => {
+  const seo = seoConfig.partner;
   const controller = usePartnerController();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +20,10 @@ const PartnerPage = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const { data: { user }, error } = await supabase.auth.getUser();
+        const {
+          data: { user },
+          error,
+        } = await supabase.auth.getUser();
 
         if (error || !user) {
           Swal.fire({
@@ -66,25 +71,35 @@ const PartnerPage = () => {
   if (!controller.profileType) {
     return (
       <div className="partner-wrapper">
-        <div className="partner-card">
+        <Helmet>
+          <title>{seo.title}</title>
 
+          <meta name="description" content={seo.description} />
+
+          <link rel="canonical" href={seo.canonical} />
+
+          <meta property="og:title" content={seo.title} />
+
+          <meta property="og:description" content={seo.description} />
+
+          <meta property="og:type" content="website" />
+
+          <meta property="og:url" content={seo.canonical} />
+        </Helmet>
+        <div className="partner-card">
           {/* HEADER */}
           <div className="partner-header">
             <h1 className="partner-title">MEDIA PARTNER</h1>
-            <p className="partner-sub">
-              By adding Choose account type
-            </p>
+            <p className="partner-sub">By adding Choose account type</p>
           </div>
 
           {/* MAIN GRID */}
           <div className="partner-grid">
-
             {/* ACCOUNT TYPE CARD */}
             <div className="account-type-card">
               <h3 className="account-title">Account Options</h3>
 
               <div className="account-options">
-
                 {/* PERSON OPTION */}
                 <div className="type-option">
                   <div className="icon-circle blue">
@@ -92,8 +107,7 @@ const PartnerPage = () => {
                   </div>
                   <h3>Person</h3>
                   <p>
-                    Looking for services? Create a
-                    personal account and explore.
+                    Looking for services? Create a personal account and explore.
                   </p>
                   <button
                     className="btn-blue"
@@ -112,10 +126,7 @@ const PartnerPage = () => {
                     <Briefcase size={36} />
                   </div>
                   <h3>Business</h3>
-                  <p>
-                    Promote your business and
-                    reach your target audience.
-                  </p>
+                  <p>Promote your business and reach your target audience.</p>
                   <button
                     className="btn-yellow"
                     onClick={() => controller.handleTypeSelection("business")}
@@ -123,7 +134,6 @@ const PartnerPage = () => {
                     Create Business Account
                   </button>
                 </div>
-
               </div>
             </div>
 
@@ -134,10 +144,8 @@ const PartnerPage = () => {
               </div>
               <h3>Revenue Tracker</h3>
               <p>
-                Monitor your referral earnings and
-                track successful registrations
-                generated through your media
-                partner invitations.
+                Monitor your referral earnings and track successful
+                registrations generated through your media partner invitations.
               </p>
               <button
                 className="btn-green"
@@ -146,16 +154,13 @@ const PartnerPage = () => {
                 View Revenue
               </button>
             </div>
-
           </div>
 
           {/* FOOTER */}
           <p className="partner-footer">
-            By adding and inviting people,
-            you'll be rewarded for every
+            By adding and inviting people, you'll be rewarded for every
             successful member.
           </p>
-
         </div>
       </div>
     );

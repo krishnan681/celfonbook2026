@@ -126,7 +126,7 @@ const Timeline = () => {
                     {item.image ? (
                       <img
                         src={item.image}
-                        alt=""
+                        alt="CelfonBook Logo"
                         className="timeline-img"
                       />
                     ) : (

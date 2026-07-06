@@ -1,0 +1,144 @@
+.tn-gov-card {
+    background: #fff;
+    border: 2px solid #d4af37;
+    border-radius: 16px;
+    padding: 16px;
+    cursor: pointer;
+    transition: .25s;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+.tn-gov-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(0,0,0,.12);
+}
+
+/* Header */
+
+.tn-gov-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+}
+
+/* Avatar */
+
+.tn-gov-avatar {
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #d4af37;
+    background: #fff;
+    flex-shrink: 0;
+}
+
+/* Details */
+
+.tn-gov-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.gov-name {
+    /* margin: 0; */
+    font-size: 21px;
+    font-weight: 500;
+    /* line-height: 1.2; */
+    color: #222;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gov-city {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 6px;
+    color: #666;
+    font-size: 15px;
+}
+
+.gov-mobile {
+    margin-top: 6px;
+    /* color: #e91e63; */
+    font-size: 15px;
+    color: #666;
+    /* font-weight: 600; */
+}
+
+/* Favourite */
+
+.fav-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000000;
+    cursor: pointer;
+    transition: .2s;
+    margin-left: auto;
+    position: relative;
+    bottom: 28px;
+
+}
+
+.fav-btn:hover {
+    color: #ff3b5c;
+}
+
+/* Buttons */
+
+.gov-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.call-btn,
+.enquiry-btn {
+    flex: 1;
+    height: 42px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 15px;
+    /* font-weight: 600; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.call-btn {
+    background: #ff0303;
+}
+
+.call-btn:hover {
+    background: #14984b;
+}
+
+.enquiry-btn {
+    background: #ff0000;
+}
+
+.enquiry-btn:hover {
+    background: #2d6be3;
+}
+
+/* Description */
+
+.gov-description {
+    margin-top: 14px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}

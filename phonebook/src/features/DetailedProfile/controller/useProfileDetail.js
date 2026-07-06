@@ -58,11 +58,11 @@ export const useProfileDetail = () => {
   useEffect(() => {
     if (!profile?.id) return;
 
-    // Prime users OR Business users use their own cover image
-    if (profile.is_prime || profile.is_business) {
+    if (profile.tn_gov) {
+      loadTNGovCoverImages();
+    } else if (profile.is_prime || profile.is_business) {
       loadCoverImages();
     } else {
-      // Normal users get shared rotating images
       loadFreeTierImages();
     }
 
@@ -105,6 +105,22 @@ export const useProfileDetail = () => {
       autoScrollRef.current = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % imgs.length);
       }, 4000);
+    } else {
+      setImages([fallbackImage()]);
+    }
+  };
+
+  /* ─────────────────────────────
+   TN GOV COVER IMAGES
+───────────────────────────── */
+  const loadTNGovCoverImages = () => {
+    if (profile?.cover_image?.trim()) {
+      const imgs = profile.cover_image
+        .split(",")
+        .map((img) => img.trim())
+        .filter(Boolean);
+
+      setImages(imgs.length ? imgs : [fallbackImage()]);
     } else {
       setImages([fallbackImage()]);
     }

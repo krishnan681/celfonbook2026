@@ -60,9 +60,6 @@
 
 // export default HomePage;
 
-
-
-
 import HeroSection from "../components/HeroSection";
 import StatsSection from "../components/StatsSection";
 import FeaturesSection from "../components/FeaturesSection";
@@ -71,10 +68,30 @@ import HowItWorks from "../components/HowItWorks";
 import PricingSection from "../components/PricingSection";
 import AboutSection from "../components/AboutSection";
 import DirectorySection from "../components/DirectorySection";
+import seoConfig from "../../../core/seo/seoConfig";
+import { Helmet } from "react-helmet-async";
 
 export default function HomePage() {
+  const seo = seoConfig.home;
+
   return (
     <main>
+      <Helmet>
+        <title>{seo.title}</title>
+
+        <meta name="description" content={seo.description} />
+
+        <link rel="canonical" href={seo.canonical} />
+
+        <meta property="og:title" content={seo.title} />
+
+        <meta property="og:description" content={seo.description} />
+
+        <meta property="og:type" content="website" />
+
+        <meta property="og:url" content={seo.canonical} />
+
+      </Helmet>
       <HeroSection />
       <DirectorySection />
       <StatsSection />

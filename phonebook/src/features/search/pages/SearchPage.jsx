@@ -61,8 +61,11 @@ import { SlidersHorizontal } from "lucide-react";
 import { FaFire } from "react-icons/fa";
 import { MdAddBusiness } from "react-icons/md";
 import "./css/search.css";
+import seoConfig from "../../../core/seo/seoConfig";
+import { Helmet } from "react-helmet-async";
 
 const SearchPage = () => {
+  const seo = seoConfig.search;
   const navigate = useNavigate();
 
   const {
@@ -113,6 +116,26 @@ const SearchPage = () => {
 
   return (
     <div className="search-wrapper">
+      
+
+      <Helmet>
+        <title>{seo.title}</title>
+
+        <meta name="description" content={seo.description} />
+
+        <link rel="canonical" href={seo.canonical} />
+
+        <meta property="og:title" content={seo.title} />
+
+        <meta property="og:description" content={seo.description} />
+
+        <meta property="og:type" content="website" />
+
+        <meta property="og:url" content={seo.canonical} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
+
       {/* HEADER */}
       <header className="header-layout">
         <SearchBar

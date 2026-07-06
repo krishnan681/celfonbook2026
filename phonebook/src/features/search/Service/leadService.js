@@ -79,8 +79,6 @@
 //   },
 // };
 
-
-
 // import { supabase } from "../../../core/config/supabaseClient";
 
 // export const LeadService = {
@@ -194,15 +192,6 @@
 //   },
 // };
 
-
-
-
-
-
-
-
-
-
 import { supabase } from "../../../core/config/supabaseClient";
 
 export const LeadService = {
@@ -245,10 +234,9 @@ export const LeadService = {
         return;
       }
 
-      const shopName =
-        item?.business_name?.trim()
-          ? item.business_name
-          : item.person_name;
+      const shopName = item?.business_name?.trim()
+        ? item.business_name
+        : item.person_name;
 
       console.log("SHOP NAME:", shopName);
       console.log("MOBILE NUMBER:", item.mobile_number);
@@ -278,6 +266,8 @@ export const LeadService = {
             shop_id: shopId,
             shop_name: shopName,
             mobile_number: item.mobile_number,
+            viewer_name: viewerName,
+            application: "https://celfonbook.directory",
           };
 
           console.log("REQUEST PAYLOAD:", payload);
@@ -290,7 +280,7 @@ export const LeadService = {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify(payload),
-            }
+            },
           );
 
           console.log("HTTP STATUS:", response.status);

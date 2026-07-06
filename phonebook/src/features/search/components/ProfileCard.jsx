@@ -238,6 +238,8 @@ import Swal from "sweetalert2";
 import { supabase } from "../../../core/config/supabaseClient";
 import "../components/css/profilecard.css";
 
+import TNGovCard from "./TNGovCard";
+
 import { ViewService } from "../Service/viewService";
 import { LeadService } from "../Service/leadService";
 
@@ -254,6 +256,10 @@ const ProfileCard = ({ profile, isKeywordFocused }) => {
   const [discountCard, setDiscountCard] = useState(null);
 
   if (!profile) return null;
+
+  if (profile.tn_gov) {
+  return <TNGovCard profile={profile} />;
+}
 
   const name = profile.business_name || profile.person_name || "Unnamed";
   const city = profile.city || "Not specified";

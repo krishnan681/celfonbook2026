@@ -1,8 +1,12 @@
 import React from "react";
 import { Shield, Database, Globe, UserMinus, CreditCard, Bell, SortAsc } from "lucide-react";
 import "../css/legal.css";
+import seoConfig from "../../../core/seo/seoConfig";
+import { Helmet } from "react-helmet-async";
+
 
 export default function PrivacyPolicyPage() {
+  const seo = seoConfig.privacy;
   const sections = [
     {
       icon: <Shield size={20} />,
@@ -43,6 +47,21 @@ export default function PrivacyPolicyPage() {
 
   return (
     <div className="lg2-wrapper">
+      <Helmet>
+          <title>{seo.title}</title>
+
+          <meta name="description" content={seo.description} />
+
+          <link rel="canonical" href={seo.canonical} />
+
+          <meta property="og:title" content={seo.title} />
+
+          <meta property="og:description" content={seo.description} />
+
+          <meta property="og:type" content="website" />
+
+          <meta property="og:url" content={seo.canonical} />
+        </Helmet>
       <div className="lg2-container">
         <header className="lg2-header">
           <div className="lg2-badge">Legal Documentation</div>

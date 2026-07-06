@@ -81,7 +81,6 @@
 //   );
 // }
 
-
 // features/DetailedProfile/pages/ProfileDetailPage.jsx
 
 import FavoriteModal from "@/features/search/components/FavoriteModal";
@@ -92,7 +91,8 @@ import DetailedProfileAbout from "../components/DetailedProfileAbout";
 import DetailedProfileProducts from "../components/DetailedProfileProducts";
 import DetailedProfileMap from "../components/DetailedProfileMap";
 import DetailedRelatedProfiles from "../components/DetailedRelatedProfiles";
-
+import { Helmet } from "react-helmet-async";
+import { getProfileSEO } from "../../../core/seo/seoHelper";
 import { useProfileDetail } from "../controller/useProfileDetail";
 
 import "../css/ProfileDetailPage.css";
@@ -115,11 +115,35 @@ export default function ProfileDetailPage() {
     addFavorite,
   } = useProfileDetail();
 
-  if (!profile)
-    return <div className="loader-box">Loading Profile...</div>;
-
+  if (!profile) return <div className="loader-box">Loading Profile...</div>;
+  const seo = getProfileSEO(profile);
   return (
     <div className="pd-page">
+      <Helmet>
+        <title>{seo.title}</title>
+
+        <meta name="description" content={seo.description} />
+
+        <meta name="keywords" content={seo.keywords} />
+
+        <link rel="canonical" href={seo.canonical} />
+
+        <meta property="og:title" content={seo.title} />
+
+        <meta property="og:description" content={seo.description} />
+
+        <meta property="og:image" content={seo.image} />
+
+        <meta property="og:url" content={seo.canonical} />
+
+        <meta property="og:type" content="website" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+
+        <meta name="twitter:title" content={seo.title} />
+
+        <meta name="twitter:description" content={seo.description} />
+      </Helmet>
       <DetailedProfileHeader
         profile={profile}
         images={images}
@@ -143,12 +167,9 @@ export default function ProfileDetailPage() {
               <DetailedProfileAbout profile={profile} />
             )}
 
-            {profile?.is_prime &&
-              activeTab === "products" && (
-                <DetailedProfileProducts
-                  priorityProducts={priorityProducts}
-                />
-              )}
+            {profile?.is_prime && activeTab === "products" && (
+              <DetailedProfileProducts priorityProducts={priorityProducts} />
+            )}
 
             {activeTab === "map" && (
               <DetailedProfileMap
