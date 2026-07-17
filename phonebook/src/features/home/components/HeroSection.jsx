@@ -964,50 +964,59 @@ export default function HeroSection() {
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="jd-mode-box">
-          {/* HEADER */}
-          <div className="jd-mode-header">
-            <div>
-              <p className="jd-mode-small">Explore Categories</p>
 
-              <h2 className="jd-mode-title">
-                {mode === "b2b"
-                  ? "Industrial & Manufacturing"
-                  : "Local & Consumer Services"}
-              </h2>
-            </div>
+        <div className="jd-right-side">
+          <button
+            className="jd-refer-btn"
+            onClick={() => navigate("/my-referrals")}
+          >
+            🎁 Refer & Earn
+          </button>
+          <div className="jd-mode-box">
+            {/* HEADER */}
+            <div className="jd-mode-header">
+              <div>
+                <p className="jd-mode-small">Explore Categories</p>
 
-            {/* SWITCH */}
-            <div className="jd-mode-switch">
-              <button
-                className={mode === "b2b" ? "active" : ""}
-                onClick={() => setMode("b2b")}
-              >
-                B2B
-              </button>
-
-              <button
-                className={mode === "b2c" ? "active" : ""}
-                onClick={() => setMode("b2c")}
-              >
-                B2C
-              </button>
-            </div>
-          </div>
-
-          {/* CATEGORY GRID */}
-          <div className="jd-mode-cards">
-            {activeCategories.map((item) => (
-              <div
-                key={item.title}
-                className="jd-mini-card"
-                onClick={() => goToSearch(item.keywords, location)}
-              >
-                <div className="jd-mini-icon">{item.icon}</div>
-
-                <div className="jd-mini-title">{item.title}</div>
+                <h2 className="jd-mode-title">
+                  {mode === "b2b"
+                    ? "Industrial & Manufacturing"
+                    : "Local & Consumer Services"}
+                </h2>
               </div>
-            ))}
+
+              {/* SWITCH */}
+              <div className="jd-mode-switch">
+                <button
+                  className={mode === "b2b" ? "active" : ""}
+                  onClick={() => setMode("b2b")}
+                >
+                  B2B
+                </button>
+
+                <button
+                  className={mode === "b2c" ? "active" : ""}
+                  onClick={() => setMode("b2c")}
+                >
+                  B2C
+                </button>
+              </div>
+            </div>
+
+            {/* CATEGORY GRID */}
+            <div className="jd-mode-cards">
+              {activeCategories.map((item) => (
+                <div
+                  key={item.title}
+                  className="jd-mini-card"
+                  onClick={() => goToSearch(item.keywords, location)}
+                >
+                  <div className="jd-mini-icon">{item.icon}</div>
+
+                  <div className="jd-mini-title">{item.title}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -1018,7 +1027,6 @@ export default function HeroSection() {
 
         <div className="jd-cats-grid">
           {CATEGORIES.map((cat) => (
-            
             <div
               key={cat.label}
               className="jd-citem"

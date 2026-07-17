@@ -988,3 +988,37 @@
   color: #111827;
   margin-bottom: 12px;
 }
+
+
+
+
+
+
+.jd-right-side {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.jd-refer-btn {
+  /* width: 100%; */
+  height: 56px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ff7a00, #ff9d00);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(255, 122, 0, 0.25);
+  transition: all .25s ease;
+}
+
+.jd-refer-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(255, 122, 0, .35);
+}
+
+.jd-refer-btn:active {
+  transform: scale(.98);
+}
