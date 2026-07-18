@@ -70,12 +70,15 @@ import AboutSection from "../components/AboutSection";
 import DirectorySection from "../components/DirectorySection";
 import seoConfig from "../../../core/seo/seoConfig";
 import { Helmet } from "react-helmet-async";
+import ReferralPopup from "../components/ReferralPopup";
 
 export default function HomePage() {
   const seo = seoConfig.home;
 
   return (
     <main>
+
+    <ReferralPopup />
       <Helmet>
         <title>{seo.title}</title>
 

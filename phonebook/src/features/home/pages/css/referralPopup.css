@@ -1,0 +1,334 @@
+/* =====================================================
+   REFERRAL POPUP
+===================================================== */
+
+.referral-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 9998;
+  animation: overlayFade 0.35s ease;
+}
+
+.referral-popup {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 430px;
+  max-width: calc(100% - 40px);
+  background: #fff;
+  border-radius: 28px;
+  padding: 35px;
+  text-align: center;
+  z-index: 9999;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  animation: popupShow 0.45s ease;
+}
+
+/* Decorative Background */
+
+.referral-popup::before {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.06);
+  right: -80px;
+  top: -80px;
+}
+
+.referral-popup::after {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: rgba(255, 140, 0, 0.08);
+  left: -70px;
+  bottom: -70px;
+}
+
+/* Close Button */
+
+.referral-close {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: #f5f5f5;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+  z-index: 2;
+}
+
+.referral-close:hover {
+  background: #ef4444;
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+/* Gift */
+
+.popup-icon {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 25px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff8c00, #ffb703);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  animation: giftBounce 2s infinite;
+  position: relative;
+  z-index: 2;
+}
+
+/* Text */
+
+.referral-popup h2 {
+  font-size: 34px;
+  color: #1d4ed8;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.referral-popup h3 {
+  font-size: 22px;
+  color: #ff8c00;
+  margin-bottom: 22px;
+  position: relative;
+  z-index: 2;
+}
+
+.referral-popup p {
+  color: #64748b;
+  line-height: 1.7;
+  margin-bottom: 14px;
+  font-size: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.referral-popup strong {
+  color: #1d4ed8;
+}
+
+/* Button */
+
+.popup-btn {
+  margin-top: 25px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  padding: 17px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff8c00, #ffb703);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s;
+  position: relative;
+  z-index: 2;
+}
+
+.popup-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 35px rgba(255, 140, 0, 0.35);
+}
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes popupShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 50px)) scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes overlayFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes giftBounce {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes mobilePopup {
+  from {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .referral-overlay {
+    display: none;
+  }
+
+  .referral-popup {
+    left: auto;
+    top: auto;
+    right: 16px;
+    bottom: 20px;
+    transform: none;
+
+    width: min(290px, calc(100vw - 32px));
+
+    padding: 22px;
+
+    border-radius: 20px;
+
+    text-align: left;
+
+    animation: mobilePopup .4s ease;
+  }
+
+  .referral-popup::before,
+  .referral-popup::after {
+    opacity: .35;
+  }
+
+  .referral-close {
+    width: 32px;
+    height: 32px;
+    right: 12px;
+    top: 12px;
+  }
+
+  .popup-icon {
+    width: 65px;
+    height: 65px;
+    margin: 0 0 16px;
+  }
+
+  .popup-icon svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .referral-popup h2 {
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+
+  .referral-popup h3 {
+    font-size: 16px;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+
+  .referral-popup p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .popup-btn {
+    margin-top: 16px;
+    padding: 14px;
+    font-size: 15px;
+  }
+}
+
+/* =====================================================
+   SMALL PHONES
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .referral-popup {
+    right: 12px;
+    bottom: 16px;
+
+    width: min(250px, calc(100vw - 24px));
+
+    padding: 18px;
+
+    border-radius: 18px;
+  }
+
+  .popup-icon {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -6px;
+    left: 35%;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 14px;
+  }
+
+  .popup-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .referral-popup h2 {
+    font-size: 21px;
+  }
+
+  .referral-popup h3 {
+    font-size: 15px;
+  }
+
+  .referral-popup p {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .popup-btn {
+    margin-top: 14px;
+    padding: 12px;
+    font-size: 14px;
+  }
+}
