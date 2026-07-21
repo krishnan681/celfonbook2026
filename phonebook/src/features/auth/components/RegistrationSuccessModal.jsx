@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import {
-  CheckCircle,
+  CheckCircle2,
   Copy,
   ArrowRight,
   ShieldCheck,
+  User,
+  Lock,
+  AtSign,
 } from "lucide-react";
 import "./../Pages/css/RegistrationSuccessModal.css";
 
@@ -28,7 +31,6 @@ Password : ${password}`;
     await navigator.clipboard.writeText(text);
 
     setCopied(true);
-
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -36,66 +38,75 @@ Password : ${password}`;
     <div className="registration-overlay">
       <div className="registration-modal">
 
-        <div className="registration-header">
+        <div className="success-icon">
+          <CheckCircle2 size={70} />
+        </div>
 
-          <div className="success-circle">
-            <CheckCircle size={48} />
+        <h2>Registration Successful</h2>
+
+        <p className="subtitle">
+          Welcome to <strong>CELFON BOOK</strong>.
+          <br />
+          Your account is ready to use.
+        </p>
+
+        <div className="credential-box">
+
+          <div className="credential-item">
+            <div className="icon">
+              <User size={18} />
+            </div>
+
+            <div>
+              <small>Name</small>
+              <h4>{name}</h4>
+            </div>
           </div>
 
-          <h2>Welcome to CELFON BOOK</h2>
+          <div className="credential-item">
+            <div className="icon">
+              <AtSign size={18} />
+            </div>
 
-          <p>
-            Your account has been created successfully.
-          </p>
+            <div>
+              <small>Username</small>
+              <h4>{username}</h4>
+            </div>
+          </div>
+
+          <div className="credential-item password">
+            <div className="icon">
+              <Lock size={18} />
+            </div>
+
+            <div>
+              <small>Password</small>
+              <h4>{password}</h4>
+            </div>
+          </div>
 
         </div>
 
-        <div className="credentials-card">
-
-          <div className="credential-row">
-            <span>Name</span>
-            <strong>{name}</strong>
-          </div>
-
-          <div className="credential-row">
-            <span>Username</span>
-            <strong>{username}</strong>
-          </div>
-
-          <div className="credential-row">
-            <span>Password</span>
-            <strong>{password}</strong>
-          </div>
-
-        </div>
-
-        <div className="registration-info">
-
+        <div className="security-note">
           <ShieldCheck size={18} />
-
-          <span>
-            Save these credentials safely. You'll need them when logging in.
-          </span>
-
+          Save these credentials safely for future login.
         </div>
 
-        <div className="registration-actions">
+        <div className="button-group">
 
           <button
-            className="copy-button"
+            className="copy-btn"
             onClick={copyDetails}
           >
             <Copy size={18} />
-
-            {copied ? "Copied" : "Copy Credentials"}
+            {copied ? "Copied!" : "Copy Details"}
           </button>
 
           <button
-            className="continue-button"
+            className="continue-btn"
             onClick={onClose}
           >
             Continue
-
             <ArrowRight size={18} />
           </button>
 
