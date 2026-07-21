@@ -45,9 +45,9 @@ export default function ReferralPopup() {
           <Gift size={40} />
         </div>
 
-        <h2>Refer & Earn</h2>
+        <h2>Refer to Win</h2>
 
-        <h3>🎉 Win a Brand New EV Scooter</h3>
+        <h3>Refer Mobile Users, <br /> 🎉 Win an EV Scooter</h3>
 
         <p>
           Invite your friends to use <strong>CELFON BOOK</strong>.

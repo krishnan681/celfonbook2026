@@ -808,14 +808,23 @@ export default function useSignupController() {
 
       if (profileError) throw profileError;
 
-      alert("Registration Successful");
-
-      window.location.href = "/";
+      return {
+        success: true,
+        credentials: {
+          name: name.trim(),
+          username: phone,
+          password: defaultPassword,
+        },
+      };
     } catch (err) {
       setError(err.message);
-    }
 
-    setLoading(false);
+      return {
+        success: false,
+      };
+    } finally {
+      setLoading(false);
+    }
   };
 
   return {

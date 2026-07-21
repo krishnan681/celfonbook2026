@@ -970,7 +970,7 @@ export default function HeroSection() {
             className="jd-refer-btn"
             onClick={() => navigate("/my-referrals")}
           >
-            🎁 Refer & Earn
+            🎁 Refer to Win
           </button>
           <div className="jd-mode-box">
             {/* HEADER */}

@@ -11,7 +11,10 @@
 │   │   ├── 🖼️ favicon-96x96.png
 │   │   ├── 📄 favicon.ico
 │   │   ├── 🖼️ favicon.svg
+│   │   ├── 🖼️ og-image.jpg
+│   │   ├── 📄 robots.txt
 │   │   ├── 📄 site.webmanifest
+│   │   ├── ⚙️ sitemap.xml
 │   │   ├── 🖼️ web-app-manifest-192x192.png
 │   │   └── 🖼️ web-app-manifest-512x512.png
 │   ├── 📁 src/
@@ -50,6 +53,9 @@
 │   │   │   │   └── 📄 FavoritesContext.jsx
 │   │   │   ├── 📁 hooks/
 │   │   │   │   └── 📄 useRealtimeLogout.js
+│   │   │   ├── 📁 seo/
+│   │   │   │   ├── 📄 seoConfig.js
+│   │   │   │   └── 📄 seoHelper.js
 │   │   │   ├── 📁 services/
 │   │   │   │   ├── 📄 authService.js
 │   │   │   │   └── 📄 profileService.js
@@ -140,6 +146,7 @@
 │   │   │   │   │   ├── 📄 HowItWorks.jsx
 │   │   │   │   │   ├── 📄 MarketingSection.jsx
 │   │   │   │   │   ├── 📄 PricingSection.jsx
+│   │   │   │   │   ├── 📄 ReferralPopup.jsx
 │   │   │   │   │   └── 📄 StatsSection.jsx
 │   │   │   │   ├── 📁 controller/
 │   │   │   │   │   └── 📄 useHomeController.js
@@ -157,6 +164,7 @@
 │   │   │   │   │   │   ├── 🎨 howitworks.css
 │   │   │   │   │   │   ├── 🎨 marketing.css
 │   │   │   │   │   │   ├── 🎨 pricing.css
+│   │   │   │   │   │   ├── 🎨 referralPopup.css
 │   │   │   │   │   │   └── 🎨 stats.css
 │   │   │   │   │   └── 📄 HomePage.jsx
 │   │   │   │   └── 📁 services/

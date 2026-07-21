@@ -1,0 +1,212 @@
+/* =====================================================
+   REGISTRATION SUCCESS MODAL
+===================================================== */
+
+.registration-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 30, 0.65);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 9999;
+  animation: overlayFade .35s ease;
+}
+
+.registration-modal {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(255,255,255,.94);
+  backdrop-filter: blur(18px);
+  border-radius: 28px;
+  padding: 38px;
+  box-shadow:
+      0 25px 70px rgba(15,23,42,.18),
+      0 10px 25px rgba(15,23,42,.08);
+  border: 1px solid rgba(255,255,255,.6);
+  animation: popupScale .35s ease;
+}
+
+.registration-header{
+    text-align:center;
+}
+
+.success-circle{
+    width:90px;
+    height:90px;
+    margin:0 auto 22px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#22c55e,#16a34a);
+    color:#fff;
+    box-shadow:
+        0 12px 35px rgba(34,197,94,.35);
+}
+
+.registration-header h2{
+    font-size:30px;
+    font-weight:700;
+    color:#0f172a;
+    margin-bottom:10px;
+}
+
+.registration-header p{
+    color:#64748b;
+    font-size:16px;
+    line-height:1.6;
+}
+
+.credentials-card{
+    margin:34px 0 26px;
+    padding:24px;
+    border-radius:20px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+}
+
+.credential-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+}
+
+.credential-row:not(:last-child){
+    border-bottom:1px solid #e2e8f0;
+}
+
+.credential-row span{
+    color:#64748b;
+    font-size:15px;
+}
+
+.credential-row strong{
+    color:#0f172a;
+    font-size:16px;
+    font-weight:600;
+    text-align:right;
+    max-width:60%;
+    word-break:break-word;
+}
+
+.registration-info{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    padding:18px;
+    border-radius:16px;
+    background:#ecfdf5;
+    color:#166534;
+    border:1px solid #bbf7d0;
+    margin-bottom:30px;
+}
+
+.registration-info svg{
+    flex-shrink:0;
+    margin-top:2px;
+}
+
+.registration-info span{
+    line-height:1.6;
+    font-size:15px;
+}
+
+.registration-actions{
+    display:flex;
+    gap:16px;
+}
+
+.copy-button,
+.continue-button{
+    flex:1;
+    height:56px;
+    border:none;
+    border-radius:16px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    transition:.3s;
+}
+
+.copy-button{
+    background:#fff;
+    color:#4f46e5;
+    border:1.5px solid #c7d2fe;
+}
+
+.copy-button:hover{
+    background:#eef2ff;
+    transform:translateY(-2px);
+}
+
+.continue-button{
+    color:#fff;
+    background:linear-gradient(135deg,#4f46e5,#2563eb);
+    box-shadow:0 12px 30px rgba(37,99,235,.30);
+}
+
+.continue-button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 18px 40px rgba(37,99,235,.35);
+}
+
+@keyframes popupScale{
+
+    from{
+        opacity:0;
+        transform:scale(.92) translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1) translateY(0);
+    }
+
+}
+
+@keyframes overlayFade{
+
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
+
+@media (max-width:600px){
+
+.registration-modal{
+    padding:28px 22px;
+    border-radius:22px;
+}
+
+.registration-header h2{
+    font-size:25px;
+}
+
+.registration-actions{
+    flex-direction:column;
+}
+
+.copy-button,
+.continue-button{
+    width:100%;
+}
+
+.success-circle{
+    width:76px;
+    height:76px;
+}
+
+}

@@ -475,13 +475,24 @@
 //   );
 // }
 
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useSignupController from "../controller/useSignupController";
 import "../../auth/Pages/css/signup.css";
+import RegistrationSuccessModal from "../components/RegistrationSuccessModal";
 
 export default function SignupPage() {
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [credentials, setCredentials] = useState(null);
   const navigate = useNavigate();
+  const handleSignup = async () => {
+    const result = await signup();
+
+    if (result.success) {
+      setCredentials(result.credentials);
+      setShowSuccessModal(true);
+    }
+  };
 
   const {
     phone,
@@ -685,7 +696,7 @@ export default function SignupPage() {
             {/* CREATE ACCOUNT */}
             <button
               className="modern-btn signup-btn"
-              onClick={signup}
+              onClick={handleSignup}
               disabled={
                 loading || !otpVerified || userAlreadyExists || checkingUser
               }
@@ -693,6 +704,16 @@ export default function SignupPage() {
               {loading ? "Creating account..." : "Create Account"}
             </button>
           </div>
+          <RegistrationSuccessModal
+            open={showSuccessModal}
+            onClose={() => {
+              setShowSuccessModal(false);
+              navigate("/");
+            }}
+            name={credentials?.name}
+            username={credentials?.username}
+            password={credentials?.password}
+          />
 
           <div className="auth-footer modern-footer">
             <p className="auth-switch">
