@@ -111,6 +111,7 @@
 │   │   │   │   ├── 📁 Pages/
 │   │   │   │   │   ├── 📁 css/
 │   │   │   │   │   │   ├── 🎨 ForgotPassword.css
+│   │   │   │   │   │   ├── 🎨 RegistrationSuccessModal.css
 │   │   │   │   │   │   ├── 🎨 login.css
 │   │   │   │   │   │   ├── 🎨 signup.css
 │   │   │   │   │   │   └── 🎨 verify.css
@@ -123,6 +124,7 @@
 │   │   │   │   │   ├── 📄 InputField.jsx
 │   │   │   │   │   ├── 📄 NetworkErrorView.jsx
 │   │   │   │   │   ├── 📄 ProtectedRoute.jsx
+│   │   │   │   │   ├── 📄 RegistrationSuccessModal.jsx
 │   │   │   │   │   └── 📄 ToggleSwitch.jsx
 │   │   │   │   └── 📁 controller/
 │   │   │   │       ├── 📄 useForgotPasswordController.js
@@ -315,13 +317,17 @@
 │   │   │   │   │   ├── 🎨 myReferrals.css
 │   │   │   │   │   ├── 🎨 reverseFinder.css
 │   │   │   │   │   └── 🎨 settings.css
+│   │   │   │   ├── 📁 models/
+│   │   │   │   │   └── 📄 referralModel.js
 │   │   │   │   ├── 📁 pages/
 │   │   │   │   │   ├── 📄 MyReferralsPage.jsx
 │   │   │   │   │   ├── 📄 PrivacyPolicyPage.jsx
 │   │   │   │   │   ├── 📄 SettingsPage.jsx
 │   │   │   │   │   └── 📄 TermsPage.jsx
 │   │   │   │   └── 📁 services/
-│   │   │   │       └── 📄 referralService.js
+│   │   │   │       ├── 📄 contactService.js
+│   │   │   │       ├── 📄 referralService.js
+│   │   │   │       └── 📄 smsService.js
 │   │   │   ├── 📁 subscription/
 │   │   │   │   ├── 📁 css/
 │   │   │   │   │   └── 🎨 subscription.css
