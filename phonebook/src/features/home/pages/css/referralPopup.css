@@ -1,14 +1,15 @@
 /* =====================================================
-   REFERRAL POPUP
+   REFERRAL & INDEPENDENCE DAY POPUP (2-COLUMN MODAL)
 ===================================================== */
 
 .referral-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(4px);
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 9998;
-  animation: overlayFade 0.35s ease;
+  animation: overlayFade 0.3s ease;
 }
 
 .referral-popup {
@@ -16,152 +17,412 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 430px;
-  max-width: calc(100% - 40px);
-  background: #fff;
-  border-radius: 28px;
-  padding: 35px;
-  text-align: center;
+  width: 860px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 30px);
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 0;
   z-index: 9999;
   overflow: hidden;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
-  animation: popupShow 0.45s ease;
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.35), 0 0 25px rgba(255, 103, 31, 0.15);
+  animation: popupShow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-/* Decorative Background */
-
-.referral-popup::before {
-  content: "";
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: rgba(37, 99, 235, 0.06);
-  right: -80px;
-  top: -80px;
+/* Top Tricolor Bar */
+.popup-tricolor-bar {
+  display: flex;
+  width: 100%;
+  height: 5px;
+  flex-shrink: 0;
 }
 
-.referral-popup::after {
-  content: "";
-  position: absolute;
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  background: rgba(255, 140, 0, 0.08);
-  left: -70px;
-  bottom: -70px;
+.p-bar {
+  flex: 1;
+  height: 100%;
+}
+
+.p-bar.saffron {
+  background: linear-gradient(90deg, #FF671F, #FF9933);
+}
+
+.p-bar.white {
+  background: #FFFFFF;
+}
+
+.p-bar.green {
+  background: linear-gradient(90deg, #138808, #046A38);
 }
 
 /* Close Button */
-
 .referral-close {
   position: absolute;
-  right: 16px;
-  top: 16px;
-  width: 38px;
-  height: 38px;
+  right: 14px;
+  top: 14px;
+  width: 34px;
+  height: 34px;
   border: none;
   border-radius: 50%;
-  background: #f5f5f5;
+  background: #f1f5f9;
+  color: #475569;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.3s;
-  z-index: 2;
+  transition: all 0.25s ease;
+  z-index: 10;
 }
 
 .referral-close:hover {
-  background: #ef4444;
-  color: #fff;
-  transform: rotate(90deg);
+  background: #fee2e2;
+  color: #ef4444;
+  transform: rotate(90deg) scale(1.05);
 }
 
-/* Gift */
+/* 2-Column Grid */
+.referral-popup-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  flex: 1;
+  min-height: 0;
+}
 
-.popup-icon {
-  width: 90px;
-  height: 90px;
-  margin: 0 auto 25px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ff8c00, #ffb703);
+/* =====================================================
+   LEFT COLUMN: INDEPENDENCE & ARMED FORCES TRIBUTE
+===================================================== */
+.referral-col-left {
+  position: relative;
+  background: linear-gradient(145deg, #fff7ed 0%, #ffffff 50%, #f0fdf4 100%);
+  padding: 28px 24px 22px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid rgba(226, 232, 240, 0.9);
+  overflow: hidden;
+}
+
+/* Chakra Watermark */
+.chakra-watermark {
+  position: absolute;
+  right: -30px;
+  bottom: -30px;
+  width: 200px;
+  height: 200px;
+  opacity: 0.05;
+  pointer-events: none;
+  animation: slowSpin 60s linear infinite;
+}
+
+.chakra-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Badges */
+.col-badge {
+  display: inline-flex;
   align-items: center;
-  color: #fff;
-  animation: giftBounce 2s infinite;
-  position: relative;
-  z-index: 2;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  width: fit-content;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 12px;
 }
 
-/* Text */
+.left-badge {
+  background: #ffedd5;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
 
-.referral-popup h2 {
-  font-size: 34px;
+.right-badge {
+  background: #eff6ff;
   color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+/* Armed Forces Header */
+.armed-forces-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 10px;
-  position: relative;
-  z-index: 2;
 }
 
-.referral-popup h3 {
-  font-size: 22px;
-  color: #ff8c00;
-  margin-bottom: 22px;
-  position: relative;
-  z-index: 2;
+.armed-icon-wrap {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #FF671F, #c2410c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(194, 65, 12, 0.25);
+  flex-shrink: 0;
 }
 
-.referral-popup p {
-  color: #64748b;
-  line-height: 1.7;
+.armed-forces-title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #1e293b;
+  margin: 0;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Salute Box */
+.salute-box {
+  background: rgba(255, 255, 255, 0.85);
+  border-left: 4px solid #FF671F;
+  border-radius: 0 12px 12px 0;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.salute-lead {
+  font-size: 14px;
+  font-weight: 800;
+  color: #9a3412;
+  margin: 0 0 3px;
+  letter-spacing: -0.2px;
+}
+
+.salute-sub {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Wishes Box */
+.wishes-box {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 10px 14px;
   margin-bottom: 14px;
-  font-size: 16px;
+  text-align: center;
+}
+
+.wishes-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 8px;
+  line-height: 1.4;
+}
+
+.slogan-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #1e3a8a, #000088);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 136, 0.2);
+}
+
+/* Left Footer Brand */
+.left-footer-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+  margin-top: auto;
+}
+
+.brand-tagline {
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: -0.2px;
+}
+
+.btn-confetti-mini {
+  background: linear-gradient(135deg, #FF671F, #FF9933);
+  color: #fff;
+  border: none;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 5px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 6px rgba(255, 103, 31, 0.3);
+}
+
+.btn-confetti-mini:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 12px rgba(255, 103, 31, 0.45);
+}
+
+/* =====================================================
+   RIGHT COLUMN: REFERRAL CONTEST & EV SCOOTER
+===================================================== */
+.referral-col-right {
+  background: #ffffff;
+  padding: 28px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: relative;
-  z-index: 2;
 }
 
-.referral-popup strong {
-  color: #1d4ed8;
+.right-heading-group {
+  margin-bottom: 12px;
 }
 
-/* Button */
+.referral-main-title {
+  font-size: 21px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 4px;
+  line-height: 1.25;
+}
 
+.highlight-ev {
+  color: #FF671F;
+  display: inline-block;
+}
+
+.referral-subhead {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Contest Points List */
+.contest-points {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+
+.contest-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #f1f5f9;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.contest-item:hover {
+  transform: translateX(3px);
+  border-color: #cbd5e1;
+}
+
+.contest-item.highlight-item {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.c-icon-pill {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: #e2e8f0;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.c-icon-pill.gold {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
+}
+
+.c-icon-pill.scooter {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+}
+
+.c-text {
+  font-size: 12.5px;
+  color: #334155;
+  line-height: 1.35;
+}
+
+.c-text strong {
+  color: #0f172a;
+}
+
+.c-text span {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.chances-note {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #059669;
+  text-align: center;
+  margin: 0 0 12px;
+  background: #ecfdf5;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+/* Primary Refer Now Button */
 .popup-btn {
-  margin-top: 25px;
   width: 100%;
   border: none;
   cursor: pointer;
-  padding: 17px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #ff8c00, #ffb703);
-  color: #fff;
-  font-size: 17px;
-  font-weight: 700;
+  padding: 13px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #FF671F 0%, #FF9933 100%);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  transition: 0.3s;
-  position: relative;
-  z-index: 2;
+  gap: 8px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 6px 18px rgba(255, 103, 31, 0.35);
 }
 
 .popup-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 35px rgba(255, 140, 0, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(255, 103, 31, 0.45);
+}
+
+.popup-btn:active {
+  transform: translateY(0);
 }
 
 /* =====================================================
    ANIMATIONS
 ===================================================== */
-
 @keyframes popupShow {
   from {
     opacity: 0;
-    transform: translate(-50%, calc(-50% + 50px)) scale(0.92);
+    transform: translate(-50%, -46%) scale(0.94);
   }
-
   to {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
@@ -169,166 +430,109 @@
 }
 
 @keyframes overlayFade {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-@keyframes giftBounce {
-  0% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-8px);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes mobilePopup {
-  from {
-    opacity: 0;
-    transform: translateY(80px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes slowSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* =====================================================
-   TABLET
+   RESPONSIVE DESIGN (TABLETS & PHONES)
 ===================================================== */
-
 @media (max-width: 768px) {
-
-  .referral-overlay {
-    display: none;
-  }
-
   .referral-popup {
-    left: auto;
-    top: auto;
-    right: 16px;
-    bottom: 20px;
-    transform: none;
-
-    width: min(290px, calc(100vw - 32px));
-
-    padding: 22px;
-
+    width: 95vw;
+    max-height: 92vh;
     border-radius: 20px;
-
-    text-align: left;
-
-    animation: mobilePopup .4s ease;
   }
 
-  .referral-popup::before,
-  .referral-popup::after {
-    opacity: .35;
+  .referral-popup-grid {
+    grid-template-columns: 1fr;
+    max-height: calc(92vh - 5px);
+    overflow-y: auto; /* Fallback only for ultra-small heights */
   }
 
-  .referral-close {
-    width: 32px;
-    height: 32px;
-    right: 12px;
-    top: 12px;
+  .referral-col-left {
+    padding: 20px 18px 16px;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
   }
 
-  .popup-icon {
-    width: 65px;
-    height: 65px;
-    margin: 0 0 16px;
+  .referral-col-right {
+    padding: 18px 18px 18px;
   }
 
-  .popup-icon svg {
-    width: 30px;
-    height: 30px;
+  .armed-forces-title {
+    font-size: 17px;
   }
 
-  .referral-popup h2 {
-    font-size: 24px;
-    margin-bottom: 6px;
-  }
-
-  .referral-popup h3 {
-    font-size: 16px;
-    margin-bottom: 14px;
-    line-height: 1.4;
-  }
-
-  .referral-popup p {
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 10px;
-  }
-
-  .popup-btn {
-    margin-top: 16px;
-    padding: 14px;
-    font-size: 15px;
-  }
-}
-
-/* =====================================================
-   SMALL PHONES
-===================================================== */
-
-@media (max-width: 480px) {
-
-  .referral-popup {
-    right: 12px;
-    bottom: 16px;
-
-    width: min(250px, calc(100vw - 24px));
-
-    padding: 18px;
-
-    border-radius: 18px;
-  }
-
-  .popup-icon {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: -6px;
-    left: 35%;
-    width: 56px;
-    height: 56px;
-    margin-bottom: 14px;
-  }
-
-  .popup-icon svg {
-    width: 26px;
-    height: 26px;
-  }
-
-  .referral-popup h2 {
-    font-size: 21px;
-  }
-
-  .referral-popup h3 {
-    font-size: 15px;
-  }
-
-  .referral-popup p {
-    font-size: 13px;
+  .salute-box {
+    padding: 8px 12px;
     margin-bottom: 8px;
   }
 
+  .salute-lead {
+    font-size: 13px;
+  }
+
+  .salute-sub {
+    font-size: 12.5px;
+  }
+
+  .wishes-box {
+    padding: 8px 12px;
+    margin-bottom: 10px;
+  }
+
+  .wishes-text {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .slogan-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+
+  .referral-main-title {
+    font-size: 18px;
+  }
+
+  .contest-points {
+    gap: 7px;
+    margin-bottom: 10px;
+  }
+
+  .contest-item {
+    padding: 7px 10px;
+  }
+
   .popup-btn {
-    margin-top: 14px;
-    padding: 12px;
+    padding: 11px 16px;
     font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .referral-popup {
+    width: calc(100vw - 20px);
+    max-height: 94vh;
+  }
+
+  .col-badge {
+    font-size: 10px;
+    padding: 3px 9px;
+    margin-bottom: 8px;
+  }
+
+  .armed-forces-title {
+    font-size: 15px;
+  }
+
+  .brand-tagline {
+    font-size: 11px;
   }
 }

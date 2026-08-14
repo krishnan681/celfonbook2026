@@ -18,14 +18,15 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SearchFooter from "./SearchFooter";
+import IndependenceCelebration from "../common/IndependenceCelebration";
 
 export default function MainLayout() {
-
   const location = useLocation();
   const isSearchPage = location.pathname === "/search";
 
   return (
     <>
+      <IndependenceCelebration />
       <Navbar />
 
       <main>
@@ -36,4 +37,4 @@ export default function MainLayout() {
       {isSearchPage ? <SearchFooter /> : <Footer />}
     </>
   );
-}
+}

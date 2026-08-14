@@ -1,0 +1,168 @@
+/* =====================================================
+   INDIAN FLAG CELEBRATION & TOPBAR
+===================================================== */
+
+/* 1. Indian Flag Top Accent Stripe */
+.indian-flag-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4.5px;
+  display: flex;
+  z-index: 10001;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+}
+
+.flag-stripe {
+  flex: 1;
+  height: 100%;
+}
+
+.flag-stripe.saffron {
+  background: linear-gradient(90deg, #FF671F, #FF9933);
+}
+
+.flag-stripe.white {
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.flag-stripe.white .mini-chakra {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #000088;
+}
+
+.flag-stripe.green {
+  background: linear-gradient(90deg, #138808, #046A38);
+}
+
+/* 2. Floating Festive Badge */
+.independence-floating-badge {
+  position: fixed;
+  bottom: 22px;
+  left: 22px;
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 8px 14px 8px 10px;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(255, 153, 51, 0.2);
+  border: 1.5px solid transparent;
+  background-image: linear-gradient(white, white),
+    linear-gradient(135deg, #FF9933 0%, #000088 50%, #138808 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  cursor: pointer;
+  user-select: none;
+  animation: floatIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.independence-floating-badge:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.18), 0 0 15px rgba(255, 153, 51, 0.35);
+}
+
+.badge-flag-icon {
+  font-size: 22px;
+  line-height: 1;
+  animation: flagWiggle 2.5s ease-in-out infinite;
+}
+
+.badge-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.badge-title {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #1e293b;
+  letter-spacing: -0.2px;
+  line-height: 1.2;
+}
+
+.badge-sub {
+  font-size: 11px;
+  font-weight: 600;
+  color: #FF671F;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.sparkle-icon {
+  color: #FF9933;
+  animation: sparkleSpin 2s linear infinite;
+}
+
+.badge-close-btn {
+  background: #f1f5f9;
+  border: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+  margin-left: 2px;
+  transition: all 0.2s;
+}
+
+.badge-close-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes flagWiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+@keyframes sparkleSpin {
+  0% { transform: rotate(0deg) scale(0.9); }
+  50% { transform: rotate(180deg) scale(1.15); }
+  100% { transform: rotate(360deg) scale(0.9); }
+}
+
+@media (max-width: 640px) {
+  .independence-floating-badge {
+    bottom: 14px;
+    left: 14px;
+    padding: 6px 12px 6px 8px;
+  }
+  .badge-flag-icon {
+    font-size: 18px;
+  }
+  .badge-title {
+    font-size: 11.5px;
+  }
+  .badge-sub {
+    font-size: 10px;
+  }
+}
