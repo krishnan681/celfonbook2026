@@ -158,6 +158,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useHomeController } from "../controller/useHomeController";
+import lionsClubLogo from "../../../assets/images/Clubs/Lions_Clubs_International_logo.jpg";
 import "../pages/css/DirectorySection.css";
 
 const DirectorySection = () => {
@@ -197,7 +198,9 @@ const DirectorySection = () => {
         </div>
 
         {/* Expos Section */}
-        <h2 className="section-title text-center mt-5 mb-5">Expos &amp; Events</h2>
+        <h2 className="section-title text-center mt-5 mb-5">
+          Expos &amp; Events
+        </h2>
 
         <div className="row g-4 justify-content-center">
           {expos.length > 0 ? (
@@ -272,6 +275,42 @@ const DirectorySection = () => {
                 <p>No popular firms available.</p>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Associations and Clubs */}
+        <div className="mt-5">
+          <h2 className="section-title text-center mb-5">
+            Associations and Clubs
+          </h2>
+
+          <div className="row g-4">
+            <div className="col-lg-4 col-md-6 col-sm-6">
+              <div
+                className="club-card clickable-card"
+                onClick={() => navigate("/lions-club")}
+              >
+                <div className="club-logo-wrapper">
+                  <img
+                    src={lionsClubLogo}
+                    alt="Lions Club"
+                    className="club-logo"
+                  />
+                </div>
+
+                <div className="club-info">
+                  <span className="club-badge">International Club</span>
+                  <h4 className="club-name">Lions Club</h4>
+                  <p className="club-description">
+                    Search Lion members, keys &amp; explore affiliated district
+                    directories.
+                  </p>
+                  <span className="club-view-link">
+                    Explore Directory &rarr;
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

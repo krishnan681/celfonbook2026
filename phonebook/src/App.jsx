@@ -43,6 +43,11 @@ import OtpVerificationPage from "./features/auth/Pages/OtpVerificationPage";
 
 import CategorywiseLayout from "./features/promotions/categorywise/pages/CategorywiseLayout";
 
+import LionsDistrictsPage from "./features/clubs/pages/LionsDistrictsPage";
+import LionsDistrictClubsPage from "./features/clubs/pages/LionsDistrictClubsPage";
+import LionsClubDetailPage from "./features/clubs/pages/LionsClubDetailPage";
+import LionsMemberDetailPage from "./features/clubs/pages/LionsMemberDetailPage";
+
 import MyReferralsPage from "./features/settings/pages/MyReferralsPage";
 
 import { useRealtimeLogout } from "./core/hooks/useRealtimeLogout";
@@ -73,6 +78,88 @@ function App() {
           <Route path="favorites" element={<FavoritesPage />} />
           <Route path="partner" element={<PartnerPage />} />
           <Route path="revenue-tracker" element={<RevenueTrackerPage />} />
+
+          {/* Clubs & Associations (Protected for Signed-In Users Only) */}
+          <Route
+            path="lions-club"
+            element={
+              <ProtectedRoute>
+                <LionsDistrictsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="clubs/lions"
+            element={
+              <ProtectedRoute>
+                <LionsDistrictsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="lions-club/:districtId"
+            element={
+              <ProtectedRoute>
+                <LionsDistrictClubsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="clubs/lions/:districtId"
+            element={
+              <ProtectedRoute>
+                <LionsDistrictClubsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="lions-club/:districtId/:clubId"
+            element={
+              <ProtectedRoute>
+                <LionsClubDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="clubs/lions/:districtId/:clubId"
+            element={
+              <ProtectedRoute>
+                <LionsClubDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="lions-club/member/:memberId"
+            element={
+              <ProtectedRoute>
+                <LionsMemberDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="clubs/lions/member/:memberId"
+            element={
+              <ProtectedRoute>
+                <LionsMemberDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="lions-club/:districtId/:clubId/member/:memberId"
+            element={
+              <ProtectedRoute>
+                <LionsMemberDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="clubs/lions/:districtId/:clubId/member/:memberId"
+            element={
+              <ProtectedRoute>
+                <LionsMemberDetailPage />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Static */}
           <Route path="about" element={<About />} />

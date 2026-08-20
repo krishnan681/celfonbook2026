@@ -1,0 +1,1552 @@
+/* ====================== LionsClubPage.css ====================== */
+
+:root {
+  --lions-navy: #002d62;
+  --lions-navy-dark: #001a3a;
+  --lions-navy-light: #0d4a8d;
+  --lions-green-header: #8cb8a3;
+  --lions-green-dark: #005a36;
+  --lions-green-tint: #eaf4ef;
+  --lions-gold: #f2a900;
+  --lions-gold-hover: #d99600;
+  --lions-gold-soft: rgba(242, 169, 0, 0.12);
+  --lions-bg: #f3f6f8;
+  --text-dark: #111827;
+  --text-muted: #64748b;
+  --card-border: #cbd5e1;
+  --card-shadow: 0 10px 25px -5px rgba(0, 45, 98, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+}
+
+.lions-page-container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #edf2f7 0%, #f8fafc 100%);
+  padding: 30px 16px 80px;
+}
+
+.lions-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Breadcrumb & Navigation */
+.lions-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.lions-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: var(--lions-navy);
+  border: 1px solid var(--card-border);
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  text-decoration: none;
+}
+
+.lions-back-btn:hover {
+  background: var(--lions-navy);
+  color: white;
+  border-color: var(--lions-navy);
+  transform: translateX(-3px);
+  box-shadow: 0 4px 14px rgba(0, 45, 98, 0.2);
+}
+
+.lions-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.breadcrumb-item {
+  cursor: pointer;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+
+.breadcrumb-item:hover {
+  color: var(--lions-navy);
+  text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+  color: var(--lions-navy);
+  font-weight: 700;
+  cursor: default;
+  text-decoration: none;
+}
+
+.breadcrumb-separator {
+  color: #cbd5e1;
+}
+
+/* Hero Header */
+.lions-hero {
+  background: linear-gradient(135deg, var(--lions-navy-dark) 0%, var(--lions-navy) 60%, var(--lions-navy-light) 100%);
+  border-radius: 24px;
+  padding: 36px 32px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 45, 98, 0.22);
+  margin-bottom: 30px;
+}
+
+.lions-hero::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(242, 169, 0, 0.25) 0%, rgba(242, 169, 0, 0) 70%);
+  pointer-events: none;
+}
+
+.lions-hero-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.lions-hero-logo {
+  width: 95px;
+  height: 95px;
+  border-radius: 20px;
+  background: white;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+  border: 3px solid var(--lions-gold);
+}
+
+.lions-hero-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.lions-hero-text h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.lions-hero-text .badge-motto {
+  background: var(--lions-gold);
+  color: var(--lions-navy-dark);
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.lions-hero-text p {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.96rem;
+  max-width: 700px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Search Container */
+.lions-search-card {
+  background: white;
+  border-radius: 20px;
+  padding: 26px 30px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  margin-bottom: 32px;
+}
+
+.lions-search-header {
+  margin-bottom: 18px;
+}
+
+.lions-search-header h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lions-search-header p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.lions-search-inputs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 18px;
+  align-items: flex-end;
+}
+
+.lions-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lions-input-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lions-input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lions-input-icon {
+  position: absolute;
+  left: 16px;
+  color: #94a3b8;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.lions-input-field {
+  width: 100%;
+  height: 48px;
+  padding: 10px 16px 10px 46px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  background: #f8fafc;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.lions-input-field:focus {
+  background: white;
+  border-color: var(--lions-navy);
+  box-shadow: 0 0 0 3px rgba(0, 45, 98, 0.12);
+}
+
+.lions-search-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.lions-btn-search {
+  height: 48px;
+  padding: 0 24px;
+  background: linear-gradient(135deg, var(--lions-navy) 0%, var(--lions-navy-light) 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 45, 98, 0.2);
+}
+
+.lions-btn-search:hover {
+  background: linear-gradient(135deg, var(--lions-navy-dark) 0%, var(--lions-navy) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 45, 98, 0.3);
+}
+
+.lions-btn-reset {
+  height: 48px;
+  padding: 0 16px;
+  background: #f1f5f9;
+  color: var(--text-muted);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.lions-btn-reset:hover {
+  background: #e2e8f0;
+  color: var(--text-dark);
+}
+
+/* Global Search Results Area */
+.lions-search-results-section {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  border: 2px solid #e0e7ff;
+  box-shadow: 0 12px 30px rgba(0, 45, 98, 0.08);
+  margin-bottom: 32px;
+}
+
+.search-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.search-results-header h3 {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--lions-navy);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-clear-search {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-clear-search:hover {
+  background: #e2e8f0;
+  color: var(--text-dark);
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.officer-result-card,
+.member-result-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.officer-result-card:hover,
+.member-result-card:hover {
+  border-color: var(--lions-navy);
+  background: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 45, 98, 0.08);
+}
+
+.result-role-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--lions-gold-soft);
+  color: #9a6b00;
+  margin-bottom: 8px;
+}
+
+.result-role-tag.member-tag {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.result-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+}
+
+.result-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.result-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.quick-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.quick-btn.phone {
+  background: rgba(0, 45, 98, 0.08);
+  color: var(--lions-navy);
+}
+
+.quick-btn.phone:hover {
+  background: var(--lions-navy);
+  color: white;
+}
+
+.quick-btn.whatsapp {
+  background: rgba(22, 163, 74, 0.1);
+  color: #16a34a;
+}
+
+.quick-btn.whatsapp:hover {
+  background: #16a34a;
+  color: white;
+}
+
+.empty-search-state {
+  text-align: center;
+  padding: 30px 10px;
+  color: var(--text-dark);
+}
+
+/* Section 1: Districts Cards */
+.lions-districts-section {
+  margin-bottom: 36px;
+}
+
+.districts-section-header {
+  margin-bottom: 18px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.districts-section-header h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0 0 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.districts-count-badge {
+  background: var(--lions-gold-soft);
+  color: #9a6b00;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(242, 169, 0, 0.3);
+}
+
+.districts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.district-box-card {
+  background: white;
+  border-radius: 20px;
+  padding: 22px 20px;
+  border: 2px solid transparent;
+  box-shadow: var(--card-shadow);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.district-box-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--lions-navy), var(--lions-gold));
+  opacity: 0.8;
+}
+
+.district-box-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--lions-gold);
+  box-shadow: 0 16px 30px -10px rgba(0, 45, 98, 0.18);
+}
+
+.district-box-card.active {
+  border-color: var(--lions-navy);
+  background: #fcfdff;
+  box-shadow: 0 0 0 3px rgba(0, 45, 98, 0.15), var(--card-shadow);
+}
+
+.district-box-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.district-badge-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--lions-gold-soft);
+  color: var(--lions-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  border: 1px solid rgba(242, 169, 0, 0.3);
+}
+
+.district-status-tag {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: var(--text-muted);
+}
+
+.district-box-card.active .district-status-tag {
+  background: rgba(0, 45, 98, 0.1);
+  color: var(--lions-navy);
+  font-weight: 700;
+}
+
+.district-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--lions-navy);
+  margin-bottom: 4px;
+}
+
+.district-desc {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.district-governor-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 14px;
+}
+
+.district-meta-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+  border-top: 1px dashed #e2e8f0;
+  border-bottom: 1px dashed #e2e8f0;
+  margin-bottom: 14px;
+}
+
+.district-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.district-meta-item .meta-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.district-meta-item .meta-value {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.district-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.district-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--lions-navy);
+}
+
+/* Section 2: Towns Grid */
+.lions-towns-section {
+  background: white;
+  border-radius: 22px;
+  padding: 28px 24px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 36px;
+}
+
+.towns-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-supertitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+  color: var(--lions-gold-hover);
+  margin-bottom: 4px;
+}
+
+.towns-section-header h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--lions-navy);
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.clubs-count-indicator {
+  background: rgba(0, 45, 98, 0.08);
+  color: var(--lions-navy);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 10px;
+}
+
+.towns-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.town-card {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.town-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--lions-green-dark);
+  background: white;
+  box-shadow: 0 14px 28px rgba(0, 90, 54, 0.1);
+}
+
+.town-card.active {
+  border-color: var(--lions-green-dark);
+  background: var(--lions-green-tint);
+  box-shadow: 0 0 0 3px rgba(0, 90, 54, 0.2);
+}
+
+.town-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.town-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(0, 45, 98, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.town-card:hover .town-card-icon {
+  background: var(--lions-green-dark);
+  color: white;
+}
+
+.town-card:hover .town-card-icon svg {
+  color: white !important;
+}
+
+.town-card-id-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  color: var(--text-muted);
+}
+
+.town-card-name {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--lions-navy);
+  margin-bottom: 6px;
+  line-height: 1.35;
+  min-height: 44px;
+}
+
+.town-card-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.town-card-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 0;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 12px;
+  font-size: 0.78rem;
+  color: var(--text-dark);
+}
+
+.town-president-preview {
+  background: rgba(242, 169, 0, 0.1);
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-bottom: 14px;
+}
+
+.president-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #9a6b00;
+  text-transform: uppercase;
+}
+
+.president-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.town-card-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  color: var(--lions-green-dark);
+  font-weight: 700;
+  font-size: 0.84rem;
+}
+
+/* ========================================================
+   SECTION 3: DIRECTORY BOOK STYLING (MATCHING PRINTED REF)
+   ======================================================== */
+
+.club-details-container {
+  margin-top: 10px;
+}
+
+/* Authentic Directory Book Header Banner */
+.club-directory-book-header {
+  background: linear-gradient(180deg, #cde3d8 0%, #b8d9cb 100%);
+  border: 2px solid #005a36;
+  border-radius: 20px 20px 0 0;
+  padding: 24px 28px 16px;
+  box-shadow: 0 10px 25px rgba(0, 90, 54, 0.12);
+  margin-bottom: 24px;
+}
+
+.book-header-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 14px;
+}
+
+.book-logo-side {
+  width: 65px;
+  height: 65px;
+  background: white;
+  border-radius: 50%;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #005a36;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.book-lions-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.book-title-center {
+  text-align: center;
+  flex: 1;
+}
+
+.book-club-name {
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: #005a36;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+  text-transform: capitalize;
+}
+
+.book-year-badge {
+  display: inline-block;
+  background: #005a36;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 4px 16px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+.book-emblem-side {
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.club-circle-badge {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f2a900 0%, #d99600 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  border: 2px solid #005a36;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-officers-banner-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  font-size: 0.88rem;
+  color: #004d2e;
+}
+
+.officer-zone-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.zone-lbl {
+  font-weight: 800;
+  color: #005a36;
+}
+
+.zone-val {
+  font-weight: 700;
+}
+
+.book-meta-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+  color: #004d2e;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(0, 90, 54, 0.4);
+}
+
+.strip-divider {
+  color: rgba(0, 90, 54, 0.3);
+}
+
+/* Leadership and Members Section */
+.club-leadership-section {
+  margin-bottom: 36px;
+}
+
+.leadership-section-header,
+.members-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.section-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #005a36;
+  margin: 0 0 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.officers-count-badge {
+  background: #eaf4ef;
+  color: #005a36;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 10px;
+  border: 1px solid #b8d9cb;
+}
+
+/* Directory Cards Grid */
+.directory-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+/* Individual Directory Card (Styled like Directory Booklet) */
+.dir-card {
+  background: #fdfefe;
+  border: 2px solid #005a36;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6px 16px rgba(0, 90, 54, 0.08);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.dir-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 90, 54, 0.15);
+  border-color: #003a22;
+}
+
+/* Card Header Role Title Bar */
+.dir-card-header-bar {
+  background: #005a36;
+  color: white;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.dir-card-role-title {
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+/* Priority Card Header Variants */
+.dir-card.priority-president .dir-card-header-bar {
+  background: #004d2e;
+}
+.dir-card.priority-dignitary .dir-card-header-bar {
+  background: #14532d;
+}
+.dir-card.priority-member .dir-card-header-bar {
+  background: #1e3a29;
+}
+
+/* Card Body */
+.dir-card-body {
+  padding: 16px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.dir-photo-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.dir-photo-frame {
+  width: 90px;
+  height: 95px;
+  border: 2px solid #005a36;
+  border-radius: 12px;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.dir-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1e3a29 0%, #005a36 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.dir-member-name {
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-align: center;
+  margin-bottom: 6px;
+  line-height: 1.25;
+}
+
+.dir-member-address {
+  font-size: 0.78rem;
+  color: #475569;
+  text-align: center;
+  margin-bottom: 12px;
+  line-height: 1.35;
+  min-height: 42px;
+}
+
+/* Contact & ID Row */
+.dir-contact-id-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  color: #1e293b;
+  padding: 8px 6px;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 8px;
+  background: #f8fafc;
+  border-radius: 6px;
+}
+
+.dir-meta-left,
+.dir-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.meta-icon {
+  color: #005a36;
+}
+
+/* Dates Row (Birthday & Anniversary) */
+.dir-dates-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #005a36;
+  padding: 4px 6px 2px;
+  margin-bottom: 8px;
+}
+
+.dir-date-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Card Actions */
+.dir-card-actions {
+  display: flex;
+  gap: 6px;
+  padding: 0 12px 12px;
+  margin-top: auto;
+}
+
+.dir-action-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 6px;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.dir-action-btn.call {
+  background: rgba(0, 90, 54, 0.1);
+  color: #005a36;
+}
+
+.dir-action-btn.call:hover {
+  background: #005a36;
+  color: white;
+}
+
+.dir-action-btn.whatsapp {
+  background: rgba(22, 163, 74, 0.12);
+  color: #16a34a;
+}
+
+.dir-action-btn.whatsapp:hover {
+  background: #16a34a;
+  color: white;
+}
+
+.dir-action-btn.info {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.dir-action-btn.info:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* Members Directory Container */
+.club-members-section {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  border: 2px solid #005a36;
+  box-shadow: 0 10px 25px rgba(0, 90, 54, 0.08);
+  margin-bottom: 40px;
+}
+
+.member-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 360px;
+}
+
+.member-search-icon {
+  position: absolute;
+  left: 14px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.member-search-box input {
+  width: 100%;
+  height: 40px;
+  padding: 8px 36px 8px 40px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  background: #f8fafc;
+  outline: none;
+}
+
+.member-search-box input:focus {
+  background: white;
+  border-color: #005a36;
+  box-shadow: 0 0 0 3px rgba(0, 90, 54, 0.12);
+}
+
+.clear-member-filter {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.empty-members-box {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-muted);
+}
+
+/* Directory Bottom Book Footer */
+.directory-book-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding: 12px 18px;
+  background: #005a36;
+  color: white;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.footer-motto-eng {
+  letter-spacing: 0.5px;
+}
+
+.footer-page-no {
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 10px;
+  border-radius: 6px;
+}
+
+.footer-motto-tam {
+  font-family: inherit;
+  letter-spacing: 0.5px;
+}
+
+/* Modal Styling */
+.lions-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 30, 20, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.lions-modal-card {
+  background: white;
+  width: 100%;
+  max-width: 520px;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  position: relative;
+  border: 2px solid #005a36;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.modal-header-banner {
+  background: linear-gradient(135deg, #005a36 0%, #003a22 100%);
+  color: white;
+  padding: 28px 20px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.modal-avatar-wrapper {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: white;
+  border: 3px solid var(--lions-gold);
+}
+
+.modal-role-badge {
+  display: inline-block;
+  background: var(--lions-gold);
+  color: #003a22;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 3px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.modal-person-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.modal-role-full {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 6px;
+}
+
+.modal-key-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+}
+
+.modal-body-content {
+  padding: 22px;
+}
+
+.modal-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.modal-info-item.full-width {
+  grid-column: span 2;
+}
+
+.modal-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #f8fafc;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.info-lbl {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.info-val {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  word-break: break-word;
+}
+
+.modal-actions-footer {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-btn-call {
+  flex: 1;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #005a36;
+  color: white;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+
+.modal-btn-call:hover {
+  background: #003a22;
+}
+
+.modal-btn-whatsapp {
+  flex: 1;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #16a34a;
+  color: white;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+
+.modal-btn-whatsapp:hover {
+  background: #15803d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .directory-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .directory-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lions-search-inputs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lions-search-actions {
+    grid-column: 1;
+    width: 100%;
+  }
+
+  .lions-btn-search {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .book-header-top-row {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .book-officers-banner-grid {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .officer-zone-item.text-right {
+    text-align: center;
+  }
+
+  .book-meta-strip {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+
+  .strip-divider {
+    display: none;
+  }
+
+  .modal-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-info-item.full-width {
+    grid-column: 1;
+  }
+
+  .directory-book-footer {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}

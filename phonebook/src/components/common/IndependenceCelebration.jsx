@@ -35,7 +35,7 @@ export default function IndependenceCelebration() {
         <div className="independence-floating-badge" role="region" aria-label="Independence Day Celebration">
           <div className="badge-flag-icon">🇮🇳</div>
           <div className="badge-text" onClick={handleCelebrateClick}>
-            <span className="badge-title">79th Independence Day</span>
+            <span className="badge-title">80th Independence Day</span>
             <span className="badge-sub">
               Tap to Celebrate <Sparkles size={13} className="sparkle-icon" />
             </span>

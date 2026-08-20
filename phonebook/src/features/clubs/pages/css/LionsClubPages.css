@@ -1,0 +1,634 @@
+/* src/features/clubs/pages/css/LionsClubPages.css */
+
+.lions-pages-container {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 24px 16px 80px;
+  box-sizing: border-box;
+}
+
+.lions-pages-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Nav Bar & Breadcrumbs */
+.lions-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.lions-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: #005a36;
+  border: 1px solid #cbd5e1;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.lions-back-btn:hover {
+  background: #005a36;
+  color: white;
+  border-color: #005a36;
+  transform: translateX(-3px);
+}
+
+.lions-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.85rem;
+  color: #64748b;
+  flex-wrap: wrap;
+}
+
+.breadcrumb-link {
+  color: #64748b;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.breadcrumb-link:hover {
+  color: #005a36;
+  text-decoration: underline;
+}
+
+.breadcrumb-current {
+  color: #005a36;
+  font-weight: 700;
+}
+
+.breadcrumb-separator {
+  color: #cbd5e1;
+}
+
+/* Hero Header */
+.lions-hero-header {
+  background: linear-gradient(135deg, #002d62 0%, #004d2e 100%);
+  border-radius: 16px;
+  padding: 28px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  box-shadow: 0 10px 25px rgba(0, 45, 98, 0.12);
+  margin-bottom: 24px;
+}
+
+.lions-hero-logo-box {
+  width: 85px;
+  height: 85px;
+  background: white;
+  border-radius: 14px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 3px solid #f2a900;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.lions-hero-logo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.lions-hero-info h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 0 0 6px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.badge-motto {
+  background: #f2a900;
+  color: #002d62;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 14px;
+  text-transform: uppercase;
+}
+
+.lions-hero-info p {
+  margin: 0;
+  font-size: 0.94rem;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 650px;
+  line-height: 1.45;
+}
+
+/* Search Card */
+.lions-search-card {
+  background: white;
+  border-radius: 14px;
+  padding: 20px 22px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 28px;
+}
+
+.lions-search-header h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lions-search-header p {
+  color: #64748b;
+  font-size: 0.88rem;
+  margin: 0 0 14px;
+}
+
+.lions-search-inputs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 14px;
+  align-items: flex-end;
+}
+
+.lions-input-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.lions-input-field {
+  width: 100%;
+  height: 42px;
+  padding: 8px 12px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  background: #f8fafc;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.lions-input-field:focus {
+  border-color: #16a34a;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+}
+
+.lions-search-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.lions-btn-search {
+  height: 42px;
+  padding: 0 18px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.lions-btn-search:hover {
+  background: #15803d;
+}
+
+.lions-btn-reset {
+  height: 42px;
+  padding: 0 14px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Search results box */
+.lions-search-results-box {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  border: 2px solid #16a34a;
+  margin-bottom: 28px;
+}
+
+.search-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.search-results-header h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #005a36;
+  font-weight: 700;
+}
+
+.btn-close-search {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+/* Section Header */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.section-head h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #005a36;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.count-pill {
+  background: #eaf4ef;
+  color: #005a36;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 12px;
+  border: 1px solid #bbf7d0;
+}
+
+/* Unified Responsive Cards Grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+/* District Card & Town Profile Card */
+.district-card,
+.town-profile-card {
+  position: relative;
+  background: white;
+  border: 1.5px solid #16a34a;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 250px;
+  box-sizing: border-box;
+}
+
+.district-card:hover,
+.town-profile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(22, 163, 74, 0.16);
+  border-color: #15803d;
+}
+
+.district-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.district-tag {
+  background: #005a36;
+  color: white;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.status-pill {
+  font-size: 0.74rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.district-card .name,
+.town-profile-card .name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 6px;
+  line-height: 1.35;
+}
+
+.district-card .type-location,
+.town-profile-card .type-location {
+  font-size: 0.85rem;
+  color: #64748b;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0 0 10px;
+}
+
+.district-card .type-location svg,
+.town-profile-card .type-location svg {
+  color: #16a34a;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.district-card .card-info,
+.town-profile-card .card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.86rem;
+  color: #334155;
+  margin-bottom: 14px;
+  flex-grow: 1;
+}
+
+.district-card .card-actions,
+.town-profile-card .card-actions {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.district-card .card-actions .btn,
+.town-profile-card .card-actions .btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #10b981;
+  color: white;
+  transition: background 0.15s ease;
+  box-sizing: border-box;
+}
+
+.district-card .card-actions .btn:hover,
+.town-profile-card .card-actions .btn:hover {
+  background: #059669;
+}
+
+/* District Header Banner */
+.district-banner-card {
+  background: linear-gradient(135deg, #005a36 0%, #16a34a 100%);
+  color: white;
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 20px rgba(0, 90, 54, 0.12);
+}
+
+.district-banner-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.district-tag-pill {
+  background: #f2a900;
+  color: #002d62;
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 12px;
+  text-transform: uppercase;
+}
+
+.district-clubs-count {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.district-banner-card h2 {
+  font-size: 1.55rem;
+  font-weight: 800;
+  margin: 0 0 6px;
+}
+
+.district-desc {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.district-meta-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.9);
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  flex-wrap: wrap;
+}
+
+.meta-sep {
+  opacity: 0.6;
+}
+
+/* Club Detail Header Banner */
+.club-detail-banner-card {
+  background: linear-gradient(135deg, #002d62 0%, #005a36 100%);
+  color: white;
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 26px;
+  box-shadow: 0 8px 20px rgba(0, 45, 98, 0.12);
+}
+
+.club-banner-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.club-district-tag {
+  background: #f2a900;
+  color: #002d62;
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.club-milestone-tag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.club-detail-banner-card h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 0 0 6px;
+}
+
+.club-address {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 14px;
+}
+
+.club-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.club-meta-grid .meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.club-meta-grid .lbl {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.club-meta-grid .val {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* Sections */
+.club-leadership-section {
+  margin-bottom: 34px;
+}
+
+.club-members-section {
+  margin-bottom: 40px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lions-search-inputs-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .lions-search-actions {
+    grid-column: span 2;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 680px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lions-search-inputs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lions-search-actions {
+    grid-column: 1;
+    width: 100%;
+  }
+
+  .lions-btn-search {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .lions-hero-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px 16px;
+  }
+
+  .lions-hero-info h1 {
+    font-size: 1.45rem;
+    justify-content: center;
+  }
+
+  .club-detail-banner-card h2 {
+    font-size: 1.35rem;
+  }
+
+  .district-banner-card h2 {
+    font-size: 1.35rem;
+  }
+
+  .club-meta-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

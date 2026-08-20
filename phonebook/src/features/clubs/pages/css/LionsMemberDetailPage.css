@@ -1,0 +1,436 @@
+/* src/features/clubs/pages/css/LionsMemberDetailPage.css */
+
+.pd-lions-page {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 24px 16px 80px;
+  box-sizing: border-box;
+}
+
+.pd-container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+/* Nav Bar & Breadcrumbs */
+.pd-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pd-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.85rem;
+  color: #64748b;
+  flex-wrap: wrap;
+}
+
+/* Hero Header Card */
+.pd-hero-card {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  border: 1.5px solid #16a34a;
+  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.08);
+  margin-bottom: 28px;
+}
+
+.pd-hero-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 28px;
+  align-items: center;
+}
+
+/* Left Emblem / Avatar Box */
+.pd-hero-emblem-box {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #002d62 0%, #005a36 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #f2a900;
+  box-shadow: 0 8px 20px rgba(0, 45, 98, 0.15);
+  flex-shrink: 0;
+}
+
+.pd-emblem-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.pd-emblem-letter {
+  font-size: 2.8rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.pd-emblem-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #f2a900;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Middle Main Info */
+.pd-hero-main-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pd-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+
+.pd-prime-badge {
+  background: #16a34a;
+  color: white;
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+}
+
+.pd-post-badge {
+  background: #002d62;
+  color: #f2a900;
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.pd-district-pill {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.pd-hero-name {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.verified-check {
+  color: #16a34a;
+}
+
+.pd-business-subtitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #005a36;
+  margin: 0;
+}
+
+.pd-keywords-line,
+.pd-location-line,
+.pd-club-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: #475569;
+  margin: 0;
+}
+
+.pd-keywords-line svg,
+.pd-location-line svg,
+.pd-club-tag svg {
+  color: #16a34a;
+  flex-shrink: 0;
+}
+
+/* Right Actions Box */
+.pd-hero-actions-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 170px;
+}
+
+.pd-cta-btn {
+  width: 100%;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pd-cta-btn.call {
+  background: #10b981;
+  color: white;
+}
+
+.pd-cta-btn.call:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+.pd-cta-btn.whatsapp {
+  background: #2563eb;
+  color: white;
+}
+
+.pd-cta-btn.whatsapp:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+.pd-cta-btn.share {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+.pd-cta-btn.share:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* Tabs */
+.pd-tabs-container {
+  margin-bottom: 36px;
+}
+
+.pd-tabs-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 6px;
+  overflow-x: auto;
+}
+
+.pd-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.pd-tab-btn:hover {
+  color: #005a36;
+  background: #f1f5f9;
+}
+
+.pd-tab-btn.active {
+  color: white;
+  background: #005a36;
+}
+
+.pd-tab-content-card {
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.pane-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 18px;
+}
+
+/* Info Grid */
+.pd-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.pd-info-card {
+  background: #f8fafc;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pd-info-card.full-col {
+  grid-column: span 2;
+}
+
+.pd-info-card .info-lbl {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.pd-info-card .info-val {
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+.contact-link {
+  color: #16a34a;
+  text-decoration: none;
+}
+
+.contact-link:hover {
+  text-decoration: underline;
+}
+
+/* Business Box & Address Box */
+.pd-business-box,
+.pd-address-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.business-main-badge,
+.address-icon-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #f0fdf4;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #bbf7d0;
+}
+
+.business-main-badge h4,
+.address-icon-row h4 {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #166534;
+}
+
+.business-main-badge p,
+.address-icon-row p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.map-action-row {
+  margin-top: 6px;
+}
+
+.pd-map-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #16a34a;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.pd-map-btn:hover {
+  background: #15803d;
+}
+
+/* Related Section */
+.pd-related-section {
+  margin-top: 36px;
+}
+
+/* Responsive */
+@media (max-width: 880px) {
+  .pd-hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 18px;
+  }
+
+  .pd-hero-emblem-box {
+    margin: 0 auto;
+  }
+
+  .pd-badge-row,
+  .pd-hero-name,
+  .pd-keywords-line,
+  .pd-location-line,
+  .pd-club-tag {
+    justify-content: center;
+  }
+
+  .pd-hero-actions-box {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .pd-hero-actions-box .pd-cta-btn {
+    flex: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .pd-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pd-info-card.full-col {
+    grid-column: span 1;
+  }
+
+  .pd-hero-actions-box {
+    flex-direction: column;
+  }
+
+  .pd-hero-name {
+    font-size: 1.45rem;
+  }
+}

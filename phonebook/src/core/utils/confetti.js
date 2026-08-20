@@ -3,6 +3,7 @@ import confetti from "canvas-confetti";
 /**
  * Fires celebration confetti in Indian Flag tricolor colors:
  * Saffron (#FF9933, #FF671F), White (#FFFFFF), Green (#138808, #046A38), and Ashoka Blue (#000088)
+ * zIndex is set to 1000000 to ensure confetti always displays ON TOP of all modals and overlays.
  */
 export const fireIndependenceConfetti = (options = {}) => {
   const tricolorPalette = [
@@ -15,17 +16,20 @@ export const fireIndependenceConfetti = (options = {}) => {
     "#000088", // Ashoka Navy Blue
   ];
 
+  const zIndex = options.zIndex || 1000000;
+
   // 1. Center burst
   confetti({
-    particleCount: options.particleCount || 70,
+    particleCount: options.particleCount || 75,
     spread: options.spread || 80,
     origin: options.origin || { y: 0.6 },
     colors: tricolorPalette,
     disableForReducedMotion: true,
     shapes: ["square", "circle"],
-    ticks: 200,
+    ticks: 220,
     gravity: 0.9,
     scalar: 1.1,
+    zIndex,
   });
 
   // 2. Dual cannon blast (left & right)
@@ -40,6 +44,7 @@ export const fireIndependenceConfetti = (options = {}) => {
       origin: { x: 0, y: 0.7 },
       colors: tricolorPalette,
       gravity: 0.85,
+      zIndex,
     });
     confetti({
       particleCount: 3,
@@ -48,6 +53,7 @@ export const fireIndependenceConfetti = (options = {}) => {
       origin: { x: 1, y: 0.7 },
       colors: tricolorPalette,
       gravity: 0.85,
+      zIndex,
     });
 
     if (Date.now() < animationEnd) {
@@ -60,10 +66,12 @@ export const fireIndependenceConfetti = (options = {}) => {
 
 export const fireGrandFireworks = () => {
   const tricolorPalette = ["#FF9933", "#FFFFFF", "#138808", "#000088"];
-  const count = 200;
+  const count = 220;
+  const zIndex = 1000000;
   const defaults = {
     origin: { y: 0.7 },
     colors: tricolorPalette,
+    zIndex,
   };
 
   function fire(particleRatio, opts) {
@@ -71,6 +79,7 @@ export const fireGrandFireworks = () => {
       ...defaults,
       ...opts,
       particleCount: Math.floor(count * particleRatio),
+      zIndex,
     });
   }
 
