@@ -297,18 +297,6 @@ const DirectorySection = () => {
                     className="club-logo"
                   />
                 </div>
-
-                <div className="club-info">
-                  <span className="club-badge">International Club</span>
-                  <h4 className="club-name">Lions Club</h4>
-                  <p className="club-description">
-                    Search Lion members, keys &amp; explore affiliated district
-                    directories.
-                  </p>
-                  <span className="club-view-link">
-                    Explore Directory &rarr;
-                  </span>
-                </div>
               </div>
             </div>
           </div>

@@ -5,6 +5,7 @@ import {
   Globe, Mail, MessageCircle, ShieldCheck, Hash, 
   Layout, CheckCircle2, Navigation
 } from "lucide-react";
+import { maskPhoneNumber, maskEmail } from "../../../core/utils/maskHelper";
 import "../css/reverseFinder.css";
 
 export default function ReverseNumberFinder() {
@@ -102,7 +103,7 @@ export default function ReverseNumberFinder() {
                         <Phone size={16} />
                         <div>
                           <label>Primary Mobile</label>
-                          <p>{item.mobile_number}</p>
+                          <p>{maskPhoneNumber(item.mobile_number)}</p>
                         </div>
                       </div>
                       {item.whats_app && (
@@ -110,7 +111,7 @@ export default function ReverseNumberFinder() {
                           <MessageCircle size={16} color="#25D366" />
                           <div>
                             <label>WhatsApp Link</label>
-                            <p>{item.whats_app}</p>
+                            <p>{maskPhoneNumber(item.whats_app)}</p>
                           </div>
                         </div>
                       )}
@@ -128,7 +129,7 @@ export default function ReverseNumberFinder() {
                           <Mail size={16} />
                           <div>
                             <label>Official Email</label>
-                            <p>{item.email}</p>
+                            <p>{maskEmail(item.email)}</p>
                           </div>
                         </div>
                       )}

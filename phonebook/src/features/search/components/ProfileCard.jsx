@@ -245,6 +245,7 @@ import { LeadService } from "../Service/leadService";
 
 import DiscountModal from "./DiscountModal";
 import { DiscountService } from "../Service/discountService";
+import { maskPhoneNumber } from "../../../core/utils/maskHelper";
 
 const ProfileCard = ({ profile, isKeywordFocused }) => {
   const navigate = useNavigate();
@@ -265,10 +266,7 @@ const ProfileCard = ({ profile, isKeywordFocused }) => {
   const city = profile.city || "Not specified";
   const keywords = profile.keywords?.trim() || "";
 
-  const mobile =
-    profile.mobile_number && profile.mobile_number.length >= 5
-      ? profile.mobile_number.slice(0, 5) + "xxxxx"
-      : "96857xxxxx";
+  const mobile = maskPhoneNumber(profile.mobile_number || "96857xxxxx");
 
   /* ---------------- BORDER TYPE ---------------- */
  

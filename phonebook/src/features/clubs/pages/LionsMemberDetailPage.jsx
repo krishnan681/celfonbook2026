@@ -1,72 +1,139 @@
 // src/features/clubs/pages/LionsMemberDetailPage.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { ArrowLeft, ChevronRight, Loader2 } from "lucide-react";
 import {
-  ArrowLeft,
-  Phone,
-  MessageSquare,
-  MapPin,
-  Mail,
-  User,
-  Cake,
-  Gem,
-  Briefcase,
-  Award,
-  Heart,
-  Share2,
-  CheckCircle2,
-  Calendar,
-  Building2,
-  ShieldCheck,
-  ChevronRight,
-  ExternalLink,
-} from "lucide-react";
-import { ALL_LIONS_MEMBERS, DISTRICT_DATA } from "../data/lionsData";
-import LionsProfileCard from "../components/LionsProfileCard";
-import "./css/LionsMemberDetailPage.css";
+  FaHeart,
+  FaRegHeart,
+  FaPhoneAlt,
+  FaWhatsapp,
+  FaGlobe,
+  FaEnvelope,
+  FaShareAlt,
+} from "react-icons/fa";
+import { MdVerified, MdLocationOn, MdBusiness } from "react-icons/md";
+import { formatWebsiteUrl } from "../../../core/utils/urlFormatter";
+import { maskPhoneNumber, maskEmail } from "../../../core/utils/maskHelper";
+import { getLionsMemberById, getClubMembers } from "../services/lionsClubService";
+import FavoriteModal from "../../search/components/FavoriteModal";
+import DetailedProfileTabs from "../../DetailedProfile/components/DetailedProfileTabs";
+import DetailedProfileMap from "../../DetailedProfile/components/DetailedProfileMap";
+import DetailedProfileProducts from "../../DetailedProfile/components/DetailedProfileProducts";
+import "../../DetailedProfile/css/ProfileDetailPage.css";
+import "../../DetailedProfile/css/DetailedProfileHeader.css";
+import "../../DetailedProfile/css/DetailedProfileAbout.css";
+import "../../DetailedProfile/css/DetailedRelatedProfiles.css";
+import "./css/LionsClubPages.css";
 
-const LionsMemberDetailPage = () => {
+export default function LionsMemberDetailPage() {
   const { memberId } = useParams();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("about");
 
-  const member = ALL_LIONS_MEMBERS.find((m) => m.id === memberId) || ALL_LIONS_MEMBERS[0];
+  const [member, setMember] = useState(null);
+  const [relatedMembers, setRelatedMembers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("about");
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [showFavoriteModal, setShowFavoriteModal] = useState(false);
+  const [imageOrientation, setImageOrientation] = useState("landscape");
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadMemberData() {
+      setIsLoading(true);
+      try {
+        const data = await getLionsMemberById(memberId);
+        if (isMounted) {
+          setMember(data);
+          if (data && data.club) {
+            const clubMems = await getClubMembers(data.districtId, data.club);
+            if (isMounted) {
+              setRelatedMembers(
+                (clubMems || [])
+                  .filter((m) => m.id !== data.id)
+                  .slice(0, 4)
+              );
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error loading member profile:", err);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    }
+
+    if (memberId) {
+      loadMemberData();
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [memberId]);
+
+  if (isLoading) {
+    return (
+      <div className="pd-page">
+        <div style={{ textAlign: "center", padding: "100px 20px", color: "#64748b" }}>
+          <Loader2 size={36} className="animate-spin" style={{ margin: "0 auto 16px" }} />
+          <p>Loading Profile...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!member) {
     return (
-      <div className="pd-lions-page">
-        <div className="pd-container">
-          <p>Member not found.</p>
-          <button type="button" className="lions-back-btn" onClick={() => navigate("/lions-club")}>
-            Back to Lions Directory
+      <div className="pd-page">
+        <div className="pd-container" style={{ textAlign: "center", padding: "60px 20px" }}>
+          <h2>Member Profile Not Found</h2>
+          <p style={{ color: "#64748b", margin: "12px 0 24px" }}>
+            The requested member record is not available in the directory.
+          </p>
+          <button
+            type="button"
+            className="lions-back-btn"
+            onClick={() => navigate("/lions-club")}
+          >
+            <ArrowLeft size={18} />
+            <span>Back to Lions Directory</span>
           </button>
         </div>
       </div>
     );
   }
 
-  const relatedMembers = ALL_LIONS_MEMBERS.filter(
-    (m) => m.clubId === member.clubId && m.id !== member.id
-  ).slice(0, 4);
+  const displayName =
+    member.fullBusinessName ||
+    member.business_name ||
+    member.fullName ||
+    member.person_name ||
+    "Unnamed Member";
 
-  const handleCall = () => {
-    if (!member.mobile) return;
-    window.location.href = `tel:${member.mobile}`;
-  };
+  const fullAddress = [
+    member.address || member.bussiness_address,
+    member.city,
+    member.pincode,
+  ]
+    .filter(Boolean)
+    .join(", ");
 
-  const handleWhatsApp = () => {
-    if (!member.mobile) return;
-    const cleanPhone = member.mobile.replace(/[^0-9]/g, "");
-    window.open(`https://wa.me/91${cleanPhone}`, "_blank");
+  const whatsappLink = member.whats_app || member.mobile_number
+    ? `https://wa.me/91${(member.whats_app || member.mobile_number).replace(/[^0-9]/g, "")}`
+    : null;
+
+  const handleImageLoad = (e) => {
+    const { naturalWidth, naturalHeight } = e.target;
+    setImageOrientation(naturalHeight > naturalWidth ? "portrait" : "landscape");
   };
 
   const handleShare = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${member.fullName} - ${member.clubName}`,
-          text: `Contact details for ${member.fullName} (${member.postFull || member.post}) on Lions Directory`,
+          title: `${displayName} - ${member.clubName}`,
+          text: `Contact details for ${displayName} on Lions Directory`,
           url: window.location.href,
         });
       } catch (err) {
@@ -78,19 +145,21 @@ const LionsMemberDetailPage = () => {
     }
   };
 
+  const coverImage = member.cover_image || member.profile_image;
+
   return (
-    <div className="pd-lions-page">
+    <div className="pd-page">
       <Helmet>
-        <title>{member.fullName} | {member.clubName} | Celfonbook Directory</title>
+        <title>{displayName} | {member.clubName} | Celfonbook</title>
         <meta
           name="description"
-          content={`Profile of ${member.fullName}, ${member.postFull || member.post} of ${member.clubName}, District ${member.districtId}.`}
+          content={`Profile of ${displayName}, ${member.postFull || member.post_of_member || "Member"} of ${member.clubName}, District ${member.districtId}.`}
         />
       </Helmet>
 
-      <div className="pd-container">
-        {/* Navigation & Breadcrumbs */}
-        <div className="pd-nav-bar">
+      {/* Navigation Breadcrumb Bar */}
+      <div className="pd-container" style={{ paddingTop: "16px" }}>
+        <div className="lions-nav-bar" style={{ marginBottom: "16px" }}>
           <button
             type="button"
             className="lions-back-btn"
@@ -100,293 +169,400 @@ const LionsMemberDetailPage = () => {
             <span>Back</span>
           </button>
 
-          <div className="pd-breadcrumbs">
-            <Link to="/lions-club" className="breadcrumb-link">Districts</Link>
+          <div className="lions-breadcrumbs">
+            <Link to="/lions-club" className="breadcrumb-link">
+              Districts
+            </Link>
             <ChevronRight size={14} className="breadcrumb-separator" />
-            <Link to={`/lions-club/${member.districtId}`} className="breadcrumb-link">{member.districtId}</Link>
+            <Link to={`/lions-club/${member.districtId}`} className="breadcrumb-link">
+              District {member.districtId}
+            </Link>
             <ChevronRight size={14} className="breadcrumb-separator" />
-            <Link to={`/lions-club/${member.districtId}/${member.clubId}`} className="breadcrumb-link">{member.clubName.replace("Lions Club of ", "")}</Link>
+            <Link
+              to={`/lions-club/${member.districtId}/${encodeURIComponent(member.club)}`}
+              className="breadcrumb-link"
+            >
+              {member.clubName.replace(/^Lions Club of\s+/i, "")}
+            </Link>
             <ChevronRight size={14} className="breadcrumb-separator" />
-            <span className="breadcrumb-current">{member.name}</span>
+            <span className="breadcrumb-current">{member.person_name || member.name}</span>
           </div>
         </div>
+      </div>
 
-        {/* DetailedProfile Header Hero Section */}
-        <div className="pd-hero-card">
-          <div className="pd-hero-grid">
-            {/* Left Cover / Emblem */}
-            <div className="pd-hero-emblem-box">
-              <div className="pd-emblem-inner">
-                <span className="pd-emblem-letter">{member.name.charAt(0)}</span>
-                <span className="pd-emblem-tag">LIONS</span>
+      {/* DetailedProfileHeader Hero Section */}
+      <div className="pd-hero">
+        <div className="pd-container pd-hero-flex">
+          {/* Gallery / Image Box */}
+          <div className={`pd-gallery shadow-sm ${imageOrientation}`}>
+            {coverImage ? (
+              <img
+                src={coverImage}
+                alt="Profile Cover"
+                className="pd-main-img"
+                onLoad={handleImageLoad}
+              />
+            ) : (
+              <div className="pd-no-img">
+                <MdBusiness size={50} color="#16a34a" />
+                <p>{member.clubName || "Lions Club Member"}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Main Details */}
+          <div className="pd-main-details">
+            <div className="pd-top-row">
+              <div className="pd-header-info">
+                <div className="pd-badge-row">
+                  {member.post_of_member && (
+                    <span className="pd-prime-tag" style={{ background: "#005a36" }}>
+                      {member.postFull || member.post_of_member}
+                    </span>
+                  )}
+                  {member.is_prime && <span className="pd-prime-tag">PRIME</span>}
+                  <span
+                    className="pd-prime-tag"
+                    style={{ background: "#f1f5f9", color: "#475569", border: "1px solid #cbd5e1" }}
+                  >
+                    District {member.districtId}
+                  </span>
+                </div>
+
+                <h1 className="pd-title">
+                  {displayName}
+                  {(member.priority || member.verified) && (
+                    <MdVerified className="verified-icon" />
+                  )}
+                </h1>
+
+                {member.keywords && <p className="pd-keywords">{member.keywords}</p>}
+              </div>
+
+              {/* Action Buttons (Favorite & Share) */}
+              <div className="pd-action-group">
+                <button
+                  type="button"
+                  className="pd-circle-btn"
+                  onClick={handleShare}
+                  title="Share Profile"
+                >
+                  <FaShareAlt />
+                </button>
+
+                <button
+                  type="button"
+                  className={`pd-circle-btn ${isFavorite ? "active" : ""}`}
+                  onClick={() => setShowFavoriteModal(true)}
+                  title="Favorite"
+                >
+                  {isFavorite ? <FaHeart color="#ff4757" /> : <FaRegHeart />}
+                </button>
               </div>
             </div>
 
-            {/* Middle Main Info */}
-            <div className="pd-hero-main-info">
-              <div className="pd-badge-row">
-                <span className="pd-prime-badge">VERIFIED LION</span>
-                {member.post && (
-                  <span className="pd-post-badge">{member.postFull || member.post}</span>
-                )}
-                <span className="pd-district-pill">District {member.districtId}</span>
+            {/* Contact Strip */}
+            <div className="pd-contact-strip">
+              <div className="pd-loc">
+                <MdLocationOn /> {member.city || "Tamil Nadu"}
               </div>
+            </div>
 
-              <h1 className="pd-hero-name">
-                {member.fullName}
-                <CheckCircle2 size={22} className="verified-check" />
-              </h1>
-
-              {member.businessName && (
-                <h3 className="pd-business-subtitle">
-                  {member.fullBusinessName || member.businessName}
-                </h3>
+            {/* CTA Buttons */}
+            <div className="pd-cta-row">
+              {(member.mobile_number || member.phone) && (
+                <a
+                  href={`tel:${member.mobile_number || member.phone}`}
+                  className="pd-action-chip chip-call"
+                >
+                  <FaPhoneAlt /> <span>Call</span>
+                </a>
               )}
 
-              <p className="pd-keywords-line">
-                <Briefcase size={15} /> {member.keywords || member.profession}
-              </p>
+              {whatsappLink && (
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="pd-action-chip chip-whatsapp"
+                >
+                  <FaWhatsapp /> <span>WhatsApp</span>
+                </a>
+              )}
 
-              <p className="pd-location-line">
-                <MapPin size={15} /> {member.city}, Tamil Nadu - {member.pincode}
-              </p>
+              {member.email && (
+                <a
+                  href={`mailto:${member.email}`}
+                  className="pd-action-chip chip-email"
+                >
+                  <FaEnvelope /> <span>Email</span>
+                </a>
+              )}
 
-              <p className="pd-club-tag">
-                <Building2 size={15} /> {member.clubName}
-              </p>
-            </div>
-
-            {/* Right Action CTA Buttons */}
-            <div className="pd-hero-actions-box">
-              <button type="button" className="pd-cta-btn call" onClick={handleCall}>
-                <Phone size={18} />
-                <span>Call Now</span>
-              </button>
-
-              <button type="button" className="pd-cta-btn whatsapp" onClick={handleWhatsApp}>
-                <MessageSquare size={18} />
-                <span>WhatsApp</span>
-              </button>
-
-              <button type="button" className="pd-cta-btn share" onClick={handleShare}>
-                <Share2 size={18} />
-                <span>Share Profile</span>
-              </button>
+              {member.web_site && (
+                <a
+                  href={formatWebsiteUrl(member.web_site)}
+                  className="pd-action-chip chip-website"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaGlobe /> <span>Website</span>
+                </a>
+              )}
             </div>
           </div>
         </div>
-
-        {/* DetailedProfile Tabs Layout */}
-        <div className="pd-tabs-container">
-          <div className="pd-tabs-bar">
-            <button
-              type="button"
-              className={`pd-tab-btn ${activeTab === "about" ? "active" : ""}`}
-              onClick={() => setActiveTab("about")}
-            >
-              <User size={16} />
-              <span>About &amp; Member Info</span>
-            </button>
-
-            <button
-              type="button"
-              className={`pd-tab-btn ${activeTab === "business" ? "active" : ""}`}
-              onClick={() => setActiveTab("business")}
-            >
-              <Briefcase size={16} />
-              <span>Business Profile</span>
-            </button>
-
-            <button
-              type="button"
-              className={`pd-tab-btn ${activeTab === "location" ? "active" : ""}`}
-              onClick={() => setActiveTab("location")}
-            >
-              <MapPin size={16} />
-              <span>Location &amp; Address</span>
-            </button>
-          </div>
-
-          <div className="pd-tab-content-card">
-            {/* Tab 1: About & Member Info */}
-            {activeTab === "about" && (
-              <div className="pd-tab-pane">
-                <h3 className="pane-title">Personal &amp; Lionistic Information</h3>
-
-                <div className="pd-info-grid">
-                  <div className="pd-info-card">
-                    <span className="info-lbl">Full Name</span>
-                    <span className="info-val">{member.fullName}</span>
-                  </div>
-
-                  <div className="pd-info-card">
-                    <span className="info-lbl">Member Number</span>
-                    <span className="info-val">#{member.memberNo || "—"}</span>
-                  </div>
-
-                  <div className="pd-info-card">
-                    <span className="info-lbl">Lionistic Post / Protocol</span>
-                    <span className="info-val">{member.postFull || member.post || "Member"}</span>
-                  </div>
-
-                  <div className="pd-info-card">
-                    <span className="info-lbl">Lionistic Year</span>
-                    <span className="info-val">{member.year}</span>
-                  </div>
-
-                  <div className="pd-info-card">
-                    <span className="info-lbl">Mobile Contact</span>
-                    <span className="info-val">
-                      <a href={`tel:${member.mobile}`} className="contact-link">
-                        +91 {member.mobile}
-                      </a>
-                    </span>
-                  </div>
-
-                  <div className="pd-info-card">
-                    <span className="info-lbl">Email Address</span>
-                    <span className="info-val">
-                      {member.email ? (
-                        <a href={`mailto:${member.email}`} className="contact-link">
-                          {member.email}
-                        </a>
-                      ) : (
-                        "—"
-                      )}
-                    </span>
-                  </div>
-
-                  <div className="pd-info-card">
-                    <span className="info-lbl">Date of Birth (🎂)</span>
-                    <span className="info-val">{member.dob || "—"}</span>
-                  </div>
-
-                  <div className="pd-info-card">
-                    <span className="info-lbl">Wedding Anniversary (💍)</span>
-                    <span className="info-val">{member.dow || "—"}</span>
-                  </div>
-
-                  <div className="pd-info-card">
-                    <span className="info-lbl">Spouse Name</span>
-                    <span className="info-val">{member.spouse || "—"}</span>
-                  </div>
-
-                  <div className="pd-info-card">
-                    <span className="info-lbl">Blood Group</span>
-                    <span className="info-val">{member.bloodGroup || "—"}</span>
-                  </div>
-
-                  <div className="pd-info-card full-col">
-                    <span className="info-lbl">Club Affiliation</span>
-                    <span className="info-val">{member.clubName} (District {member.districtId})</span>
-                  </div>
-
-                  <div className="pd-info-card full-col">
-                    <span className="info-lbl">Registered Address</span>
-                    <span className="info-val">{member.address}</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Tab 2: Business Profile */}
-            {activeTab === "business" && (
-              <div className="pd-tab-pane">
-                <h3 className="pane-title">Business &amp; Professional Details</h3>
-
-                <div className="pd-business-box">
-                  <div className="business-main-badge">
-                    <Briefcase size={24} color="#16a34a" />
-                    <div>
-                      <h4>{member.fullBusinessName || member.businessName || "Commercial Practice"}</h4>
-                      <p>{member.profession || member.keywords}</p>
-                    </div>
-                  </div>
-
-                  <div className="pd-info-grid" style={{ marginTop: "18px" }}>
-                    <div className="pd-info-card">
-                      <span className="info-lbl">Industry / Keywords</span>
-                      <span className="info-val">{member.keywords || "—"}</span>
-                    </div>
-
-                    <div className="pd-info-card">
-                      <span className="info-lbl">Operating City</span>
-                      <span className="info-val">{member.city} - {member.pincode}</span>
-                    </div>
-
-                    <div className="pd-info-card">
-                      <span className="info-lbl">Business Contact</span>
-                      <span className="info-val">+91 {member.mobile}</span>
-                    </div>
-
-                    <div className="pd-info-card">
-                      <span className="info-lbl">Official Email</span>
-                      <span className="info-val">{member.email || "—"}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Tab 3: Location & Map */}
-            {activeTab === "location" && (
-              <div className="pd-tab-pane">
-                <h3 className="pane-title">Address &amp; Location Map</h3>
-
-                <div className="pd-address-box">
-                  <div className="address-icon-row">
-                    <MapPin size={22} color="#16a34a" />
-                    <div>
-                      <h4>{member.address}</h4>
-                      <p>{member.city}, Tamil Nadu, Pincode: {member.pincode}</p>
-                    </div>
-                  </div>
-
-                  <div className="map-action-row">
-                    <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                        `${member.address}, ${member.city}, Tamil Nadu ${member.pincode}`
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="pd-map-btn"
-                    >
-                      <ExternalLink size={16} />
-                      <span>Open in Google Maps</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Related Club Members Section */}
-        {relatedMembers.length > 0 && (
-          <div className="pd-related-section">
-            <div className="section-head">
-              <h3>
-                <Building2 size={22} color="#005a36" />
-                Other Members in {member.clubName}
-              </h3>
-              <span className="count-pill">Affiliated Lions</span>
-            </div>
-
-            <div className="cards-grid">
-              {relatedMembers.map((rel, idx) => (
-                <LionsProfileCard
-                  key={idx}
-                  person={rel}
-                  roleTitle={rel.postFull || rel.post || "Member"}
-                  isLeadership={rel.isLeadership}
-                />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Tabs & Main Body Layout */}
+      <div className="pd-container pd-main-layout">
+        <div className="pd-left-content">
+          <DetailedProfileTabs
+            activeTab={activeTab}
+            onChange={setActiveTab}
+            profile={member}
+          />
+
+          <div className="pd-tab-body">
+            {/* Tab: About */}
+            {activeTab === "about" && (
+              <div className="pd-about-section">
+                <h3>Business &amp; Personal Information</h3>
+
+                <div className="pd-details-grid">
+                  {member.description && (
+                    <div className="pd-detail-item" style={{ gridColumn: "1 / -1" }}>
+                      <div>
+                        <strong>Description:</strong>
+                        <p>{member.description}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.person_name && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Name:</strong>
+                        <p>{member.fullName || member.person_name}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.mobile_number && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Mobile Number:</strong>
+                        <p>{maskPhoneNumber(member.mobile_number)}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.whats_app && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>WhatsApp:</strong>
+                        <p>{maskPhoneNumber(member.whats_app)}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.email && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Email:</strong>
+                        <p>{maskEmail(member.email)}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {fullAddress && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Address:</strong>
+                        <p>{fullAddress}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.city && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>City:</strong>
+                        <p>{member.city}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.pincode && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Pincode:</strong>
+                        <p>{member.pincode}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.keywords && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Keywords:</strong>
+                        <p>{member.keywords}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.web_site && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Website:</strong>
+                        <p>
+                          <a
+                            href={formatWebsiteUrl(member.web_site)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Visit Website
+                          </a>
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Thin divider line */}
+                <hr style={{ border: 0, borderTop: "1px solid #e2e8f0", margin: "24px 0" }} />
+
+                <h3 style={{ marginBottom: "16px", color: "#005a36" }}>Lions Club Details</h3>
+
+                <div className="pd-details-grid">
+                  {member.post_of_member && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Post / Designation:</strong>
+                        <p>{member.postFull || member.post_of_member}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.member_num && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Member Number:</strong>
+                        <p>#{member.member_num}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.clubName && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Club Affiliation:</strong>
+                        <p>{member.clubName}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.districtId && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>District:</strong>
+                        <p>District {member.districtId}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {(member.DOB || member.dob) && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Date of Birth (🎂):</strong>
+                        <p>{member.DOB || member.dob}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {(member.DOW || member.dow) && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Wedding Anniversary (💍):</strong>
+                        <p>{member.DOW || member.dow}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.spouse && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Spouse Name:</strong>
+                        <p>{member.spouse}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.blood_group && (
+                    <div className="pd-detail-item">
+                      <div>
+                        <strong>Blood Group:</strong>
+                        <p>{member.blood_group}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Tab: Products (for prime members) */}
+            {member.is_prime && activeTab === "products" && (
+              <DetailedProfileProducts priorityProducts={[]} />
+            )}
+
+            {/* Tab: Map */}
+            {activeTab === "map" && (
+              <DetailedProfileMap
+                address={member.address || member.bussiness_address}
+                city={member.city}
+                pincode={member.pincode}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Related Members Section */}
+      {relatedMembers.length > 0 && (
+        <div className="pd-container pd-related-section">
+          <h3>Other Members in {member.clubName}</h3>
+
+          <div className="pd-related-grid">
+            {relatedMembers.map((rel) => (
+              <div
+                key={rel.id}
+                className="pd-related-card"
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  navigate(`/lions-club/member/${rel.id}`);
+                }}
+              >
+                <h4>{rel.business_name || rel.fullName || rel.person_name || "Unnamed Lion"}</h4>
+                <p className="pd-rel-loc">
+                  <MdLocationOn size={14} />
+                  {rel.city || "Tamil Nadu"}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Favorite Modal */}
+      <FavoriteModal
+        show={showFavoriteModal}
+        onClose={() => setShowFavoriteModal(false)}
+        onSave={() => {
+          setIsFavorite(true);
+          setShowFavoriteModal(false);
+        }}
+        selectedItem={member}
+      />
     </div>
   );
-};
-
-export default LionsMemberDetailPage;
+}

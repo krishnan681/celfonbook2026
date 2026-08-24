@@ -83,26 +83,13 @@
 //   );
 // }
 
-// features/DetailedProfile/components/DetailedProfileAbout.jsx
-
-
 import { MdLocationOn } from "react-icons/md";
 import { FaPhoneAlt, FaGlobe } from "react-icons/fa";
 import "../css/DetailedProfileAbout.css";
-
 import { formatWebsiteUrl } from "../../../core/utils/urlFormatter";
+import { maskPhoneNumber, maskEmail } from "../../../core/utils/maskHelper";
 
 export default function DetailedProfileAbout({ profile }) {
-  const maskPhoneNumber = (num) => {
-    if (!num) return "";
-
-    const str = num.toString().trim();
-
-    if (str.length <= 5) return str;
-
-    return str.slice(0, 5) + "x".repeat(str.length - 5);
-  };
-
   const fullAddress = [profile?.address].filter(Boolean).join(", ");
 
   return (
@@ -118,7 +105,6 @@ export default function DetailedProfileAbout({ profile }) {
             </div>
           </div>
         )}
-        
 
         {/* Name */}
         {profile?.person_name && (
@@ -133,7 +119,6 @@ export default function DetailedProfileAbout({ profile }) {
         {/* Mobile */}
         {profile?.mobile_number && (
           <div className="pd-detail-item">
-            {/* <FaPhoneAlt className="pd-icon" /> */}
             <div>
               <strong>Mobile Number:</strong>
               <p>{maskPhoneNumber(profile.mobile_number)}</p>
@@ -146,7 +131,7 @@ export default function DetailedProfileAbout({ profile }) {
           <div className="pd-detail-item">
             <div>
               <strong>WhatsApp:</strong>
-              <p>{profile.whats_app}</p>
+              <p>{maskPhoneNumber(profile.whats_app)}</p>
             </div>
           </div>
         )}
@@ -156,7 +141,7 @@ export default function DetailedProfileAbout({ profile }) {
           <div className="pd-detail-item">
             <div>
               <strong>Email:</strong>
-              <p>{profile.email}</p>
+              <p>{maskEmail(profile.email)}</p>
             </div>
           </div>
         )}

@@ -1,52 +1,73 @@
 // src/features/clubs/pages/LionsDistrictsPage.jsx
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Search, User, Key, ArrowLeft, RotateCcw, Building2, ChevronRight, Award, Users } from "lucide-react";
-import lionsLogo from "../../../assets/images/Clubs/Lions_Clubs_International_logo.jpg";
-import { DISTRICT_DATA, ALL_LIONS_MEMBERS } from "../data/lionsData";
+import {
+  Search,
+  User,
+  Key,
+  ArrowLeft,
+  RotateCcw,
+  Building2,
+  Loader2,
+} from "lucide-react";
+import { getDistricts, searchLionsMembers } from "../services/lionsClubService";
 import LionsProfileCard from "../components/LionsProfileCard";
 import "./css/LionsClubPages.css";
 
 const LionsDistrictsPage = () => {
   const navigate = useNavigate();
+  const [districts, setDistricts] = useState([{ id: "3424C", name: "District 3424C" }]);
+  const [isLoadingDistricts, setIsLoadingDistricts] = useState(true);
+
   const [lionsName, setLionsName] = useState("");
   const [lionsKey, setLionsKey] = useState("");
-  const [hasSearched, setHasSearched] = useState(false);
+  const [searchResults, setSearchResults] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isKeywordFocused, setIsKeywordFocused] = useState(false);
 
-  const handleSearch = (e) => {
+  useEffect(() => {
+    let isMounted = true;
+    async function loadDistricts() {
+      setIsLoadingDistricts(true);
+      try {
+        const data = await getDistricts();
+        if (isMounted && data && data.length > 0) {
+          setDistricts(data);
+        }
+      } catch (err) {
+        console.error("Error loading districts:", err);
+      } finally {
+        if (isMounted) setIsLoadingDistricts(false);
+      }
+    }
+    loadDistricts();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleSearch = async (e) => {
     if (e) e.preventDefault();
-    setHasSearched(true);
+    if (!lionsName.trim() && !lionsKey.trim()) return;
+
+    setIsSearching(true);
+    try {
+      const results = await searchLionsMembers(lionsName, lionsKey);
+      setSearchResults(results);
+    } catch (err) {
+      console.error("Search failed:", err);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   const handleReset = () => {
     setLionsName("");
     setLionsKey("");
-    setHasSearched(false);
+    setSearchResults(null);
   };
-
-  const globalSearchResults = useMemo(() => {
-    if (!hasSearched && !lionsName && !lionsKey) return null;
-    const nameQuery = lionsName.trim().toLowerCase();
-    const keyQuery = lionsKey.trim().toLowerCase();
-
-    if (!nameQuery && !keyQuery) return null;
-
-    return ALL_LIONS_MEMBERS.filter((mem) => {
-      const matchName =
-        !nameQuery ||
-        (mem.name && mem.name.toLowerCase().includes(nameQuery)) ||
-        (mem.fullName && mem.fullName.toLowerCase().includes(nameQuery)) ||
-        (mem.businessName && mem.businessName.toLowerCase().includes(nameQuery));
-
-      const matchKey =
-        !keyQuery ||
-        (mem.memberNo && mem.memberNo.toLowerCase().includes(keyQuery)) ||
-        (mem.mobile && mem.mobile.includes(keyQuery));
-
-      return matchName && matchKey;
-    });
-  }, [hasSearched, lionsName, lionsKey]);
 
   return (
     <div className="lions-pages-container">
@@ -57,53 +78,31 @@ const LionsDistrictsPage = () => {
       <div className="lions-pages-wrapper">
         {/* Navigation */}
         <div className="lions-nav-bar">
-          <button type="button" className="lions-back-btn" onClick={() => navigate(-1)}>
+          <button
+            type="button"
+            className="lions-back-btn"
+            onClick={() => navigate("/")}
+          >
             <ArrowLeft size={18} />
             <span>Back to Home</span>
           </button>
         </div>
 
-        {/* Hero Section */}
-        <div className="lions-hero-header">
-          <div className="lions-hero-logo-box">
-            <img src={lionsLogo} alt="Lions Clubs International" />
-          </div>
-          <div className="lions-hero-info">
-            <h1>
-              Lions Clubs International
-              <span className="badge-motto">We Serve</span>
-            </h1>
-            <p>
-              Official Lions District Registry. Search for Lion leaders, member numbers, and explore chartered district clubs.
-            </p>
-          </div>
-        </div>
-
         {/* Member Search Box */}
         <div className="lions-search-card">
-          <div className="lions-search-header">
-            <h2>
-              <Search size={22} color="#005a36" />
-              Member &amp; Officer Search
-            </h2>
-            <p>
-              Enter the Lion Name, Business, or Member Number to search across all clubs.
-            </p>
-          </div>
-
           <form onSubmit={handleSearch}>
             <div className="lions-search-inputs-grid">
               <div className="lions-input-group">
                 <label htmlFor="lions-name-input">
                   <User size={16} />
-                  Lions Name / Business
+                  Business / Person Name
                 </label>
                 <div className="lions-input-box">
                   <input
                     id="lions-name-input"
                     type="text"
                     className="lions-input-field"
-                    placeholder="e.g. Mani, Muthukumar, Srinivasa Fire"
+                    placeholder="Search by Name or Business"
                     value={lionsName}
                     onChange={(e) => setLionsName(e.target.value)}
                   />
@@ -113,26 +112,32 @@ const LionsDistrictsPage = () => {
               <div className="lions-input-group">
                 <label htmlFor="lions-key-input">
                   <Key size={16} />
-                  Member No. / Mobile
+                  Member No / Mobile / Keyword
                 </label>
                 <div className="lions-input-box">
                   <input
                     id="lions-key-input"
                     type="text"
                     className="lions-input-field"
-                    placeholder="e.g. 5993702, 9442146076"
+                    placeholder="Search by Member No, Mobile..."
                     value={lionsKey}
+                    onFocus={() => setIsKeywordFocused(true)}
+                    onBlur={() => setIsKeywordFocused(false)}
                     onChange={(e) => setLionsKey(e.target.value)}
                   />
                 </div>
               </div>
 
               <div className="lions-search-actions">
-                <button type="submit" className="lions-btn-search">
-                  <Search size={18} />
-                  <span>Search</span>
+                <button type="submit" className="lions-btn-search" disabled={isSearching}>
+                  {isSearching ? (
+                    <Loader2 size={18} className="animate-spin" />
+                  ) : (
+                    <Search size={18} />
+                  )}
+                  <span>{isSearching ? "Searching..." : "Search"}</span>
                 </button>
-                {(lionsName || lionsKey || hasSearched) && (
+                {(lionsName || lionsKey || searchResults) && (
                   <button
                     type="button"
                     className="lions-btn-reset"
@@ -148,10 +153,10 @@ const LionsDistrictsPage = () => {
         </div>
 
         {/* Global Search Results */}
-        {globalSearchResults && (
+        {searchResults !== null && (
           <div className="lions-search-results-box">
             <div className="search-results-header">
-              <h3>Search Results ({globalSearchResults.length})</h3>
+              <h3>Search Results ({searchResults.length})</h3>
               <button
                 type="button"
                 className="btn-close-search"
@@ -161,18 +166,19 @@ const LionsDistrictsPage = () => {
               </button>
             </div>
 
-            {globalSearchResults.length === 0 ? (
+            {searchResults.length === 0 ? (
               <p className="no-results-msg">
-                No matching Lions members found. Try searching with a different name or number.
+                No matching Lions members found in the directory.
               </p>
             ) : (
               <div className="cards-grid">
-                {globalSearchResults.map((person) => (
+                {searchResults.map((person) => (
                   <LionsProfileCard
                     key={person.id}
                     person={person}
-                    roleTitle={person.postFull || person.post || "Member"}
+                    roleTitle={person.postFull || person.post_of_member || "Member"}
                     isLeadership={person.isLeadership}
+                    isKeywordFocused={isKeywordFocused}
                   />
                 ))}
               </div>
@@ -187,52 +193,43 @@ const LionsDistrictsPage = () => {
               <Building2 size={24} color="#005a36" />
               Lions Multiple Districts
             </h3>
-            <span className="count-pill">{DISTRICT_DATA.length} Active Districts</span>
+            {!isLoadingDistricts && (
+              <span className="count-pill">
+                {districts.length} {districts.length === 1 ? "District" : "Districts"}
+              </span>
+            )}
           </div>
 
-          <div className="cards-grid">
-            {DISTRICT_DATA.map((dist) => (
-              <div
-                key={dist.id}
-                className="district-card"
-                onClick={() => navigate(`/lions-club/${dist.id}`)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    navigate(`/lions-club/${dist.id}`);
-                  }
-                }}
-              >
-                <div className="district-badge-row">
-                  <span className="district-tag">{dist.tag}</span>
-                  <span className="status-pill">{dist.clubsCount}</span>
+          {isLoadingDistricts ? (
+            <div style={{ textAlign: "center", padding: "40px", color: "#64748b" }}>
+              <Loader2 size={28} className="animate-spin" style={{ margin: "0 auto 10px" }} />
+              <p>Loading districts from directory...</p>
+            </div>
+          ) : (
+            <div className="cards-grid">
+              {districts.map((dist) => (
+                <div
+                  key={dist.id}
+                  className="district-card"
+                  onClick={() => navigate(`/lions-club/${dist.id}`)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      navigate(`/lions-club/${dist.id}`);
+                    }
+                  }}
+                >
+                  <h3 className="name">{dist.name}</h3>
+                  {dist.totalClubs !== undefined && dist.totalClubs > 0 && (
+                    <p style={{ margin: "6px 0 0", fontSize: "0.85rem", color: "#64748b" }}>
+                      {dist.totalClubs} {dist.totalClubs === 1 ? "Club" : "Clubs"} • {dist.totalMembers} Lions
+                    </p>
+                  )}
                 </div>
-
-                <h3 className="name">{dist.name}</h3>
-                <p className="type-location">
-                  <Building2 size={14} /> {dist.region}
-                </p>
-
-                <div className="card-info">
-                  <p className="district-lead">
-                    <Award size={14} /> Governor: <strong>{dist.governor}</strong>
-                  </p>
-                  <p className="district-strength">
-                    <Users size={14} /> Strength: <strong>{dist.membersCount}</strong>
-                  </p>
-                  <p className="district-desc">{dist.description}</p>
-                </div>
-
-                <div className="card-actions">
-                  <button type="button" className="btn call">
-                    <span>View District Clubs</span>
-                    <ChevronRight size={18} />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

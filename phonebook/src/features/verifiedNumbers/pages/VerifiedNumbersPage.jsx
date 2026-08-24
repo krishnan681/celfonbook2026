@@ -6,6 +6,7 @@ import {
   ShieldCheck, ChevronRight,
   PhoneCall
 } from "lucide-react";
+import { maskPhoneNumber, maskEmail } from "../../../core/utils/maskHelper";
 
 export default function VerifiedNumbersPage() {
 
@@ -201,7 +202,7 @@ export default function VerifiedNumbersPage() {
                       {getName(profile)}
                     </div>
                     <div className="vnp-item-sub">
-                      {profile.mobile_number}
+                      {maskPhoneNumber(profile.mobile_number)}
                     </div>
                   </div>
 
@@ -226,12 +227,12 @@ export default function VerifiedNumbersPage() {
 
                     <div className="vnp-info-box">
                       <label><PhoneCall size={14} /> Mobile</label>
-                      <p>{selectedProfile.mobile_number || "-"}</p>
+                      <p>{maskPhoneNumber(selectedProfile.mobile_number) || "-"}</p>
                     </div>
 
                     <div className="vnp-info-box">
                       <label>Email</label>
-                      <p>{selectedProfile.email || "-"}</p>
+                      <p>{maskEmail(selectedProfile.email) || "-"}</p>
                     </div>
 
                     <div className="vnp-info-box">
