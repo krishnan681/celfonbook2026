@@ -632,3 +632,84 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* Filter Tabs Bar (DC, RC, ZC, etc.) */
+.district-filter-tabs-container {
+  margin-bottom: 24px;
+}
+
+.district-filter-tabs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 10px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.district-filter-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.district-filter-tabs::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.filter-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  background: white;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 30px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.filter-tab-btn:hover {
+  border-color: #16a34a;
+  color: #005a36;
+  background: #f0fdf4;
+  transform: translateY(-1px);
+}
+
+.filter-tab-btn.active {
+  background: linear-gradient(135deg, #005a36 0%, #16a34a 100%);
+  color: white;
+  border-color: #005a36;
+  box-shadow: 0 4px 12px rgba(0, 90, 54, 0.22);
+}
+
+.filter-tab-btn.active .filter-tab-count {
+  background: #f2a900;
+  color: #002d62;
+  font-weight: 800;
+}
+
+.filter-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  min-width: 18px;
+  transition: all 0.2s ease;
+}
+
+.filter-tab-btn:hover .filter-tab-count {
+  background: #dcfce7;
+  color: #16a34a;
+}
+

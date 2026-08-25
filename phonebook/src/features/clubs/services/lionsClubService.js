@@ -159,6 +159,44 @@ export async function getDistricts() {
 }
 
 /**
+ * Fetch all distinct clubs and normalized members for a given district in a single query
+ */
+export async function getDistrictData(districtId) {
+  try {
+    let cleanDist = (districtId || "").trim();
+    let query = supabase.from("profiles").select("*");
+
+    if (cleanDist) {
+      const distNoSpace = cleanDist.replace(/\s+/g, "");
+      query = query.or(
+        `district.eq.${cleanDist},district.ilike.%${cleanDist}%,district.ilike.%${distNoSpace}%`
+      );
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+
+    let rawData = data || [];
+    if (rawData.length === 0) {
+      const { data: fallbackData } = await supabase
+        .from("profiles")
+        .select("*")
+        .ilike("assn", "%Lions%");
+
+      rawData = fallbackData || [];
+    }
+
+    const clubs = groupProfilesIntoClubs(rawData, cleanDist);
+    const members = rawData.map((row) => normalizeLionsMember(row, cleanDist));
+
+    return { clubs, members };
+  } catch (err) {
+    console.error("Error fetching district data from Supabase:", err);
+    return { clubs: [], members: [] };
+  }
+}
+
+/**
  * Fetch all distinct clubs and member statistics for a given district
  */
 export async function getClubsByDistrict(districtId) {
