@@ -1,4 +1,3 @@
-// src/features/clubs/pages/LionsClubDetailPage.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -13,14 +12,17 @@ import {
 } from "lucide-react";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { TbTag } from "react-icons/tb";
-import { getClubMembers } from "../services/lionsClubService";
+import { getClubMembers, getClubInfo } from "../services/clubService";
 import LionsProfileCard from "../components/LionsProfileCard";
 import "../../search/components/css/SearchBar.css";
 import "./css/LionsClubPages.css";
 
 const LionsClubDetailPage = () => {
-  const { districtId, clubId } = useParams();
+  const { districtId, clubId, clubSlug: paramSlug } = useParams();
   const navigate = useNavigate();
+
+  const clubSlug = (paramSlug || "lions").toLowerCase();
+  const [clubInfo, setClubInfo] = useState(null);
 
   const decodedClubName = decodeURIComponent(clubId || "");
   const formattedDistrictName = districtId
@@ -42,8 +44,13 @@ const LionsClubDetailPage = () => {
     async function loadMembers() {
       setIsLoading(true);
       try {
-        const data = await getClubMembers(districtId, clubId);
+        const [info, data] = await Promise.all([
+          getClubInfo(clubSlug),
+          getClubMembers(districtId, clubId, clubSlug),
+        ]);
+
         if (isMounted) {
+          setClubInfo(info);
           setMembers(data || []);
         }
       } catch (err) {
@@ -56,7 +63,10 @@ const LionsClubDetailPage = () => {
     return () => {
       isMounted = false;
     };
-  }, [districtId, clubId]);
+  }, [districtId, clubId, clubSlug]);
+
+  const clubTitle = clubInfo?.short_name || clubInfo?.name || "Club";
+  const basePath = clubSlug === "lions" ? "/lions-club" : `/clubs/${clubSlug}`;
 
   // Filtered members based on search inputs
   const filteredMembers = useMemo(() => {
@@ -105,18 +115,18 @@ const LionsClubDetailPage = () => {
           <button
             type="button"
             className="lions-back-btn"
-            onClick={() => navigate(`/lions-club/${districtId || "3242C"}`)}
+            onClick={() => navigate(`${basePath}/${districtId || "3242C"}`)}
           >
             <ArrowLeft size={18} />
             <span>Back to Clubs</span>
           </button>
 
           <div className="lions-breadcrumbs">
-            <Link to="/lions-club" className="breadcrumb-link">
+            <Link to={basePath} className="breadcrumb-link">
               Districts
             </Link>
             <ChevronRight size={14} className="breadcrumb-separator" />
-            <Link to={`/lions-club/${districtId || "3242C"}`} className="breadcrumb-link">
+            <Link to={`${basePath}/${districtId || "3242C"}`} className="breadcrumb-link">
               {formattedDistrictName}
             </Link>
             <ChevronRight size={14} className="breadcrumb-separator" />

@@ -34,3 +34,23 @@ export const fetchPopularFirms = async () => {
 
   return data || [];
 };
+
+export const fetchClubs = async () => {
+  try {
+    const { data, error } = await supabase
+      .from("clubs")
+      .select("*")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true });
+
+    if (error) {
+      console.warn("fetchClubs notice (fallback will be used if table is not yet populated):", error.message);
+      return [];
+    }
+
+    return data || [];
+  } catch (err) {
+    console.error("fetchClubs error:", err);
+    return [];
+  }
+};

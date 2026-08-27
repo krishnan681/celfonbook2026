@@ -728,10 +728,7 @@ import {
   Plug,
   Plane,
   Truck,
-  Sparkles,
-  ArrowRight,
 } from "lucide-react";
-import { fireGrandFireworks } from "../../../core/utils/confetti";
 
 import "../pages/css/hero.css";
 
@@ -866,7 +863,6 @@ export default function HeroSection() {
     if (e.key === "Enter") goToSearch();
   };
 
-  /* TEMPORARILY COMMENTED FOR INDEPENDENCE DAY BANNER (RETAINED FOR FUTURE USE)
   useEffect(() => {
     const interval = setInterval(() => {
       const currentBanners = BANNERS[mode];
@@ -878,7 +874,6 @@ export default function HeroSection() {
   }, [mode]);
 
   const currentBanner = BANNERS[mode][activeBanner];
-  */
 
   const activeCategories =
     mode === "b2b" ? DIRECTORY_CATEGORIES_B2B : DIRECTORY_CATEGORIES_B2C;
@@ -925,90 +920,19 @@ export default function HeroSection() {
 
       {/* BANNER + B2B/B2C */}
       <div className="jd-content-row">
-        {/* =====================================================
-            INDEPENDENCE DAY SPECIAL HERO BANNER (NON-SCROLLING)
-           ===================================================== */}
-        <div className="jd-hero-banner jd-independence-banner">
-          <div className="id-banner-bg" />
-
-          {/* Watermark Chakra */}
-          <div className="id-chakra-watermark" aria-hidden="true">
-            <svg viewBox="0 0 100 100" className="id-chakra-svg">
-              <circle cx="50" cy="50" r="46" fill="none" stroke="#FFFFFF" strokeWidth="2.5" />
-              <circle cx="50" cy="50" r="8" fill="#FFFFFF" />
-              {Array.from({ length: 24 }).map((_, i) => (
-                <line
-                  key={i}
-                  x1="50"
-                  y1="50"
-                  x2={50 + 44 * Math.cos((i * 15 * Math.PI) / 180)}
-                  y2={50 + 44 * Math.sin((i * 15 * Math.PI) / 180)}
-                  stroke="#FFFFFF"
-                  strokeWidth="1.5"
-                />
-              ))}
-            </svg>
-          </div>
-
-          <div className="jd-banner-body id-banner-body">
-            <div className="id-flag-badge">
-              <span>🇮🇳 80-வது சுதந்திர தினம் | 80th Independence Day</span>
-            </div>
-
-            <div className="id-title-wrap">
-              <h2 className="id-hero-title">INDIAN ARMED FORCES</h2>
-              <p className="id-salute-text">
-                வீரம், தியாகம், தேசபக்தி! நமது இந்திய இராணுவத்திற்கு வீர வணக்கம்! 🫡🇮🇳
-              </p>
-            </div>
-
-            <p className="id-wishes-text">
-              உங்கள் அனைவருக்கும் இனிய 80-வது சுதந்திரதின நல்வாழ்த்துக்கள்! 🇮🇳
-            </p>
-
-            <div className="id-slogan-row">
-              <span className="id-slogan-pill">🇮🇳 வந்தே மாதரம் | ஜெய் ஹிந்த் 🇮🇳</span>
-              <span className="id-brand-sub">CelfonBook - Connects For Growth</span>
-            </div>
-
-            <div className="id-actions-row">
-              <button
-                className="id-cta-primary"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate("/search");
-                }}
-              >
-                Explore Directory <ArrowRight size={15} />
-              </button>
-
-              <button
-                className="id-cta-celebrate"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  fireGrandFireworks();
-                }}
-              >
-                <Sparkles size={15} /> Celebrate 🇮🇳
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* 
-        PREVIOUS ROTATING HERO BANNER (RETAINED FOR FUTURE USE):
+        {/* ROTATING HERO BANNER */}
         <div className="jd-hero-banner" onClick={() => navigate("/search")}>
           <div
             className="jd-banner-bg"
             style={{
-              background: currentBanner.bg,
+              background: currentBanner?.bg || "linear-gradient(120deg,#0f2176 55%,#1a3a8f 100%)",
             }}
           />
 
           <div className="jd-banner-body">
-            <div className="jd-b-title">{currentBanner.title}</div>
-            <div className="jd-b-highlight">{currentBanner.highlight}</div>
-            <div className="jd-b-sub">{currentBanner.sub}</div>
+            <div className="jd-b-title">{currentBanner?.title}</div>
+            <div className="jd-b-highlight">{currentBanner?.highlight}</div>
+            <div className="jd-b-sub">{currentBanner?.sub}</div>
 
             <button
               className="jd-b-cta"
@@ -1034,7 +958,6 @@ export default function HeroSection() {
             ))}
           </div>
         </div>
-        */}
 
         {/* RIGHT SIDE */}
 

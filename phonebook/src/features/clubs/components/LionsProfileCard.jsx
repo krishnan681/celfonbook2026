@@ -58,7 +58,9 @@ const LionsProfileCard = ({
 
   const handleCardClick = () => {
     if (person.id) {
-      navigate(`/lions-club/member/${person.id}`);
+      const slug = person.clubSlug || ((person.assn || "").toLowerCase().includes("vasavi") ? "vasavi" : "lions");
+      const targetUrl = slug === "lions" ? `/lions-club/member/${person.id}` : `/clubs/${slug}/member/${person.id}`;
+      navigate(targetUrl);
     }
   };
 

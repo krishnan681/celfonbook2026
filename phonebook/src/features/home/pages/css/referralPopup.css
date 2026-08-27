@@ -1,5 +1,5 @@
 /* =====================================================
-   REFERRAL & INDEPENDENCE DAY POPUP (2-COLUMN MODAL)
+   REFERRAL & EV SCOOTER PROMOTION POPUP
 ===================================================== */
 
 .referral-overlay {
@@ -17,9 +17,9 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 860px;
+  width: 540px;
   max-width: calc(100vw - 32px);
-  max-height: calc(100vh - 30px);
+  max-height: calc(100vh - 40px);
   background: #ffffff;
   border-radius: 24px;
   padding: 0;
@@ -32,36 +32,11 @@
   border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-/* Top Tricolor Bar */
-.popup-tricolor-bar {
-  display: flex;
-  width: 100%;
-  height: 5px;
-  flex-shrink: 0;
-}
-
-.p-bar {
-  flex: 1;
-  height: 100%;
-}
-
-.p-bar.saffron {
-  background: linear-gradient(90deg, #FF671F, #FF9933);
-}
-
-.p-bar.white {
-  background: #FFFFFF;
-}
-
-.p-bar.green {
-  background: linear-gradient(90deg, #138808, #046A38);
-}
-
 /* Close Button */
 .referral-close {
   position: absolute;
-  right: 14px;
-  top: 14px;
+  right: 16px;
+  top: 16px;
   width: 34px;
   height: 34px;
   border: none;
@@ -82,217 +57,39 @@
   transform: rotate(90deg) scale(1.05);
 }
 
-/* 2-Column Grid */
-.referral-popup-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  flex: 1;
-  min-height: 0;
-}
-
-/* =====================================================
-   LEFT COLUMN: INDEPENDENCE & ARMED FORCES TRIBUTE
-===================================================== */
-.referral-col-left {
-  position: relative;
-  background: linear-gradient(145deg, #fff7ed 0%, #ffffff 50%, #f0fdf4 100%);
-  padding: 28px 24px 22px;
+/* Single Container */
+.referral-popup-single {
+  padding: 32px 28px 26px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  border-right: 1px solid rgba(226, 232, 240, 0.9);
-  overflow: hidden;
+  background: radial-gradient(circle at top right, rgba(255, 103, 31, 0.05) 0%, transparent 60%), #ffffff;
 }
 
-/* Chakra Watermark */
-.chakra-watermark {
-  position: absolute;
-  right: -30px;
-  bottom: -30px;
-  width: 200px;
-  height: 200px;
-  opacity: 0.05;
-  pointer-events: none;
-  animation: slowSpin 60s linear infinite;
+.referral-popup-header {
+  margin-bottom: 20px;
 }
 
-.chakra-svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Badges */
-.col-badge {
+.ev-promo-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
-  padding: 5px 12px;
+  padding: 6px 14px;
   border-radius: 999px;
-  width: fit-content;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
-  margin-bottom: 12px;
-}
-
-.left-badge {
-  background: #ffedd5;
-  color: #c2410c;
-  border: 1px solid #fed7aa;
-}
-
-.right-badge {
-  background: #eff6ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
-}
-
-/* Armed Forces Header */
-.armed-forces-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.armed-icon-wrap {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #FF671F, #c2410c);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(194, 65, 12, 0.25);
-  flex-shrink: 0;
-}
-
-.armed-forces-title {
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: 0.5px;
-  color: #1e293b;
-  margin: 0;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-}
-
-/* Salute Box */
-.salute-box {
-  background: rgba(255, 255, 255, 0.85);
-  border-left: 4px solid #FF671F;
-  border-radius: 0 12px 12px 0;
-  padding: 10px 14px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-}
-
-.salute-lead {
-  font-size: 14px;
-  font-weight: 800;
-  color: #9a3412;
-  margin: 0 0 3px;
-  letter-spacing: -0.2px;
-}
-
-.salute-sub {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0;
-  line-height: 1.4;
-}
-
-/* Wishes Box */
-.wishes-box {
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  border-radius: 12px;
-  padding: 10px 14px;
-  margin-bottom: 14px;
-  text-align: center;
-}
-
-.wishes-text {
-  font-size: 13px;
-  font-weight: 600;
-  color: #0f172a;
-  margin: 0 0 8px;
-  line-height: 1.4;
-}
-
-.slogan-badge {
-  display: inline-block;
-  background: linear-gradient(135deg, #1e3a8a, #000088);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 800;
-  padding: 4px 12px;
-  border-radius: 999px;
   letter-spacing: 0.4px;
-  box-shadow: 0 2px 6px rgba(0, 0, 136, 0.2);
-}
-
-/* Left Footer Brand */
-.left-footer-brand {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 10px;
-  border-top: 1px solid rgba(226, 232, 240, 0.8);
-  margin-top: auto;
-}
-
-.brand-tagline {
-  font-size: 12px;
-  font-weight: 700;
-  color: #475569;
-  letter-spacing: -0.2px;
-}
-
-.btn-confetti-mini {
-  background: linear-gradient(135deg, #FF671F, #FF9933);
-  color: #fff;
-  border: none;
-  font-size: 11.5px;
-  font-weight: 700;
-  padding: 5px 11px;
-  border-radius: 999px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 6px rgba(255, 103, 31, 0.3);
-}
-
-.btn-confetti-mini:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 4px 12px rgba(255, 103, 31, 0.45);
-}
-
-/* =====================================================
-   RIGHT COLUMN: REFERRAL CONTEST & EV SCOOTER
-===================================================== */
-.referral-col-right {
-  background: #ffffff;
-  padding: 28px 24px 22px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-}
-
-.right-heading-group {
+  background: #fff7ed;
+  color: #ea580c;
+  border: 1px solid #fed7aa;
   margin-bottom: 12px;
 }
 
 .referral-main-title {
-  font-size: 21px;
+  font-size: 23px;
   font-weight: 800;
   color: #0f172a;
-  margin: 0 0 4px;
+  margin: 0 0 6px;
   line-height: 1.25;
 }
 
@@ -302,33 +99,34 @@
 }
 
 .referral-subhead {
-  font-size: 13px;
+  font-size: 14px;
   color: #64748b;
   margin: 0;
   font-weight: 500;
+  line-height: 1.4;
 }
 
 /* Contest Points List */
 .contest-points {
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  margin-bottom: 12px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .contest-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
+  gap: 12px;
+  padding: 12px 14px;
   background: #f8fafc;
-  border-radius: 12px;
+  border-radius: 14px;
   border: 1px solid #f1f5f9;
   transition: transform 0.2s, border-color 0.2s;
 }
 
 .contest-item:hover {
-  transform: translateX(3px);
+  transform: translateX(4px);
   border-color: #cbd5e1;
 }
 
@@ -337,10 +135,15 @@
   border-color: #bfdbfe;
 }
 
+.contest-item.grand-prize-item {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
 .c-icon-pill {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   background: #e2e8f0;
   color: #1e293b;
   display: flex;
@@ -362,9 +165,9 @@
 }
 
 .c-text {
-  font-size: 12.5px;
+  font-size: 13.5px;
   color: #334155;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 .c-text strong {
@@ -377,14 +180,14 @@
 }
 
 .chances-note {
-  font-size: 11.5px;
+  font-size: 12.5px;
   font-weight: 700;
   color: #059669;
   text-align: center;
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   background: #ecfdf5;
-  padding: 5px 10px;
-  border-radius: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
 }
 
 /* Primary Refer Now Button */
@@ -392,11 +195,11 @@
   width: 100%;
   border: none;
   cursor: pointer;
-  padding: 13px 20px;
-  border-radius: 12px;
+  padding: 14px 22px;
+  border-radius: 14px;
   background: linear-gradient(135deg, #FF671F 0%, #FF9933 100%);
   color: #ffffff;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 800;
   display: flex;
   justify-content: center;
@@ -434,105 +237,37 @@
   to { opacity: 1; }
 }
 
-@keyframes slowSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 /* =====================================================
    RESPONSIVE DESIGN (TABLETS & PHONES)
 ===================================================== */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .referral-popup {
-    width: 95vw;
-    max-height: 92vh;
+    width: calc(100vw - 24px);
     border-radius: 20px;
   }
 
-  .referral-popup-grid {
-    grid-template-columns: 1fr;
-    max-height: calc(92vh - 5px);
-    overflow-y: auto; /* Fallback only for ultra-small heights */
-  }
-
-  .referral-col-left {
-    padding: 20px 18px 16px;
-    border-right: none;
-    border-bottom: 1px solid #e2e8f0;
-  }
-
-  .referral-col-right {
-    padding: 18px 18px 18px;
-  }
-
-  .armed-forces-title {
-    font-size: 17px;
-  }
-
-  .salute-box {
-    padding: 8px 12px;
-    margin-bottom: 8px;
-  }
-
-  .salute-lead {
-    font-size: 13px;
-  }
-
-  .salute-sub {
-    font-size: 12.5px;
-  }
-
-  .wishes-box {
-    padding: 8px 12px;
-    margin-bottom: 10px;
-  }
-
-  .wishes-text {
-    font-size: 12px;
-    margin-bottom: 6px;
-  }
-
-  .slogan-badge {
-    font-size: 11px;
-    padding: 3px 10px;
+  .referral-popup-single {
+    padding: 24px 18px 20px;
   }
 
   .referral-main-title {
-    font-size: 18px;
+    font-size: 19px;
+  }
+
+  .c-text {
+    font-size: 12.5px;
   }
 
   .contest-points {
-    gap: 7px;
-    margin-bottom: 10px;
+    gap: 9px;
   }
 
   .contest-item {
-    padding: 7px 10px;
+    padding: 10px 12px;
   }
 
   .popup-btn {
-    padding: 11px 16px;
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .referral-popup {
-    width: calc(100vw - 20px);
-    max-height: 94vh;
-  }
-
-  .col-badge {
-    font-size: 10px;
-    padding: 3px 9px;
-    margin-bottom: 8px;
-  }
-
-  .armed-forces-title {
+    padding: 12px 18px;
     font-size: 15px;
-  }
-
-  .brand-tagline {
-    font-size: 11px;
   }
 }

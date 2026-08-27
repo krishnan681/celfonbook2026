@@ -27,7 +27,7 @@ import "../../DetailedProfile/css/DetailedRelatedProfiles.css";
 import "./css/LionsClubPages.css";
 
 export default function LionsMemberDetailPage() {
-  const { memberId } = useParams();
+  const { memberId, clubSlug: paramSlug } = useParams();
   const navigate = useNavigate();
 
   const [member, setMember] = useState(null);
@@ -47,7 +47,7 @@ export default function LionsMemberDetailPage() {
         if (isMounted) {
           setMember(data);
           if (data && data.club) {
-            const clubMems = await getClubMembers(data.districtId, data.club);
+            const clubMems = await getClubMembers(data.districtId, data.club, data.clubSlug || paramSlug || "lions");
             if (isMounted) {
               setRelatedMembers(
                 (clubMems || [])
@@ -70,7 +70,10 @@ export default function LionsMemberDetailPage() {
     return () => {
       isMounted = false;
     };
-  }, [memberId]);
+  }, [memberId, paramSlug]);
+
+  const clubSlug = paramSlug || member?.clubSlug || "lions";
+  const basePath = clubSlug === "lions" ? "/lions-club" : `/clubs/${clubSlug}`;
 
   if (isLoading) {
     return (
@@ -94,10 +97,10 @@ export default function LionsMemberDetailPage() {
           <button
             type="button"
             className="lions-back-btn"
-            onClick={() => navigate("/lions-club")}
+            onClick={() => navigate(basePath)}
           >
             <ArrowLeft size={18} />
-            <span>Back to Lions Directory</span>
+            <span>Back to Directory</span>
           </button>
         </div>
       </div>
@@ -133,7 +136,7 @@ export default function LionsMemberDetailPage() {
       try {
         await navigator.share({
           title: `${displayName} - ${member.clubName}`,
-          text: `Contact details for ${displayName} on Lions Directory`,
+          text: `Contact details for ${displayName} on Directory`,
           url: window.location.href,
         });
       } catch (err) {
@@ -170,19 +173,19 @@ export default function LionsMemberDetailPage() {
           </button>
 
           <div className="lions-breadcrumbs">
-            <Link to="/lions-club" className="breadcrumb-link">
+            <Link to={basePath} className="breadcrumb-link">
               Districts
             </Link>
             <ChevronRight size={14} className="breadcrumb-separator" />
-            <Link to={`/lions-club/${member.districtId}`} className="breadcrumb-link">
+            <Link to={`${basePath}/${member.districtId}`} className="breadcrumb-link">
               District {member.districtId}
             </Link>
             <ChevronRight size={14} className="breadcrumb-separator" />
             <Link
-              to={`/lions-club/${member.districtId}/${encodeURIComponent(member.club)}`}
+              to={`${basePath}/${member.districtId}/${encodeURIComponent(member.club)}`}
               className="breadcrumb-link"
             >
-              {member.clubName.replace(/^Lions Club of\s+/i, "")}
+              {member.clubName.replace(/^(Lions|Vasavi|Rotary)\s+Club\s+of\s+/i, "")}
             </Link>
             <ChevronRight size={14} className="breadcrumb-separator" />
             <span className="breadcrumb-current">{member.person_name || member.name}</span>

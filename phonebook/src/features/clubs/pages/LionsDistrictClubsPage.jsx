@@ -1,4 +1,3 @@
-// src/features/clubs/pages/LionsDistrictClubsPage.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -15,16 +14,19 @@ import {
   Compass,
   Briefcase,
   Users,
+  Cake,
+  Phone,
+  MessageSquare,
 } from "lucide-react";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { TbTag } from "react-icons/tb";
-import { getDistrictData } from "../services/lionsClubService";
+import { getDistrictData, getClubInfo, getClubCelebrations } from "../services/clubService";
 import LionsProfileCard from "../components/LionsProfileCard";
 import "../../search/components/css/SearchBar.css";
 import "./css/LionsClubPages.css";
 
 /**
- * Role matching utility for Lions designation tabs
+ * Role matching utility for club designation tabs
  */
 const matchesRoleFilter = (member, filterKey) => {
   if (!member) return false;
@@ -83,8 +85,11 @@ const matchesRoleFilter = (member, filterKey) => {
 };
 
 const LionsDistrictClubsPage = () => {
-  const { districtId } = useParams();
+  const { districtId, clubSlug: paramSlug } = useParams();
   const navigate = useNavigate();
+
+  const clubSlug = (paramSlug || "lions").toLowerCase();
+  const [clubInfo, setClubInfo] = useState(null);
 
   const formattedDistrictName = districtId
     ? districtId.toLowerCase().startsWith("district")
@@ -94,9 +99,10 @@ const LionsDistrictClubsPage = () => {
 
   const [clubs, setClubs] = useState([]);
   const [members, setMembers] = useState([]);
+  const [celebrations, setCelebrations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Active filter tab: "CLUBS", "DC", "RC", "ZC", "DG", "CABINET", "ALL_MEMBERS"
+  // Active filter tab: "CLUBS", "DC", "RC", "ZC", "DG", "CABINET", "ALL_MEMBERS", "CELEBRATIONS"
   const [activeFilter, setActiveFilter] = useState("CLUBS");
 
   // Search state
@@ -109,11 +115,17 @@ const LionsDistrictClubsPage = () => {
     async function loadDistrict() {
       setIsLoading(true);
       try {
-        const { clubs: loadedClubs, members: loadedMembers } =
-          await getDistrictData(districtId);
+        const [info, data, celebs] = await Promise.all([
+          getClubInfo(clubSlug),
+          getDistrictData(districtId, clubSlug),
+          getClubCelebrations(clubSlug, districtId),
+        ]);
+
         if (isMounted) {
-          setClubs(loadedClubs || []);
-          setMembers(loadedMembers || []);
+          setClubInfo(info);
+          setClubs(data.clubs || []);
+          setMembers(data.members || []);
+          setCelebrations(celebs || []);
         }
       } catch (err) {
         console.error("Error loading district data:", err);
@@ -125,12 +137,13 @@ const LionsDistrictClubsPage = () => {
     return () => {
       isMounted = false;
     };
-  }, [districtId]);
+  }, [districtId, clubSlug]);
 
   // Compute counts for filter tabs
   const tabCounts = useMemo(() => {
     return {
       CLUBS: clubs.length,
+      CELEBRATIONS: celebrations.length,
       DC: members.filter((m) => matchesRoleFilter(m, "DC")).length,
       RC: members.filter((m) => matchesRoleFilter(m, "RC")).length,
       ZC: members.filter((m) => matchesRoleFilter(m, "ZC")).length,
@@ -138,7 +151,7 @@ const LionsDistrictClubsPage = () => {
       CABINET: members.filter((m) => matchesRoleFilter(m, "CABINET")).length,
       ALL_MEMBERS: members.length,
     };
-  }, [clubs, members]);
+  }, [clubs, members, celebrations]);
 
   // Filtered Clubs when "CLUBS" is active
   const filteredClubs = useMemo(() => {
@@ -165,7 +178,7 @@ const LionsDistrictClubsPage = () => {
 
   // Filtered Members when a designation filter is active
   const filteredMembers = useMemo(() => {
-    if (activeFilter === "CLUBS") return [];
+    if (activeFilter === "CLUBS" || activeFilter === "CELEBRATIONS") return [];
     const bQuery = businessName.trim().toLowerCase();
     const kQuery = keywords.trim().toLowerCase();
 
@@ -203,6 +216,13 @@ const LionsDistrictClubsPage = () => {
   // Filter button configurations
   const filterTabs = [
     { id: "CLUBS", label: "Clubs", icon: Building2, count: tabCounts.CLUBS },
+    {
+      id: "CELEBRATIONS",
+      label: "Celebrations Today",
+      title: "Today's Birthdays & Wedding Anniversaries",
+      icon: Cake,
+      count: tabCounts.CELEBRATIONS,
+    },
     {
       id: "DC",
       label: "DC",
@@ -250,6 +270,13 @@ const LionsDistrictClubsPage = () => {
   // Active section metadata
   const currentSectionMeta = useMemo(() => {
     switch (activeFilter) {
+      case "CELEBRATIONS":
+        return {
+          title: `Today's Celebrations in ${formattedDistrictName}`,
+          icon: <Cake size={24} color="#e11d48" />,
+          count: celebrations.length,
+          unit: "Events",
+        };
       case "DC":
         return {
           title: `District Chairpersons (DC) in ${formattedDistrictName}`,
@@ -306,12 +333,16 @@ const LionsDistrictClubsPage = () => {
     formattedDistrictName,
     filteredClubs.length,
     filteredMembers.length,
+    celebrations.length,
   ]);
+
+  const clubTitle = clubInfo?.short_name || clubInfo?.name || "Clubs";
+  const basePath = clubSlug === "lions" ? "/lions-club" : `/clubs/${clubSlug}`;
 
   return (
     <div className="lions-pages-container">
       <Helmet>
-        <title>{formattedDistrictName} | Lions Directory | Celfonbook</title>
+        <title>{formattedDistrictName} | {clubTitle} Directory | Celfonbook</title>
       </Helmet>
 
       <div className="lions-pages-wrapper">
@@ -320,14 +351,14 @@ const LionsDistrictClubsPage = () => {
           <button
             type="button"
             className="lions-back-btn"
-            onClick={() => navigate("/lions-club")}
+            onClick={() => navigate(basePath)}
           >
             <ArrowLeft size={18} />
             <span>Back to Districts</span>
           </button>
 
           <div className="lions-breadcrumbs">
-            <Link to="/lions-club" className="breadcrumb-link">
+            <Link to={basePath} className="breadcrumb-link">
               Districts
             </Link>
             <ChevronRight size={14} className="breadcrumb-separator" />
@@ -339,7 +370,7 @@ const LionsDistrictClubsPage = () => {
         <div className="district-banner-card">
           <h2>{formattedDistrictName}</h2>
           <p className="district-desc">
-            Explore chartered Lions Clubs, district leadership (DC, RC, ZC, DG),
+            Explore chartered {clubTitle} clubs, district leadership,
             and active member rosters across {formattedDistrictName}.
           </p>
         </div>
@@ -478,19 +509,167 @@ const LionsDistrictClubsPage = () => {
                     key={club.id}
                     className="district-card"
                     onClick={() =>
-                      navigate(`/lions-club/${districtId}/${club.id}`)
+                      navigate(`${basePath}/${districtId}/${club.id}`)
                     }
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
-                        navigate(`/lions-club/${districtId}/${club.id}`);
+                        navigate(`${basePath}/${districtId}/${club.id}`);
                       }
                     }}
                   >
                     <h3 className="name">{club.name}</h3>
                   </div>
                 ))}
+              </div>
+            )
+          ) : activeFilter === "CELEBRATIONS" ? (
+            /* CELEBRATIONS GRID */
+            celebrations.length === 0 ? (
+              <div
+                style={{
+                  padding: "40px 20px",
+                  background: "white",
+                  borderRadius: "16px",
+                  textAlign: "center",
+                  color: "#64748b",
+                }}
+              >
+                <Cake size={48} color="#cbd5e1" style={{ margin: "0 auto 12px" }} />
+                <h4>No Birthdays or Anniversaries Today</h4>
+                <p style={{ marginTop: "6px" }}>
+                  Check back tomorrow for today's member celebrations.
+                </p>
+              </div>
+            ) : (
+              <div className="cards-grid">
+                {celebrations.map((item) => {
+                  const m = item.member;
+                  const displayName =
+                    m.fullName || m.person_name || m.business_name || "Member";
+                  const rawPhone = (m.mobile_number || m.phone || "").replace(
+                    /[^0-9]/g,
+                    ""
+                  );
+                  const isBday = item.type === "BIRTHDAY";
+
+                  const wishMessage = isBday
+                    ? `Dear ${displayName}, wishing you a very Happy Birthday! 🎂🎉 May you have a wonderful year ahead filled with joy and success! - Best wishes from ${clubTitle}`
+                    : `Dear ${displayName} ${
+                        item.spouse ? `& ${item.spouse}` : ""
+                      }, wishing you both a very Happy Wedding Anniversary! 💍✨ Wishing you many more years of togetherness and happiness! - Best wishes from ${clubTitle}`;
+
+                  const waUrl = rawPhone
+                    ? `https://wa.me/91${rawPhone}?text=${encodeURIComponent(
+                        wishMessage
+                      )}`
+                    : null;
+
+                  return (
+                    <div
+                      key={item.id}
+                      className="profile-card card-default"
+                      style={{
+                        borderLeft: isBday
+                          ? "4px solid #f59e0b"
+                          : "4px solid #ec4899",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => navigate(`${basePath}/member/${m.id}`)}
+                    >
+                      <div
+                        className="card-header"
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: "0.8rem",
+                            fontWeight: "700",
+                            padding: "4px 10px",
+                            borderRadius: "12px",
+                            background: isBday
+                              ? "rgba(245, 158, 11, 0.15)"
+                              : "rgba(236, 72, 153, 0.15)",
+                            color: isBday ? "#b45309" : "#be185d",
+                          }}
+                        >
+                          {item.title}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: "0.85rem",
+                            color: "#64748b",
+                            fontWeight: "600",
+                          }}
+                        >
+                          📅 {item.date}
+                        </span>
+                      </div>
+
+                      <div className="card-info" style={{ marginTop: "12px" }}>
+                        <h3 className="name" style={{ fontSize: "1.1rem" }}>
+                          {displayName}
+                        </h3>
+                        {m.post_of_member && (
+                          <p
+                            style={{
+                              color: "#005a36",
+                              fontWeight: "600",
+                              fontSize: "0.85rem",
+                              margin: "4px 0",
+                            }}
+                          >
+                            {m.postFull || m.post_of_member}
+                          </p>
+                        )}
+                        <p style={{ color: "#64748b", fontSize: "0.85rem" }}>
+                          🏢 {m.clubName || "Club Member"}
+                        </p>
+                        {item.spouse && (
+                          <p
+                            style={{
+                              color: "#475569",
+                              fontSize: "0.85rem",
+                              marginTop: "4px",
+                            }}
+                          >
+                            ❤️ Spouse: <strong>{item.spouse}</strong>
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="card-actions" style={{ marginTop: "14px" }}>
+                        {waUrl && (
+                          <a
+                            href={waUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn enquire"
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                              background: "#25D366",
+                              color: "white",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              gap: "6px",
+                              textDecoration: "none",
+                              fontWeight: "600",
+                              width: "100%",
+                            }}
+                          >
+                            <MessageSquare size={16} /> Wish on WhatsApp
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )
           ) : /* MEMBERS GRID (DC, RC, ZC, DG, CABINET, ALL_MEMBERS) */

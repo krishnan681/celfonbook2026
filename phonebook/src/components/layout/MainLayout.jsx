@@ -18,7 +18,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SearchFooter from "./SearchFooter";
-import IndependenceCelebration from "../common/IndependenceCelebration";
 
 export default function MainLayout() {
   const location = useLocation();
@@ -26,7 +25,6 @@ export default function MainLayout() {
 
   return (
     <>
-      <IndependenceCelebration />
       <Navbar />
 
       <main>

@@ -158,12 +158,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useHomeController } from "../controller/useHomeController";
-import lionsClubLogo from "../../../assets/images/Clubs/Lions_Clubs_International_logo.jpg";
 import "../pages/css/DirectorySection.css";
 
 const DirectorySection = () => {
   const navigate = useNavigate();
-  const { onlineDirectories, expos, popularFirms, loading, error } =
+  const { onlineDirectories, expos, popularFirms, clubs, loading, error } =
     useHomeController();
 
   if (loading) return <div className="text-center py-5">Loading...</div>;
@@ -262,10 +261,6 @@ const DirectorySection = () => {
                       </div>
 
                       <h5 className="firm-name">{firm.name}</h5>
-
-                      {/* {firm.redirect_url && (
-                        <span className="visit-text">Visit Website →</span>
-                      )} */}
                     </div>
                   </a>
                 </div>
@@ -285,20 +280,42 @@ const DirectorySection = () => {
           </h2>
 
           <div className="row g-4">
-            <div className="col-lg-4 col-md-6 col-sm-6">
-              <div
-                className="club-card clickable-card"
-                onClick={() => navigate("/lions-club")}
-              >
-                <div className="club-logo-wrapper">
-                  <img
-                    src={lionsClubLogo}
-                    alt="Lions Club"
-                    className="club-logo"
-                  />
-                </div>
+            {clubs && clubs.length > 0 ? (
+              clubs.map((club) => {
+                const targetPath =
+                  club.slug === "lions" ? "/lions-club" : `/clubs/${club.slug}`;
+                return (
+                  <div
+                    className="col-lg-3 col-md-4 col-sm-6"
+                    key={club.id || club.slug}
+                  >
+                    <div
+                      className="club-card clickable-card"
+                      onClick={() => navigate(targetPath)}
+                    >
+                      <div className="club-logo-wrapper">
+                        {club.logo_url ? (
+                          <img
+                            src={club.logo_url}
+                            alt={club.name || club.short_name || "Club Logo"}
+                            className="club-logo"
+                          />
+                        ) : (
+                          <span style={{ fontSize: "3rem" }}>🏛️</span>
+                        )}
+                      </div>
+                      <h4 className="club-card-title">
+                        {club.short_name || club.name}
+                      </h4>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="col-12 text-center">
+                <p>No clubs available at the moment.</p>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

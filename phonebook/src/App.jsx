@@ -89,23 +89,7 @@ function App() {
             }
           />
           <Route
-            path="clubs/lions"
-            element={
-              <ProtectedRoute>
-                <LionsDistrictsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="lions-club/:districtId"
-            element={
-              <ProtectedRoute>
-                <LionsDistrictClubsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="clubs/lions/:districtId"
             element={
               <ProtectedRoute>
                 <LionsDistrictClubsPage />
@@ -121,23 +105,7 @@ function App() {
             }
           />
           <Route
-            path="clubs/lions/:districtId/:clubId"
-            element={
-              <ProtectedRoute>
-                <LionsClubDetailPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="lions-club/member/:memberId"
-            element={
-              <ProtectedRoute>
-                <LionsMemberDetailPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="clubs/lions/member/:memberId"
             element={
               <ProtectedRoute>
                 <LionsMemberDetailPage />
@@ -152,8 +120,42 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Dynamic Multi-Club Routes (Lions, Vasavi, Rotary, etc.) */}
           <Route
-            path="clubs/lions/:districtId/:clubId/member/:memberId"
+            path="clubs/:clubSlug"
+            element={
+              <ProtectedRoute>
+                <LionsDistrictsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="clubs/:clubSlug/:districtId"
+            element={
+              <ProtectedRoute>
+                <LionsDistrictClubsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="clubs/:clubSlug/:districtId/:clubId"
+            element={
+              <ProtectedRoute>
+                <LionsClubDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="clubs/:clubSlug/member/:memberId"
+            element={
+              <ProtectedRoute>
+                <LionsMemberDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="clubs/:clubSlug/:districtId/:clubId/member/:memberId"
             element={
               <ProtectedRoute>
                 <LionsMemberDetailPage />

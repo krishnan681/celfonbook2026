@@ -331,6 +331,33 @@
   min-height: 90px;
 }
 
+.district-card {
+  align-items: center;
+  text-align: center;
+  padding: 28px 20px;
+  gap: 10px;
+}
+
+.district-card-logo-box {
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+  transition: transform 0.2s ease;
+}
+
+.district-card:hover .district-card-logo-box {
+  transform: scale(1.06);
+}
+
+.district-card-logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
 .district-card:hover,
 .town-profile-card:hover {
   transform: translateY(-4px);
@@ -642,7 +669,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  overflow-x: auto;
+  overflow-x: hidden;
   padding: 4px 2px 10px;
   scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
