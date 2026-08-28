@@ -1,4 +1,4 @@
-// src/features/clubs/pages/LionsDistrictsPage.jsx
+// src/features/clubs/pages/ClubDistrictsPage.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -18,10 +18,11 @@ import {
   getClubInfo,
   getClubCelebrations,
 } from "../services/clubService";
-import LionsProfileCard from "../components/LionsProfileCard";
+import ClubProfileCard from "../components/ClubProfileCard";
+import FounderCard from "../components/FounderCard";
 import "./css/LionsClubPages.css";
 
-const LionsDistrictsPage = () => {
+const ClubDistrictsPage = () => {
   const { clubSlug: paramSlug } = useParams();
   const navigate = useNavigate();
 
@@ -92,11 +93,13 @@ const LionsDistrictsPage = () => {
     setSearchResults(null);
   };
 
-  const clubTitle = clubInfo?.short_name || clubInfo?.name || "Clubs";
+  const clubTitle = clubInfo?.short_name || clubInfo?.name || (clubSlug === "vasavi" ? "Vasavi Club" : "Lions Club");
   const basePath = clubSlug === "lions" ? "/lions-club" : `/clubs/${clubSlug}`;
 
+  const themeClass = clubSlug === "vasavi" ? "theme-vasavi" : "theme-lions";
+
   return (
-    <div className="lions-pages-container">
+    <div className={`lions-pages-container ${themeClass}`}>
       <Helmet>
         <title>{clubTitle} Directory | Districts | Celfonbook</title>
       </Helmet>
@@ -114,7 +117,10 @@ const LionsDistrictsPage = () => {
           </button>
         </div>
 
-        {/* Today's Celebrations Highlights Banner (if any celebrations exist today) */}
+        {/* Founder & Heritage Card with Download PDF */}
+        <FounderCard clubSlug={clubSlug} />
+
+        {/* Today's Celebrations Highlights Banner */}
         {celebrations && celebrations.length > 0 && (
           <div
             className="celebrations-banner"
@@ -302,9 +308,10 @@ const LionsDistrictsPage = () => {
                     type="button"
                     className="lions-btn-reset"
                     onClick={handleReset}
-                    title="Reset Search"
+                    title="Clear Search"
                   >
-                    <RotateCcw size={16} />
+                    <RotateCcw size={18} />
+                    <span>Clear</span>
                   </button>
                 )}
               </div>
@@ -312,92 +319,101 @@ const LionsDistrictsPage = () => {
           </form>
         </div>
 
-        {/* Global Search Results */}
-        {searchResults !== null && (
-          <div className="lions-search-results-box">
-            <div className="search-results-header">
-              <h3>Search Results ({searchResults.length})</h3>
-              <button
-                type="button"
-                className="btn-close-search"
-                onClick={handleReset}
-              >
-                Clear Results
-              </button>
+        {/* Search Results Display if active */}
+        {searchResults !== null ? (
+          <div className="district-clubs-list-section" style={{ marginTop: "24px" }}>
+            <div className="section-head">
+              <h3>
+                <Search className="section-icon" />
+                Search Results ({searchResults.length})
+              </h3>
             </div>
-
             {searchResults.length === 0 ? (
-              <p className="no-results-msg">
-                No matching {clubTitle} members found in the directory.
-              </p>
+              <div
+                style={{
+                  padding: "30px",
+                  background: "white",
+                  borderRadius: "12px",
+                  textAlign: "center",
+                  color: "#64748b",
+                }}
+              >
+                <p>No {clubTitle} members found matching your search.</p>
+                <button
+                  type="button"
+                  className="lions-back-btn"
+                  style={{ margin: "12px auto 0" }}
+                  onClick={handleReset}
+                >
+                  Back to Districts
+                </button>
+              </div>
             ) : (
               <div className="cards-grid">
-                {searchResults.map((person) => (
-                  <LionsProfileCard
-                    key={person.id}
-                    person={person}
-                    roleTitle={person.postFull || person.post_of_member || "Member"}
-                    isLeadership={person.isLeadership}
+                {searchResults.map((member) => (
+                  <ClubProfileCard
+                    key={member.id}
+                    person={member}
+                    roleTitle={member.postFull || member.post}
+                    isLeadership={member.isLeadership}
                     isKeywordFocused={isKeywordFocused}
                   />
                 ))}
               </div>
             )}
           </div>
-        )}
+        ) : (
+          /* Normal Districts Grid */
+          <div className="district-clubs-list-section" style={{ marginTop: "24px" }}>
+            <div className="section-head">
+              <h3>
+                <Building2 className="section-icon" />
+                {clubTitle} Districts
+              </h3>
+              {!isLoadingDistricts && (
+                <span className="count-pill">{districts.length} Districts</span>
+              )}
+            </div>
 
-        {/* Districts Section */}
-        <div className="districts-list-section">
-          <div className="section-head">
-            <h3>
-              <Building2 size={24} color={clubInfo?.theme_color || "#005a36"} />
-              {clubTitle} Districts
-            </h3>
+            {isLoadingDistricts ? (
+              <div
+                style={{ textAlign: "center", padding: "50px", color: "#64748b" }}
+              >
+                <Loader2
+                  size={32}
+                  className="animate-spin"
+                  style={{ margin: "0 auto 12px" }}
+                />
+                <p>Loading {clubTitle} districts...</p>
+              </div>
+            ) : (
+              <div className="cards-grid">
+                {districts.map((dist) => {
+                  const districtName = dist.name || `District ${dist.id}`;
+                  return (
+                    <div
+                      key={dist.id}
+                      className="district-card"
+                      onClick={() => navigate(`${basePath}/${dist.id}`)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          navigate(`${basePath}/${dist.id}`);
+                        }
+                      }}
+                    >
+                      <h3 className="name">{districtName}</h3>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
-
-          {isLoadingDistricts ? (
-            <div style={{ textAlign: "center", padding: "40px", color: "#64748b" }}>
-              <Loader2 size={28} className="animate-spin" style={{ margin: "0 auto 10px" }} />
-              <p>Loading districts from directory...</p>
-            </div>
-          ) : (
-            <div className="cards-grid">
-              {districts.map((dist) => (
-                <div
-                  key={dist.id}
-                  className="district-card"
-                  onClick={() => navigate(`${basePath}/${dist.id}`)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      navigate(`${basePath}/${dist.id}`);
-                    }
-                  }}
-                >
-                  <div className="district-card-logo-box">
-                    {dist.logo_url || clubInfo?.logo_url ? (
-                      <img
-                        src={dist.logo_url || clubInfo.logo_url}
-                        alt={`${clubTitle} Logo`}
-                        className="district-card-logo"
-                      />
-                    ) : (
-                      <span style={{ fontSize: "2rem" }}>🏛️</span>
-                    )}
-                  </div>
-                  <h3 className="name">
-                    {(dist.name || dist.id).replace(/^district\s*/i, "").trim()}
-                  </h3>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default LionsDistrictsPage;
-
+export default ClubDistrictsPage;

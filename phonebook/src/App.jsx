@@ -43,10 +43,10 @@ import OtpVerificationPage from "./features/auth/Pages/OtpVerificationPage";
 
 import CategorywiseLayout from "./features/promotions/categorywise/pages/CategorywiseLayout";
 
-import LionsDistrictsPage from "./features/clubs/pages/LionsDistrictsPage";
-import LionsDistrictClubsPage from "./features/clubs/pages/LionsDistrictClubsPage";
-import LionsClubDetailPage from "./features/clubs/pages/LionsClubDetailPage";
-import LionsMemberDetailPage from "./features/clubs/pages/LionsMemberDetailPage";
+import ClubDistrictsPage from "./features/clubs/pages/ClubDistrictsPage";
+import ClubDistrictClubsPage from "./features/clubs/pages/ClubDistrictClubsPage";
+import ClubDetailPage from "./features/clubs/pages/ClubDetailPage";
+import ClubMemberDetailPage from "./features/clubs/pages/ClubMemberDetailPage";
 
 import MyReferralsPage from "./features/settings/pages/MyReferralsPage";
 
@@ -84,7 +84,7 @@ function App() {
             path="lions-club"
             element={
               <ProtectedRoute>
-                <LionsDistrictsPage />
+                <ClubDistrictsPage />
               </ProtectedRoute>
             }
           />
@@ -92,7 +92,7 @@ function App() {
             path="lions-club/:districtId"
             element={
               <ProtectedRoute>
-                <LionsDistrictClubsPage />
+                <ClubDistrictClubsPage />
               </ProtectedRoute>
             }
           />
@@ -100,7 +100,7 @@ function App() {
             path="lions-club/:districtId/:clubId"
             element={
               <ProtectedRoute>
-                <LionsClubDetailPage />
+                <ClubDetailPage />
               </ProtectedRoute>
             }
           />
@@ -108,7 +108,7 @@ function App() {
             path="lions-club/member/:memberId"
             element={
               <ProtectedRoute>
-                <LionsMemberDetailPage />
+                <ClubMemberDetailPage />
               </ProtectedRoute>
             }
           />
@@ -116,7 +116,7 @@ function App() {
             path="lions-club/:districtId/:clubId/member/:memberId"
             element={
               <ProtectedRoute>
-                <LionsMemberDetailPage />
+                <ClubMemberDetailPage />
               </ProtectedRoute>
             }
           />
@@ -126,7 +126,7 @@ function App() {
             path="clubs/:clubSlug"
             element={
               <ProtectedRoute>
-                <LionsDistrictsPage />
+                <ClubDistrictsPage />
               </ProtectedRoute>
             }
           />
@@ -134,7 +134,7 @@ function App() {
             path="clubs/:clubSlug/:districtId"
             element={
               <ProtectedRoute>
-                <LionsDistrictClubsPage />
+                <ClubDistrictClubsPage />
               </ProtectedRoute>
             }
           />
@@ -142,7 +142,7 @@ function App() {
             path="clubs/:clubSlug/:districtId/:clubId"
             element={
               <ProtectedRoute>
-                <LionsClubDetailPage />
+                <ClubDetailPage />
               </ProtectedRoute>
             }
           />
@@ -150,7 +150,7 @@ function App() {
             path="clubs/:clubSlug/member/:memberId"
             element={
               <ProtectedRoute>
-                <LionsMemberDetailPage />
+                <ClubMemberDetailPage />
               </ProtectedRoute>
             }
           />
@@ -158,7 +158,7 @@ function App() {
             path="clubs/:clubSlug/:districtId/:clubId/member/:memberId"
             element={
               <ProtectedRoute>
-                <LionsMemberDetailPage />
+                <ClubMemberDetailPage />
               </ProtectedRoute>
             }
           />

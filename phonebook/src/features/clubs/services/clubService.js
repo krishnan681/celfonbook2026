@@ -416,12 +416,11 @@ export async function getMemberById(memberId) {
 }
 
 /**
- * Helper to check if a date matches today's month and day (DD/MM)
+ * Helper to parse a date string into { month (0-11), day (1-31) }
  */
-export function isDateToday(dateStr) {
-  if (!dateStr) return false;
+export function parseDateMonthDay(dateStr) {
+  if (!dateStr) return null;
   try {
-    // Supports YYYY-MM-DD, DD-MM-YYYY, DD/MM/YYYY
     let day, month;
     if (typeof dateStr === "string" && dateStr.includes("-")) {
       const parts = dateStr.split("-");
@@ -440,22 +439,94 @@ export function isDateToday(dateStr) {
       month = parseInt(parts[1], 10) - 1;
     } else {
       const d = new Date(dateStr);
-      if (isNaN(d.getTime())) return false;
+      if (isNaN(d.getTime())) return null;
       day = d.getDate();
       month = d.getMonth();
     }
 
-    const now = new Date();
-    return day === now.getDate() && month === now.getMonth();
+    if (isNaN(day) || isNaN(month) || month < 0 || month > 11 || day < 1 || day > 31) {
+      return null;
+    }
+    return { month, day };
   } catch (e) {
-    return false;
+    return null;
   }
+}
+
+/**
+ * Calculate celebration days difference from today (-180 to +180)
+ */
+export function getDaysDifferenceFromToday(month, day) {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const today = new Date(currentYear, now.getMonth(), now.getDate());
+
+  let targetThisYear = new Date(currentYear, month, day);
+  let diffTime = targetThisYear.getTime() - today.getTime();
+  let diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+  // Handle year boundaries (e.g. late Dec -> early Jan)
+  if (diffDays < -180) {
+    const targetNextYear = new Date(currentYear + 1, month, day);
+    diffDays = Math.round((targetNextYear.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  } else if (diffDays > 180) {
+    const targetPrevYear = new Date(currentYear - 1, month, day);
+    diffDays = Math.round((targetPrevYear.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  }
+
+  return diffDays;
+}
+
+/**
+ * Format month and day to friendly readable string (e.g. "28 Aug", "14 Oct")
+ */
+export function formatMonthDayReadable(month, day) {
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  ];
+  return `${day} ${months[month] || ""}`;
+}
+
+/**
+ * Helper to check if a date matches today's month and day (DD/MM)
+ */
+export function isDateToday(dateStr) {
+  const parsed = parseDateMonthDay(dateStr);
+  if (!parsed) return false;
+  const now = new Date();
+  return parsed.day === now.getDate() && parsed.month === now.getMonth();
 }
 
 /**
  * Fetch Today's Birthday & Wedding Anniversary Celebrations directly from profiles table
  */
 export async function getClubCelebrations(clubSlug = "lions", districtId = null) {
+  try {
+    const timeline = await getClubCelebrationsTimeline(clubSlug, districtId);
+    return timeline.today || [];
+  } catch (err) {
+    console.error("Error fetching club celebrations:", err);
+    return [];
+  }
+}
+
+/**
+ * Comprehensive Celebrations Timeline:
+ * Categorizes all member birthdays and anniversaries into:
+ * - today (diffDays === 0)
+ * - tomorrow (diffDays === 1)
+ * - thisWeek (diffDays 2 to 7)
+ * - thisMonth (diffDays 8 to 30)
+ * - upcoming (all future events within 60 days)
+ * - recentPast (diffDays -1 to -7 for belated wishes)
+ * - allChronological (all sorted from next upcoming)
+ */
+export async function getClubCelebrationsTimeline(
+  clubSlug = "lions",
+  districtId = null,
+  clubName = null
+) {
   try {
     let query = supabase.from("profiles").select("*");
 
@@ -475,43 +546,246 @@ export async function getClubCelebrations(clubSlug = "lions", districtId = null)
       query = query.eq("district", districtId);
     }
 
-    const { data, error } = await query;
+    if (clubName) {
+      query = query.ilike("club", `%${clubName}%`);
+    }
+
+    let { data, error } = await query;
     if (error) throw error;
 
-    const celebrations = [];
+    // Fallback to district if club-specific has no records
+    if ((!data || data.length === 0) && clubName) {
+      const fallbackQuery = supabase
+        .from("profiles")
+        .select("*")
+        .eq("district", districtId || "3242C");
+      const { data: fbData } = await fallbackQuery;
+      if (fbData && fbData.length > 0) {
+        data = fbData;
+      }
+    }
+
+    const allEvents = [];
 
     (data || []).forEach((row) => {
       const member = normalizeMember(row, districtId || "3242C", clubSlug);
 
-      if (isDateToday(row.DOB)) {
-        celebrations.push({
+      // 1. Process Date of Birth (DOB)
+      const dobParsed = parseDateMonthDay(row.DOB || row.dob);
+      if (dobParsed) {
+        const diffDays = getDaysDifferenceFromToday(dobParsed.month, dobParsed.day);
+        allEvents.push({
           id: `${row.id}-dob`,
           memberId: row.id,
           type: "BIRTHDAY",
-          title: "Happy Birthday! 🎂",
-          date: row.DOB,
+          title: "Birthday 🎂",
+          dateFormatted: formatMonthDayReadable(dobParsed.month, dobParsed.day),
+          rawDate: row.DOB || row.dob,
+          month: dobParsed.month,
+          day: dobParsed.day,
+          diffDays,
+          status:
+            diffDays === 0
+              ? "Today"
+              : diffDays === 1
+              ? "Tomorrow"
+              : diffDays > 1
+              ? `In ${diffDays} days`
+              : diffDays === -1
+              ? "Yesterday"
+              : `${Math.abs(diffDays)} days ago`,
           member,
         });
       }
 
-      if (isDateToday(row.DOW)) {
-        celebrations.push({
+      // 2. Process Date of Wedding (DOW)
+      const dowParsed = parseDateMonthDay(row.DOW || row.dow);
+      if (dowParsed) {
+        const diffDays = getDaysDifferenceFromToday(dowParsed.month, dowParsed.day);
+        allEvents.push({
           id: `${row.id}-dow`,
           memberId: row.id,
           type: "ANNIVERSARY",
-          title: "Happy Wedding Anniversary! 💍",
-          date: row.DOW,
+          title: "Wedding Anniversary 💍",
+          dateFormatted: formatMonthDayReadable(dowParsed.month, dowParsed.day),
+          rawDate: row.DOW || row.dow,
+          month: dowParsed.month,
+          day: dowParsed.day,
+          diffDays,
           spouse: row.spouse || "",
+          status:
+            diffDays === 0
+              ? "Today"
+              : diffDays === 1
+              ? "Tomorrow"
+              : diffDays > 1
+              ? `In ${diffDays} days`
+              : diffDays === -1
+              ? "Yesterday"
+              : `${Math.abs(diffDays)} days ago`,
           member,
         });
       }
     });
 
-    return celebrations;
+    // Sort chronologically starting from today, upcoming (diffDays >= 0 ascending), then recent past
+    const today = allEvents.filter((e) => e.diffDays === 0);
+    const tomorrow = allEvents.filter((e) => e.diffDays === 1);
+    const thisWeek = allEvents
+      .filter((e) => e.diffDays >= 2 && e.diffDays <= 7)
+      .sort((a, b) => a.diffDays - b.diffDays);
+    const thisMonth = allEvents
+      .filter((e) => e.diffDays > 7 && e.diffDays <= 30)
+      .sort((a, b) => a.diffDays - b.diffDays);
+    const upcoming = allEvents
+      .filter((e) => e.diffDays > 0 && e.diffDays <= 60)
+      .sort((a, b) => a.diffDays - b.diffDays);
+    const recentPast = allEvents
+      .filter((e) => e.diffDays < 0 && e.diffDays >= -7)
+      .sort((a, b) => b.diffDays - a.diffDays); // closest past first
+
+    const allSorted = [...allEvents].sort((a, b) => {
+      // Prioritize future (0 to positive), followed by past
+      const aVal = a.diffDays >= 0 ? a.diffDays : 365 + a.diffDays;
+      const bVal = b.diffDays >= 0 ? b.diffDays : 365 + b.diffDays;
+      return aVal - bVal;
+    });
+
+    return {
+      today,
+      tomorrow,
+      thisWeek,
+      thisMonth,
+      upcoming,
+      recentPast,
+      all: allSorted,
+      totalCelebrants: allEvents.length,
+    };
   } catch (err) {
-    console.error("Error fetching club celebrations:", err);
-    return [];
+    console.error("Error generating celebrations timeline:", err);
+    return {
+      today: [],
+      tomorrow: [],
+      thisWeek: [],
+      thisMonth: [],
+      upcoming: [],
+      recentPast: [],
+      all: [],
+      totalCelebrants: 0,
+    };
   }
+}
+
+/**
+ * Club Founder Biography & Book Data Provider
+ */
+export function getClubFounderInfo(clubSlug = "lions") {
+  const slug = (clubSlug || "lions").toLowerCase();
+
+  if (slug === "vasavi") {
+    return {
+      clubSlug: "vasavi",
+      clubName: "Vasavi Clubs International",
+      founderName: "Vasavi Heritage & Founders",
+      title: "The Legacy of Sri Vasavi Kanyaka Parameswari & Vasavi Movement",
+      shortSummary:
+        "Vasavi Clubs International was founded to foster brotherhood, mutual business growth, community service, and youth empowerment inspired by the eternal ideals of peace, integrity, and selflessness.",
+      coverImage: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80",
+      portraitImage: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&auto=format&fit=crop&q=80",
+      quote: "Friendship, Service, and Universal Brotherhood for Community Prosperity.",
+      pdfDownloadUrl: null,
+      pages: [
+        {
+          pageNumber: 1,
+          chapter: "1. The Genesis",
+          title: "Origins of Vasavi Clubs International",
+          content: [
+            "Vasavi Clubs International took its origin to unite like-minded individuals dedicated to societal welfare, mutual support, education, and cultural preservation.",
+            "The foundational vision emphasizes ethical leadership, empowering underprivileged communities through healthcare camps, scholarship initiatives, and business networking among members.",
+          ],
+        },
+        {
+          pageNumber: 2,
+          chapter: "2. Core Principles",
+          title: "Service, Fellowship & Empowerment",
+          content: [
+            "With chapters across the globe, Vasavi Clubs actively coordinate humanitarian activities such as blood donation drives, artificial limb distribution, and women entrepreneurship workshops.",
+            "Fellowship meetings strengthen social bonding among families while fostering collaborative opportunities in trade and commerce.",
+          ],
+        },
+        {
+          pageNumber: 3,
+          chapter: "3. Global Impact",
+          title: "A Worldwide Network of Goodness",
+          content: [
+            "Today, thousands of dedicated club members participate across hundreds of districts and zones.",
+            "Each district champions community development, disaster relief, and youth leadership wings (VJC - Vasavi Junior Clubs), creating a lasting generational impact.",
+          ],
+        },
+        {
+          pageNumber: 4,
+          chapter: "4. The Path Ahead",
+          title: "Digital Connectivity & Sustainable Service",
+          content: [
+            "As we advance into modern times, digital directories like Celfonbook bridge the gap between members, enabling instant contact, celebratory wishes, and cross-border commercial harmony.",
+            "May the spirit of service continue to light the lives of countless individuals worldwide.",
+          ],
+        },
+      ],
+    };
+  }
+
+  // Default: Lions Club (Melvin Jones)
+  return {
+    clubSlug: "lions",
+    clubName: "Lions Clubs International",
+    founderName: "Melvin Jones (1879 - 1961)",
+    title: "The Visionary Founder of Lions Clubs International",
+    shortSummary:
+      "Melvin Jones founded Lions Clubs International in 1917 with the philosophy: 'You can't get very far until you start doing something for somebody else.' Today it is the world's largest service club organization.",
+    coverImage: "https://images.unsplash.com/photo-1532012164546-f432f2e3edd3?w=600&auto=format&fit=crop&q=80",
+    portraitImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
+    quote: "You can't get very far until you start doing something for somebody else.",
+    pdfDownloadUrl: null,
+    pages: [
+      {
+        pageNumber: 1,
+        chapter: "1. Early Life",
+        title: "The Birth of an Ideal",
+        content: [
+          "Melvin Jones was born on January 13, 1879, in Fort Thomas, Arizona, the son of a United States Army captain who commanded a troop of scouts.",
+          "As a young man, Melvin Jones made his home in Chicago, Illinois, where he worked with an insurance firm and later founded his own successful agency in 1913.",
+        ],
+      },
+      {
+        pageNumber: 2,
+        chapter: "2. The Historic 1917 Meeting",
+        title: "From Business to Humanitarian Service",
+        content: [
+          "He joined the Business Circle, a businessmen's luncheon group, and was promptly elected secretary. But Melvin wondered: 'What if these men, who are successful because of their drive and intelligence, were to put their talents to work improving their communities?'",
+          "At his invitation, delegates from men's clubs met in Chicago on June 7, 1917, founding Lions Clubs International. In October 1917, the first national convention was held in Dallas, Texas.",
+        ],
+      },
+      {
+        pageNumber: 3,
+        chapter: "3. 'We Serve' & Global Expansion",
+        title: "The World's Largest Service Organization",
+        content: [
+          "Melvin Jones eventually abandoned his insurance business to devote himself full-time to Lionism at International Headquarters in Chicago.",
+          "Under his mentorship, Lions Clubs earned worldwide prestige for civic betterment, blindness prevention (answering Helen Keller's 1925 challenge to become 'Knights of the Blind'), youth programs, and humanitarian relief.",
+        ],
+      },
+      {
+        pageNumber: 4,
+        chapter: "4. Lasting Legacy",
+        title: "A Beacon for Generations",
+        content: [
+          "Melvin Jones passed away in 1961, leaving behind a movement with over 1.4 million members across 200+ countries.",
+          "His philosophy remains the core motto of Lionism: 'We Serve'. The Melvin Jones Fellowship (MJF) award stands today as the highest tribute to humanitarian service.",
+        ],
+      },
+    ],
+  };
 }
 
 /**
@@ -571,3 +845,4 @@ export async function searchClubMembers(clubSlug = "lions", nameQuery = "", keyQ
     return [];
   }
 }
+

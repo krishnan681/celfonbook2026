@@ -20,6 +20,10 @@
 │   ├── 📁 src/
 │   │   ├── 📁 assets/
 │   │   │   ├── 📁 images/
+│   │   │   │   ├── 📁 Clubs/
+│   │   │   │   │   ├── 🖼️ Lions_Clubs_International_logo.jpg
+│   │   │   │   │   ├── 🖼️ Lions_Clubs_International_logo.svg
+│   │   │   │   │   └── 🖼️ Vasavi.png
 │   │   │   │   ├── 🖼️ AboutPageImage.jpg
 │   │   │   │   ├── 🖼️ Login-image.jpg
 │   │   │   │   ├── 🖼️ TimelineLogo.png
@@ -32,10 +36,12 @@
 │   │   │   │   │   ├── 🎨 Timeline.css
 │   │   │   │   │   ├── 🎨 about.css
 │   │   │   │   │   └── 🎨 product.css
+│   │   │   │   ├── 📄 IndependenceCelebration.jsx
 │   │   │   │   ├── 📄 Products.jsx
 │   │   │   │   ├── 📄 Timeline.jsx
 │   │   │   │   ├── 📄 Toast.jsx
-│   │   │   │   └── 📄 about.jsx
+│   │   │   │   ├── 📄 about.jsx
+│   │   │   │   └── 🎨 independenceCelebration.css
 │   │   │   └── 📁 layout/
 │   │   │       ├── 📄 Footer.jsx
 │   │   │       ├── 📄 MainLayout.jsx
@@ -60,6 +66,8 @@
 │   │   │   │   ├── 📄 authService.js
 │   │   │   │   └── 📄 profileService.js
 │   │   │   └── 📁 utils/
+│   │   │       ├── 📄 confetti.js
+│   │   │       ├── 📄 maskHelper.js
 │   │   │       └── 📄 urlFormatter.js
 │   │   ├── 📁 features/
 │   │   │   ├── 📁 DetailedProfile/
@@ -130,6 +138,24 @@
 │   │   │   │       ├── 📄 useForgotPasswordController.js
 │   │   │   │       ├── 📄 useLoginController.js
 │   │   │   │       └── 📄 useSignupController.js
+│   │   │   ├── 📁 clubs/
+│   │   │   │   ├── 📁 components/
+│   │   │   │   │   ├── 📁 css/
+│   │   │   │   │   │   └── 🎨 LionsProfileCard.css
+│   │   │   │   │   └── 📄 LionsProfileCard.jsx
+│   │   │   │   ├── 📁 pages/
+│   │   │   │   │   ├── 📁 css/
+│   │   │   │   │   │   ├── 🎨 LionsClubPage.css
+│   │   │   │   │   │   ├── 🎨 LionsClubPages.css
+│   │   │   │   │   │   └── 🎨 LionsMemberDetailPage.css
+│   │   │   │   │   ├── 📄 LionsClubDetailPage.jsx
+│   │   │   │   │   ├── 📄 LionsClubPage.jsx
+│   │   │   │   │   ├── 📄 LionsDistrictClubsPage.jsx
+│   │   │   │   │   ├── 📄 LionsDistrictsPage.jsx
+│   │   │   │   │   └── 📄 LionsMemberDetailPage.jsx
+│   │   │   │   └── 📁 services/
+│   │   │   │       ├── 📄 clubService.js
+│   │   │   │       └── 📄 lionsClubService.js
 │   │   │   ├── 📁 favorites/
 │   │   │   │   ├── 📁 components/
 │   │   │   │   │   └── 📄 FavoritesView.jsx
