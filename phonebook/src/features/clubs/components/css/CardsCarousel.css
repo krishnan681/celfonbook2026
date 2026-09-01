@@ -1,0 +1,281 @@
+/* src/features/clubs/components/css/CardsCarousel.css */
+
+.cards-carousel-root {
+  width: 100%;
+  margin-top: 8px;
+  position: relative;
+}
+
+/* Header with Title and Controls */
+.cards-carousel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cards-carousel-title-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cards-carousel-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.cards-carousel-badge {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.cards-carousel-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Toggle Switcher (Carousel / Grid) */
+.carousel-view-toggle {
+  display: inline-flex;
+  background: #f1f5f9;
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.view-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-toggle-btn:hover {
+  color: #1e293b;
+}
+
+.view-toggle-btn.active {
+  background: #ffffff;
+  color: #005a36;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.theme-vasavi .view-toggle-btn.active {
+  color: #dc2626;
+}
+
+/* Desktop Arrow Buttons */
+.carousel-nav-arrows {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 2px 4px;
+  border-radius: 8px;
+}
+
+.carousel-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: none;
+  background: #f8fafc;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.carousel-nav-btn:hover:not(:disabled) {
+  background: #005a36;
+  color: #ffffff;
+}
+
+.theme-vasavi .carousel-nav-btn:hover:not(:disabled) {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.carousel-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.carousel-counter {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #64748b;
+  padding: 0 4px;
+  min-width: 42px;
+  text-align: center;
+}
+
+/* Carousel Viewport & Track */
+.cards-carousel-viewport {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 6px 2px 14px;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.cards-carousel-viewport:active {
+  cursor: grabbing;
+}
+
+.cards-carousel-track {
+  display: flex;
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+  gap: 0;
+}
+
+.cards-carousel-slide {
+  box-sizing: border-box;
+  padding: 0 8px;
+  min-width: 0;
+  display: flex;
+}
+
+.slide-content-wrapper {
+  width: 100%;
+  display: flex;
+}
+
+.slide-content-wrapper > * {
+  width: 100%;
+}
+
+/* Floating Navigation Buttons (Side Overlays) */
+.carousel-floating-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.carousel-floating-nav:hover {
+  background: #005a36;
+  color: #ffffff;
+  border-color: #005a36;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.theme-vasavi .carousel-floating-nav:hover {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+}
+
+.carousel-floating-nav.left {
+  left: 6px;
+}
+
+.carousel-floating-nav.right {
+  right: 6px;
+}
+
+/* Pagination Dots */
+.cards-carousel-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding-bottom: 6px;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: #cbd5e1;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.carousel-dot.active {
+  width: 22px;
+  background: #005a36;
+  box-shadow: 0 2px 6px rgba(0, 90, 54, 0.3);
+}
+
+.theme-vasavi .carousel-dot.active {
+  background: #dc2626;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+}
+
+.carousel-grid-item {
+  min-width: 0;
+}
+
+.cards-carousel-empty {
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  text-align: center;
+  color: #64748b;
+  border: 1px dashed #cbd5e1;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+  .cards-carousel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .cards-carousel-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .carousel-floating-nav {
+    width: 32px;
+    height: 32px;
+  }
+
+  .cards-carousel-slide {
+    padding: 0 4px;
+  }
+}

@@ -49,6 +49,7 @@ import ClubDetailPage from "./features/clubs/pages/ClubDetailPage";
 import ClubMemberDetailPage from "./features/clubs/pages/ClubMemberDetailPage";
 
 import MyReferralsPage from "./features/settings/pages/MyReferralsPage";
+import NotFoundPage from "./components/common/NotFoundPage";
 
 import { useRealtimeLogout } from "./core/hooks/useRealtimeLogout";
 
@@ -209,6 +210,9 @@ function App() {
 
           {/* OTP Verification */}
           <Route path="/otp_verification" element={<OtpVerificationPage />} />
+
+          {/* 404 Catch-All Page */}
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </>

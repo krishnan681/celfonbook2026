@@ -18,8 +18,11 @@ import {
   getClubInfo,
   getClubCelebrations,
 } from "../services/clubService";
+import { formatCelebrationWishMessage } from "../utils/celebrationMessageHelper";
 import ClubProfileCard from "../components/ClubProfileCard";
 import FounderCard from "../components/FounderCard";
+import lionsDefaultLogo from "../../../assets/images/Clubs/Lions_Clubs_International_logo.svg";
+import vasaviDefaultLogo from "../../../assets/images/Clubs/Vasavi.png";
 import "./css/LionsClubPages.css";
 
 const ClubDistrictsPage = () => {
@@ -173,11 +176,15 @@ const ClubDistrictsPage = () => {
                   /[^0-9]/g,
                   ""
                 );
-                const wishMessage = isBday
-                  ? `Dear ${displayName}, wishing you a very Happy Birthday! 🎂🎉 - from ${clubTitle}`
-                  : `Dear ${displayName} ${
-                      c.spouse ? `& ${c.spouse}` : ""
-                    }, wishing you both a very Happy Wedding Anniversary! 💍✨ - from ${clubTitle}`;
+                const wishMessage = formatCelebrationWishMessage({
+                  member: m,
+                  type: c.type,
+                  diffDays: c.diffDays || 0,
+                  dateFormatted: c.dateFormatted || "",
+                  spouse: c.spouse || "",
+                  clubSlug,
+                  clubTitle,
+                });
                 const waUrl = rawPhone
                   ? `https://wa.me/91${rawPhone}?text=${encodeURIComponent(
                       wishMessage
@@ -389,11 +396,18 @@ const ClubDistrictsPage = () => {
             ) : (
               <div className="cards-grid">
                 {districts.map((dist) => {
-                  const districtName = dist.name || `District ${dist.id}`;
+                  const cleanName =
+                    dist.displayName ||
+                    (dist.name ? dist.name.replace(/^District\s+/i, "") : "") ||
+                    String(dist.id).replace(/^District\s+/i, "");
+                  const logoSrc =
+                    dist.logo_url ||
+                    (clubSlug === "vasavi" ? vasaviDefaultLogo : lionsDefaultLogo);
+
                   return (
                     <div
                       key={dist.id}
-                      className="district-card"
+                      className="district-card district-card-enhanced"
                       onClick={() => navigate(`${basePath}/${dist.id}`)}
                       role="button"
                       tabIndex={0}
@@ -403,7 +417,33 @@ const ClubDistrictsPage = () => {
                         }
                       }}
                     >
-                      <h3 className="name">{districtName}</h3>
+                      <div className="district-card-logo-box">
+                        <img
+                          src={logoSrc}
+                          alt={`${cleanName} Logo`}
+                          className="district-logo-img"
+                        />
+                      </div>
+
+                      <div className="district-card-info">
+                        <h3 className="district-code-name">{cleanName}</h3>
+                        {/* <span className="district-club-tag">{clubTitle}</span> */}
+
+                        {/* {(dist.totalClubs > 0 || dist.totalMembers > 0) && (
+                          <div className="district-stats-row">
+                            {dist.totalClubs > 0 && (
+                              <span className="district-stat-pill">
+                                🏛️ {dist.totalClubs} Clubs
+                              </span>
+                            )}
+                            {dist.totalMembers > 0 && (
+                              <span className="district-stat-pill">
+                                👥 {dist.totalMembers} Members
+                              </span>
+                            )}
+                          </div>
+                        )} */}
+                      </div>
                     </div>
                   );
                 })}

@@ -1,0 +1,160 @@
+/* src/features/clubs/components/css/TabsCarousel.css */
+
+.tabs-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.tabs-carousel-track {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 6px 4px 10px;
+  width: 100%;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  -webkit-overflow-scrolling: touch;
+}
+
+.tabs-carousel-track::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Arrow Buttons */
+.tabs-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #1e293b;
+  border: 1.5px solid #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: all 0.2s ease;
+}
+
+.tabs-carousel-arrow:hover {
+  background: #005a36;
+  color: #ffffff;
+  border-color: #005a36;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.theme-vasavi .tabs-carousel-arrow:hover {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+}
+
+.tabs-carousel-arrow.left {
+  left: -12px;
+}
+
+.tabs-carousel-arrow.right {
+  right: -12px;
+}
+
+/* Individual Tab Button styling */
+.filter-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 30px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.filter-tab-btn:hover {
+  border-color: #16a34a;
+  color: #005a36;
+  background: #f0fdf4;
+  transform: translateY(-1px);
+}
+
+.theme-vasavi .filter-tab-btn:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+.filter-tab-btn.active {
+  background: linear-gradient(135deg, #005a36 0%, #16a34a 100%);
+  color: #ffffff;
+  border-color: #005a36;
+  box-shadow: 0 4px 12px rgba(0, 90, 54, 0.22);
+}
+
+.theme-vasavi .filter-tab-btn.active {
+  background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%);
+  color: #ffffff;
+  border-color: #991b1b;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.22);
+}
+
+.filter-tab-btn.active .filter-tab-count {
+  background: #f2a900;
+  color: #002d62;
+  font-weight: 800;
+}
+
+.filter-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  min-width: 18px;
+  transition: all 0.2s ease;
+}
+
+.filter-tab-btn:hover .filter-tab-count {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.theme-vasavi .filter-tab-btn:hover .filter-tab-count {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+@media (max-width: 640px) {
+  .tabs-carousel-arrow {
+    display: none; /* Mobile touch swipe feels natural without blocking arrow buttons */
+  }
+
+  .tabs-carousel-track {
+    padding: 4px 2px 8px;
+    gap: 8px;
+  }
+
+  .filter-tab-btn {
+    padding: 8px 14px;
+    font-size: 0.82rem;
+  }
+}

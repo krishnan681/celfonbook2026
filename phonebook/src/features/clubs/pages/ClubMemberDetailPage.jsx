@@ -1,40 +1,39 @@
 // src/features/clubs/pages/ClubMemberDetailPage.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import {
-  ArrowLeft,
-  ChevronRight,
-  Loader2,
-  Heart,
-  Phone,
-  MessageSquare,
-  MapPin,
-  Share2,
-} from "lucide-react";
+import { ArrowLeft, ChevronRight, Loader2, Award, Calendar, Heart } from "lucide-react";
 import { MdVerified, MdBusiness } from "react-icons/md";
-import { formatWebsiteUrl } from "../../../core/utils/urlFormatter";
-import { maskPhoneNumber, maskEmail } from "../../../core/utils/maskHelper";
+import { supabase } from "../../../core/config/supabaseClient";
+import { useFavorites } from "../../../core/context/FavoritesContext";
 import { getMemberById, getClubInfo } from "../services/clubService";
+import { getProfileSEO } from "../../../core/seo/seoHelper";
+
 import FavoriteModal from "../../search/components/FavoriteModal";
+import DetailedProfileHeader from "../../DetailedProfile/components/DetailedProfileHeader";
 import DetailedProfileTabs from "../../DetailedProfile/components/DetailedProfileTabs";
-import DetailedProfileMap from "../../DetailedProfile/components/DetailedProfileMap";
+import DetailedProfileAbout from "../../DetailedProfile/components/DetailedProfileAbout";
 import DetailedProfileProducts from "../../DetailedProfile/components/DetailedProfileProducts";
-import "../../search/components/css/profilecard.css";
+import DetailedProfileMap from "../../DetailedProfile/components/DetailedProfileMap";
+
 import "../../DetailedProfile/css/ProfileDetailPage.css";
 import "./css/LionsClubPages.css";
 
 export default function ClubMemberDetailPage() {
   const { memberId, clubSlug: paramSlug } = useParams();
   const navigate = useNavigate();
+  const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   const [member, setMember] = useState(null);
   const [clubInfo, setClubInfo] = useState(null);
+  const [images, setImages] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [priorityProducts, setPriorityProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("about");
-  const [isFavorite, setIsFavorite] = useState(false);
   const [showFavoriteModal, setShowFavoriteModal] = useState(false);
 
+  // Fetch Member & Club Info
   useEffect(() => {
     let isMounted = true;
     async function loadMemberData() {
@@ -68,6 +67,66 @@ export default function ClubMemberDetailPage() {
     };
   }, [memberId, paramSlug]);
 
+  // Load Cover Images & Products for Prime Members
+  useEffect(() => {
+    if (!member) return;
+
+    // Build Image Gallery
+    const memberImages = [];
+    if (member.cover_image?.trim()) {
+      const imgs = member.cover_image
+        .split(",")
+        .map((img) => img.trim())
+        .filter(Boolean);
+      memberImages.push(...imgs);
+    }
+    if (member.profile_image) memberImages.push(member.profile_image);
+    if (member.photo_url) memberImages.push(member.photo_url);
+    if (member.avatar) memberImages.push(member.avatar);
+    if (member.image_url) memberImages.push(member.image_url);
+
+    if (memberImages.length > 0) {
+      setImages([...new Set(memberImages)]);
+    } else {
+      // Fallback to shared header images or placeholder
+      const loadSharedHeaders = async () => {
+        try {
+          const { data } = await supabase
+            .from("free_tier_shared_header_images")
+            .select("image_url")
+            .order("sort_order", { ascending: true })
+            .limit(3);
+
+          if (data && data.length > 0) {
+            setImages(data.map((d) => d.image_url));
+          } else {
+            setImages(["https://via.placeholder.com/800x450?text=Member+Profile"]);
+          }
+        } catch (e) {
+          setImages(["https://via.placeholder.com/800x450?text=Member+Profile"]);
+        }
+      };
+      loadSharedHeaders();
+    }
+
+    // Load Products if Prime
+    if (member.is_prime && member.id) {
+      const loadProducts = async () => {
+        try {
+          const { data } = await supabase
+            .from("products")
+            .select("*")
+            .eq("profile_id", member.id)
+            .order("priority", { ascending: false });
+          if (data) setPriorityProducts(data);
+        } catch (e) {
+          console.error("Error loading member products:", e);
+        }
+      };
+      loadProducts();
+    }
+  }, [member]);
+
   const clubSlug =
     paramSlug ||
     member?.clubSlug ||
@@ -77,8 +136,72 @@ export default function ClubMemberDetailPage() {
     clubInfo?.name ||
     (clubSlug === "vasavi" ? "Vasavi Club" : "Lions Club");
   const clubThemeColor =
-    clubInfo?.theme_color || (clubSlug === "vasavi" ? "#7c2d12" : "#005a36");
+    clubInfo?.theme_color || (clubSlug === "vasavi" ? "#dc2626" : "#005a36");
   const basePath = clubSlug === "lions" ? "/lions-club" : `/clubs/${clubSlug}`;
+
+  // Normalized Profile Object for DetailedProfile Components
+  const normalizedProfile = useMemo(() => {
+    if (!member) return null;
+    return {
+      ...member,
+      id: member.id,
+      business_name:
+        member.fullBusinessName ||
+        member.business_name ||
+        member.fullName ||
+        member.person_name ||
+        "Unnamed Member",
+      person_name: member.person_name || member.fullName || "",
+      keywords: member.keywords || member.profession || member.activity || "",
+      mobile_number: member.mobile_number || member.phone || "",
+      whats_app:
+        member.whats_app || member.mobile_number || member.phone || "",
+      email: member.email || "",
+      web_site: member.web_site || "",
+      address: member.address || member.bussiness_address || "",
+      city: member.city || "",
+      pincode: member.pincode || "",
+      description: member.description || "",
+      is_prime: Boolean(member.is_prime),
+      priority: Boolean(member.priority || member.isLeadership),
+    };
+  }, [member]);
+
+  const isFavorite = useMemo(() => {
+    if (!normalizedProfile?.id || !favorites) return false;
+    return favorites.some((fav) => fav.id === normalizedProfile.id);
+  }, [favorites, normalizedProfile]);
+
+  const handleFavoriteToggle = () => {
+    if (!normalizedProfile) return;
+    if (isFavorite) {
+      removeFavorite(normalizedProfile.id);
+    } else {
+      setShowFavoriteModal(true);
+    }
+  };
+
+  const handleShare = async () => {
+    if (!normalizedProfile) return;
+    const shareTitle = `${normalizedProfile.business_name} - ${
+      member?.clubName || clubTitle
+    }`;
+    const shareText = `View ${normalizedProfile.business_name} on Celfonbook Directory`;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: window.location.href,
+        });
+      } catch (err) {
+        console.log("Share dismissed");
+      }
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("Profile link copied to clipboard!");
+    }
+  };
 
   if (isLoading) {
     return (
@@ -101,7 +224,7 @@ export default function ClubMemberDetailPage() {
     );
   }
 
-  if (!member) {
+  if (!member || !normalizedProfile) {
     return (
       <div className="pd-page">
         <div
@@ -125,13 +248,7 @@ export default function ClubMemberDetailPage() {
     );
   }
 
-  const displayName =
-    member.fullBusinessName ||
-    member.business_name ||
-    member.fullName ||
-    member.person_name ||
-    "Unnamed Member";
-
+  const seo = getProfileSEO(normalizedProfile);
   const fullAddress = [
     member.address || member.bussiness_address,
     member.city,
@@ -140,71 +257,38 @@ export default function ClubMemberDetailPage() {
     .filter(Boolean)
     .join(", ");
 
-  const rawPhone = member.mobile_number || member.phone || member.whats_app || "";
-  const maskedPhone = maskPhoneNumber(rawPhone || "96857xxxxx");
-
-  const keywords =
-    member.keywords || member.profession || member.activity || "";
-
-  const borderClass = member.isLeadership
-    ? "card-business"
-    : member.is_prime
-    ? "card-prime"
-    : "card-default";
-
-  const handleCall = (e) => {
-    e?.stopPropagation();
-    if (!rawPhone) {
-      alert("No phone number available");
-      return;
-    }
-    window.location.href = `tel:${rawPhone}`;
-  };
-
-  const handleWhatsApp = (e) => {
-    e?.stopPropagation();
-    if (!rawPhone) {
-      alert("No phone number available");
-      return;
-    }
-    const cleanPhone = rawPhone.replace(/[^0-9]/g, "");
-    window.open(`https://wa.me/91${cleanPhone}`, "_blank");
-  };
-
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `${displayName} - ${member.clubName || clubTitle}`,
-          text: `Contact details for ${displayName} on Celfonbook Directory`,
-          url: window.location.href,
-        });
-      } catch (err) {
-        console.log("Share dismissed");
-      }
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert("Profile link copied to clipboard!");
-    }
-  };
+  const hasClubDetails = Boolean(
+    member.post_of_member ||
+      member.postFull ||
+      member.member_num ||
+      member.clubName ||
+      member.districtId ||
+      member.DOB ||
+      member.dob ||
+      member.DOW ||
+      member.dow ||
+      member.spouse ||
+      member.blood_group
+  );
 
   return (
     <div className="pd-page">
       <Helmet>
         <title>
-          {displayName} | {clubTitle} Directory | Celfonbook
+          {normalizedProfile.business_name} | {clubTitle} Directory | Celfonbook
         </title>
         <meta
           name="description"
-          content={`View business profile and contact details for ${displayName} in ${
-            member.clubName || clubTitle
-          }.`}
+          content={`View business profile and contact details for ${
+            normalizedProfile.business_name
+          } in ${member.clubName || clubTitle}.`}
         />
+        <meta name="keywords" content={seo.keywords} />
       </Helmet>
 
-      <div className="pd-container">
-        {/* Navigation & Breadcrumbs */}
-        <div className="lions-nav-bar" style={{ marginBottom: "20px" }}>
+      {/* Breadcrumb Navigation Bar */}
+      <div className="pd-container" style={{ paddingTop: "16px" }}>
+        <div className="lions-nav-bar" style={{ marginBottom: "16px" }}>
           <button
             type="button"
             className="lions-back-btn"
@@ -243,467 +327,160 @@ export default function ClubMemberDetailPage() {
                 <ChevronRight size={14} className="breadcrumb-separator" />
               </>
             )}
-            <span className="breadcrumb-current">{displayName}</span>
+            <span className="breadcrumb-current">
+              {normalizedProfile.business_name}
+            </span>
           </div>
         </div>
+      </div>
 
-        {/* ======================================================== */}
-        {/* MAIN PROFILE CARD (EXACT SAME DESIGN AS Search/ProfileCard.jsx) */}
-        {/* ======================================================== */}
-        <div
-          className={`profile-card ${borderClass}`}
-          style={{
-            marginBottom: "28px",
-            padding: "24px 26px 20px",
-            borderRadius: "16px",
-          }}
-        >
-          {/* Heart / Favorite button - top right */}
-          <button
-            className={`heart-btn ${isFavorite ? "saved" : ""}`}
-            onClick={() => setShowFavoriteModal(true)}
-            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-            style={{ top: "16px", right: "16px" }}
-          >
-            <Heart
-              size={20}
-              fill={isFavorite ? "#ef4444" : "none"}
-              stroke={isFavorite ? "none" : "#64748b"}
-            />
-          </button>
+      {/* Hero Header Component (Exact Same Design as ProfileDetailPage) */}
+      <DetailedProfileHeader
+        profile={normalizedProfile}
+        images={images}
+        currentIndex={currentIndex}
+        setCurrentIndex={setCurrentIndex}
+        isFavorite={isFavorite}
+        onShare={handleShare}
+        onToggleFavorite={handleFavoriteToggle}
+      />
 
-          {/* Prime badge - top left */}
-          {member.is_prime && (
-            <div className="prime-badge" style={{ top: "16px", left: "16px" }}>
-              <span className="star">★</span> Prime
-            </div>
-          )}
+      {/* Main Layout: Tabs + Tab Content Body */}
+      <div className="pd-container pd-main-layout">
+        <div className="pd-left-content">
+          <DetailedProfileTabs
+            activeTab={activeTab}
+            onChange={setActiveTab}
+            profile={normalizedProfile}
+          />
 
-          {/* Card Header */}
-          <div
-            className="card-header"
-            style={{
-              marginTop: member.is_prime ? "28px" : "4px",
-              marginBottom: "12px",
-            }}
-          >
-            <h2
-              className="name"
-              style={{
-                fontSize: "1.55rem",
-                fontWeight: "700",
-                color: "#0f172a",
-                lineHeight: "1.3",
-              }}
-            >
-              {displayName}
-            </h2>
-            {member.person_name && member.fullBusinessName && (
-              <p
-                style={{
-                  margin: "4px 0 0",
-                  fontSize: "0.92rem",
-                  color: "#475569",
-                  fontWeight: "600",
-                }}
-              >
-                👤 {member.person_name}
-              </p>
-            )}
-          </div>
+          <div className="pd-tab-body">
+            {/* Tab: About & Club Details */}
+            {activeTab === "about" && (
+              <>
+                {/* Standard Business Details */}
+                <DetailedProfileAbout profile={normalizedProfile} />
 
-          {/* Card Info */}
-          <div className="card-info" style={{ marginBottom: "20px" }}>
-            <p className="type-location" style={{ fontSize: "0.95rem" }}>
-              <MapPin size={16} /> {fullAddress || member.city || "Coimbatore"}
-            </p>
-
-            {rawPhone && (
-              <p
-                className="mobile"
-                style={{ fontSize: "0.95rem", margin: "6px 0" }}
-              >
-                📞 {maskedPhone}
-              </p>
-            )}
-
-            {keywords && (
-              <p
-                className="keywords"
-                style={{ fontSize: "0.9rem", margin: "6px 0 8px" }}
-              >
-                {keywords
-                  .split(",")
-                  .slice(0, 4)
-                  .map((kw, i) => (
-                    <span key={i} style={{ marginRight: "6px" }}>
-                      {kw.trim()}
-                    </span>
-                  ))}
-              </p>
-            )}
-
-            {member.post_of_member && (
-              <p
-                className="post-role"
-                style={{
-                  fontWeight: "700",
-                  color: clubThemeColor,
-                  margin: "8px 0 4px",
-                  fontSize: "0.95rem",
-                }}
-              >
-                🎖️ {member.postFull || member.post_of_member}
-              </p>
-            )}
-
-            {member.clubName && (
-              <p
-                className="club-info"
-                style={{
-                  color: "#475569",
-                  margin: "4px 0",
-                  fontSize: "0.9rem",
-                }}
-              >
-                🏛️ {member.clubName}{" "}
-                {member.districtId ? `• District ${member.districtId}` : ""}
-              </p>
-            )}
-
-            {/* Celebrations info if present */}
-            {(member.DOB || member.dob || member.DOW || member.dow) && (
-              <div
-                style={{
-                  display: "flex",
-                  gap: "12px",
-                  marginTop: "8px",
-                  flexWrap: "wrap",
-                }}
-              >
-                {(member.DOB || member.dob) && (
-                  <span
-                    style={{
-                      fontSize: "0.82rem",
-                      background: "rgba(245, 158, 11, 0.12)",
-                      color: "#b45309",
-                      padding: "3px 8px",
-                      borderRadius: "6px",
-                      fontWeight: "600",
-                    }}
+                {/* Club-Specific Membership Details */}
+                {hasClubDetails && (
+                  <div
+                    className="pd-about-section"
+                    style={{ marginTop: "24px" }}
                   >
-                    🎂 Birthday: {member.DOB || member.dob}
-                  </span>
+                    <h3 style={{ color: clubThemeColor }}>
+                      {clubTitle} Membership Information
+                    </h3>
+
+                    <div className="pd-details-grid">
+                      {(member.postFull || member.post_of_member) && (
+                        <div className="pd-detail-item">
+                          <div>
+                            <strong>Post / Designation:</strong>
+                            <p style={{ fontWeight: "700", color: clubThemeColor }}>
+                              {member.postFull || member.post_of_member}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      {member.clubName && (
+                        <div className="pd-detail-item">
+                          <div>
+                            <strong>Club Affiliation:</strong>
+                            <p>{member.clubName}</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {member.districtId && (
+                        <div className="pd-detail-item">
+                          <div>
+                            <strong>District:</strong>
+                            <p>District {member.districtId}</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {member.member_num && (
+                        <div className="pd-detail-item">
+                          <div>
+                            <strong>Member ID / Number:</strong>
+                            <p>#{member.member_num}</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {(member.DOB || member.dob) && (
+                        <div className="pd-detail-item">
+                          <div>
+                            <strong>Date of Birth (🎂):</strong>
+                            <p>{member.DOB || member.dob}</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {(member.DOW || member.dow) && (
+                        <div className="pd-detail-item">
+                          <div>
+                            <strong>Wedding Anniversary (💍):</strong>
+                            <p>{member.DOW || member.dow}</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {member.spouse && (
+                        <div className="pd-detail-item">
+                          <div>
+                            <strong>Spouse Name:</strong>
+                            <p>{member.spouse}</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {member.blood_group && (
+                        <div className="pd-detail-item">
+                          <div>
+                            <strong>Blood Group:</strong>
+                            <p>{member.blood_group}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 )}
-                {(member.DOW || member.dow) && (
-                  <span
-                    style={{
-                      fontSize: "0.82rem",
-                      background: "rgba(236, 72, 153, 0.12)",
-                      color: "#be185d",
-                      padding: "3px 8px",
-                      borderRadius: "6px",
-                      fontWeight: "600",
-                    }}
-                  >
-                    💍 Anniversary: {member.DOW || member.dow}{" "}
-                    {member.spouse ? `(${member.spouse})` : ""}
-                  </span>
-                )}
-              </div>
+              </>
             )}
-          </div>
 
-          {/* Card Actions */}
-          <div className="card-actions" style={{ gap: "12px" }}>
-            <button
-              type="button"
-              className="btn call"
-              onClick={handleCall}
-              style={{
-                height: "44px",
-                fontSize: "0.95rem",
-                fontWeight: "600",
-                borderRadius: "10px",
-                background: "#10b981",
-                color: "white",
-              }}
-            >
-              <Phone size={17} /> Call
-            </button>
+            {/* Tab: Products (For Prime Members) */}
+            {normalizedProfile?.is_prime && activeTab === "products" && (
+              <DetailedProfileProducts priorityProducts={priorityProducts} />
+            )}
 
-            <button
-              type="button"
-              className="btn enquire"
-              onClick={handleWhatsApp}
-              style={{
-                height: "44px",
-                fontSize: "0.95rem",
-                fontWeight: "600",
-                borderRadius: "10px",
-                background: "#3b82f6",
-                color: "white",
-              }}
-            >
-              <MessageSquare size={17} /> Enquire
-            </button>
-
-            <button
-              type="button"
-              className="btn"
-              onClick={handleShare}
-              style={{
-                background: "#f1f5f9",
-                color: "#475569",
-                border: "1px solid #cbd5e1",
-                height: "44px",
-                fontSize: "0.95rem",
-                fontWeight: "600",
-                borderRadius: "10px",
-                flex: "0 0 100px",
-              }}
-            >
-              <Share2 size={16} /> Share
-            </button>
-          </div>
-        </div>
-
-        {/* Navigation Tabs */}
-        <DetailedProfileTabs
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          hasProducts={Boolean(member.is_prime)}
-          hasMap={Boolean(fullAddress)}
-        />
-
-        {/* Tab Content Body */}
-        <div
-          className="pd-tab-content-wrapper"
-          style={{
-            background: "white",
-            border: "1px solid #e2e8f0",
-            borderRadius: "16px",
-            padding: "24px",
-            boxShadow: "0 2px 10px rgba(0,0,0,0.04)",
-          }}
-        >
-          {activeTab === "about" && (
-            <div className="pd-about-section">
-              {/* Description */}
-              {member.description && (
-                <div style={{ marginBottom: "24px" }}>
-                  <h3 style={{ marginBottom: "10px", color: "#1e293b" }}>
-                    About Business
-                  </h3>
-                  <p style={{ lineHeight: "1.7", color: "#475569" }}>
-                    {member.description}
-                  </p>
-                </div>
-              )}
-
-              {/* Contact Information */}
-              <h3 style={{ marginBottom: "16px", color: "#1e293b" }}>
-                Contact & Profile Details
-              </h3>
-              <div className="pd-details-grid">
-                {member.person_name && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Full Name:</strong>
-                      <p>{member.person_name}</p>
-                    </div>
-                  </div>
-                )}
-
-                {member.mobile_number && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Mobile Number:</strong>
-                      <p>{maskPhoneNumber(member.mobile_number)}</p>
-                    </div>
-                  </div>
-                )}
-
-                {member.whats_app && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>WhatsApp:</strong>
-                      <p>{maskPhoneNumber(member.whats_app)}</p>
-                    </div>
-                  </div>
-                )}
-
-                {member.email && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Email:</strong>
-                      <p>{maskEmail(member.email)}</p>
-                    </div>
-                  </div>
-                )}
-
-                {fullAddress && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Address:</strong>
-                      <p>{fullAddress}</p>
-                    </div>
-                  </div>
-                )}
-
-                {member.city && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>City:</strong>
-                      <p>{member.city}</p>
-                    </div>
-                  </div>
-                )}
-
-                {member.pincode && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Pincode:</strong>
-                      <p>{member.pincode}</p>
-                    </div>
-                  </div>
-                )}
-
-                {member.web_site && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Website:</strong>
-                      <p>
-                        <a
-                          href={formatWebsiteUrl(member.web_site)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Visit Website
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Club Specific Details Header & Grid */}
-              <hr
-                style={{
-                  border: 0,
-                  borderTop: "1px solid #e2e8f0",
-                  margin: "24px 0",
-                }}
+            {/* Tab: Map */}
+            {activeTab === "map" && (
+              <DetailedProfileMap
+                address={normalizedProfile.address}
+                city={normalizedProfile.city}
+                pincode={normalizedProfile.pincode}
               />
-
-              <h3 style={{ marginBottom: "16px", color: clubThemeColor }}>
-                {clubTitle} Membership Details
-              </h3>
-
-              <div className="pd-details-grid">
-                {member.post_of_member && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Post / Designation:</strong>
-                      <p>{member.postFull || member.post_of_member}</p>
-                    </div>
-                  </div>
-                )}
-
-                {member.member_num && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Member Number:</strong>
-                      <p>#{member.member_num}</p>
-                    </div>
-                  </div>
-                )}
-
-                {member.clubName && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Club Affiliation:</strong>
-                      <p>{member.clubName}</p>
-                    </div>
-                  </div>
-                )}
-
-                {member.districtId && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>District:</strong>
-                      <p>District {member.districtId}</p>
-                    </div>
-                  </div>
-                )}
-
-                {(member.DOB || member.dob) && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Date of Birth (🎂):</strong>
-                      <p>{member.DOB || member.dob}</p>
-                    </div>
-                  </div>
-                )}
-
-                {(member.DOW || member.dow) && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Wedding Anniversary (💍):</strong>
-                      <p>{member.DOW || member.dow}</p>
-                    </div>
-                  </div>
-                )}
-
-                {member.spouse && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Spouse Name:</strong>
-                      <p>{member.spouse}</p>
-                    </div>
-                  </div>
-                )}
-
-                {member.blood_group && (
-                  <div className="pd-detail-item">
-                    <div>
-                      <strong>Blood Group:</strong>
-                      <p>{member.blood_group}</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Tab: Products */}
-          {member.is_prime && activeTab === "products" && (
-            <DetailedProfileProducts priorityProducts={[]} />
-          )}
-
-          {/* Tab: Map */}
-          {activeTab === "map" && (
-            <DetailedProfileMap
-              address={member.address || member.bussiness_address}
-              city={member.city}
-              pincode={member.pincode}
-            />
-          )}
+            )}
+          </div>
         </div>
       </div>
 
       {/* Favorite Modal */}
-      {showFavoriteModal && (
-        <FavoriteModal
-          show={showFavoriteModal}
-          onClose={() => setShowFavoriteModal(false)}
-          selectedItem={member}
-          onSaved={() => {
-            setIsFavorite(true);
-            window.dispatchEvent(new Event("favorites-updated"));
-          }}
-        />
-      )}
+      <FavoriteModal
+        show={showFavoriteModal}
+        onClose={() => setShowFavoriteModal(false)}
+        onSave={(cat) => {
+          addFavorite({
+            ...normalizedProfile,
+            category: cat,
+          });
+          setShowFavoriteModal(false);
+        }}
+        selectedItem={normalizedProfile}
+      />
     </div>
   );
 }

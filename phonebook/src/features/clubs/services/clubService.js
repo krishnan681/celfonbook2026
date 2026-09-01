@@ -1,5 +1,8 @@
 // src/features/clubs/services/clubService.js
 import { supabase } from "../../../core/config/supabaseClient";
+import { cacheService } from "../../../core/services/cacheService";
+import lionsDefaultLogo from "../../../assets/images/Clubs/Lions_Clubs_International_logo.svg";
+import vasaviDefaultLogo from "../../../assets/images/Clubs/Vasavi.png";
 
 /**
  * Built-in fallback definitions for known clubs when backend table is not yet seeded
@@ -11,7 +14,7 @@ export const KNOWN_CLUBS = {
     name: "Lions Clubs International",
     short_name: "Lions Club",
     search_keyword: "Lions",
-    logo_url: null,
+    logo_url: lionsDefaultLogo,
     default_district: "3242C",
     theme_color: "#005a36",
   },
@@ -21,7 +24,7 @@ export const KNOWN_CLUBS = {
     name: "Vasavi Clubs International",
     short_name: "Vasavi Club",
     search_keyword: "Vasavi",
-    logo_url: null,
+    logo_url: vasaviDefaultLogo,
     default_district: "V501A",
     theme_color: "#7c2d12",
   },
@@ -176,6 +179,18 @@ export async function getClubInfo(clubSlug = "lions") {
 export async function getDistricts(clubSlug = "lions") {
   const clubInfo = await getClubInfo(clubSlug);
   const searchKeyword = clubInfo.search_keyword || clubSlug;
+  const fallbackLogo = clubSlug === "vasavi" ? vasaviDefaultLogo : lionsDefaultLogo;
+
+  // Helper to format clean district name without "District " prefix
+  const cleanDistrictTitle = (name, code) => {
+    if (code && code.trim()) {
+      return code.trim().replace(/^District\s+/i, "");
+    }
+    if (name && name.trim()) {
+      return name.trim().replace(/^District\s+/i, "");
+    }
+    return code || name || "";
+  };
 
   try {
     // 1. Check if districts are defined in public.club_districts
@@ -205,8 +220,10 @@ export async function getDistricts(clubSlug = "lions") {
 
           return {
             id: code,
-            name: d.district_name || `District ${code}`,
-            logo_url: d.logo_url || clubInfo.logo_url || null,
+            name: cleanDistrictTitle(d.district_name, code),
+            displayName: cleanDistrictTitle(d.district_name, code),
+            fullDistrictName: `District ${cleanDistrictTitle(d.district_name, code)}`,
+            logo_url: d.logo_url || clubInfo.logo_url || fallbackLogo,
             totalClubs: clubsSet.size,
             totalMembers: matchingProfs.length,
           };
@@ -229,11 +246,14 @@ export async function getDistricts(clubSlug = "lions") {
     if (error) throw error;
 
     if (!data || data.length === 0) {
+      const defaultCode = clubInfo.default_district || (clubSlug === "vasavi" ? "V501A" : "3242C");
       return [
         {
-          id: clubInfo.default_district || "3242C",
-          name: `District ${clubInfo.default_district || "3242C"}`,
-          logo_url: clubInfo.logo_url || null,
+          id: defaultCode,
+          name: cleanDistrictTitle(defaultCode, defaultCode),
+          displayName: cleanDistrictTitle(defaultCode, defaultCode),
+          fullDistrictName: `District ${defaultCode}`,
+          logo_url: clubInfo.logo_url || fallbackLogo,
           totalClubs: 0,
           totalMembers: 0,
         },
@@ -244,20 +264,23 @@ export async function getDistricts(clubSlug = "lions") {
     const districtMap = new Map();
 
     data.forEach((row) => {
-      const dist = (row.district || "").trim();
-      if (!dist) return;
+      const rawDist = (row.district || "").trim();
+      if (!rawDist) return;
+      const cleanCode = cleanDistrictTitle(rawDist, rawDist);
 
-      if (!districtMap.has(dist)) {
-        districtMap.set(dist, {
-          id: dist,
-          name: dist.toLowerCase().startsWith("district") ? dist : `District ${dist}`,
-          logo_url: clubInfo.logo_url || null,
+      if (!districtMap.has(cleanCode)) {
+        districtMap.set(cleanCode, {
+          id: rawDist,
+          name: cleanCode,
+          displayName: cleanCode,
+          fullDistrictName: `District ${cleanCode}`,
+          logo_url: clubInfo.logo_url || fallbackLogo,
           clubsSet: new Set(),
           totalMembers: 0,
         });
       }
 
-      const item = districtMap.get(dist);
+      const item = districtMap.get(cleanCode);
       item.totalMembers += 1;
       if (row.club && row.club.trim()) {
         item.clubsSet.add(row.club.trim());
@@ -267,17 +290,22 @@ export async function getDistricts(clubSlug = "lions") {
     return Array.from(districtMap.values()).map((d) => ({
       id: d.id,
       name: d.name,
-      logo_url: d.logo_url,
+      displayName: d.displayName,
+      fullDistrictName: d.fullDistrictName,
+      logo_url: d.logo_url || fallbackLogo,
       totalClubs: d.clubsSet.size,
       totalMembers: d.totalMembers,
     }));
   } catch (err) {
     console.error("Error fetching districts from Supabase:", err);
+    const defaultCode = clubInfo.default_district || (clubSlug === "vasavi" ? "V501A" : "3242C");
     return [
       {
-        id: clubInfo.default_district || "3242C",
-        name: `District ${clubInfo.default_district || "3242C"}`,
-        logo_url: clubInfo.logo_url || null,
+        id: defaultCode,
+        name: cleanDistrictTitle(defaultCode, defaultCode),
+        displayName: cleanDistrictTitle(defaultCode, defaultCode),
+        fullDistrictName: `District ${defaultCode}`,
+        logo_url: clubInfo.logo_url || fallbackLogo,
         totalClubs: 0,
         totalMembers: 0,
       },
@@ -415,30 +443,85 @@ export async function getMemberById(memberId) {
   }
 }
 
+const MONTH_NAMES = {
+  jan: 0, january: 0,
+  feb: 1, february: 1,
+  mar: 2, march: 2,
+  apr: 3, april: 3,
+  may: 4,
+  jun: 5, june: 5,
+  jul: 6, july: 6,
+  aug: 7, august: 7,
+  sep: 8, sept: 8, september: 8,
+  oct: 9, october: 9,
+  nov: 10, november: 10,
+  dec: 11, december: 11,
+};
+
 /**
  * Helper to parse a date string into { month (0-11), day (1-31) }
  */
 export function parseDateMonthDay(dateStr) {
   if (!dateStr) return null;
   try {
+    if (dateStr instanceof Date && !isNaN(dateStr.getTime())) {
+      return { month: dateStr.getMonth(), day: dateStr.getDate() };
+    }
+
+    const str = String(dateStr).trim();
+    if (!str) return null;
+
+    // Check ISO or standard timestamp format (e.g. 2024-08-15T00:00:00Z)
+    if (str.includes("T") || str.includes(":")) {
+      const d = new Date(str);
+      if (!isNaN(d.getTime())) {
+        return { month: d.getMonth(), day: d.getDate() };
+      }
+    }
+
+    // Replace various delimiters with a single hyphen: '/', '.', ' ', ','
+    const normalized = str.replace(/[\/,\.\s]+/g, "-");
+    const parts = normalized.split("-").filter(Boolean);
+
     let day, month;
-    if (typeof dateStr === "string" && dateStr.includes("-")) {
-      const parts = dateStr.split("-");
-      if (parts[0].length === 4) {
+
+    if (parts.length >= 2) {
+      const p0 = parts[0].toLowerCase();
+      const p1 = parts[1].toLowerCase();
+
+      // Check if text month name is in part 0 or 1
+      if (MONTH_NAMES[p0] !== undefined) {
+        month = MONTH_NAMES[p0];
+        day = parseInt(p1, 10);
+      } else if (MONTH_NAMES[p1] !== undefined) {
+        month = MONTH_NAMES[p1];
+        day = parseInt(p0, 10);
+      } else if (parts[0].length === 4) {
         // YYYY-MM-DD
         month = parseInt(parts[1], 10) - 1;
-        day = parseInt(parts[2], 10);
-      } else {
-        // DD-MM-YYYY
+        day = parseInt(parts[2] || parts[1], 10);
+      } else if (parts.length >= 3 && parts[2].length === 4) {
+        // DD-MM-YYYY (Standard Indian / Global)
         day = parseInt(parts[0], 10);
         month = parseInt(parts[1], 10) - 1;
+      } else {
+        // General 2-part or 3-part: DD-MM
+        const num0 = parseInt(parts[0], 10);
+        const num1 = parseInt(parts[1], 10);
+        if (num0 > 12) {
+          day = num0;
+          month = num1 - 1;
+        } else if (num1 > 12) {
+          day = num1;
+          month = num0 - 1;
+        } else {
+          // Default DD-MM
+          day = num0;
+          month = num1 - 1;
+        }
       }
-    } else if (typeof dateStr === "string" && dateStr.includes("/")) {
-      const parts = dateStr.split("/");
-      day = parseInt(parts[0], 10);
-      month = parseInt(parts[1], 10) - 1;
     } else {
-      const d = new Date(dateStr);
+      const d = new Date(str);
       if (isNaN(d.getTime())) return null;
       day = d.getDate();
       month = d.getMonth();
@@ -516,17 +599,18 @@ export async function getClubCelebrations(clubSlug = "lions", districtId = null)
  * Categorizes all member birthdays and anniversaries into:
  * - today (diffDays === 0)
  * - tomorrow (diffDays === 1)
- * - thisWeek (diffDays 2 to 7)
- * - thisMonth (diffDays 8 to 30)
+ * - thisWeek (diffDays 0 to 7)
+ * - thisMonth (diffDays 0 to 30)
  * - upcoming (all future events within 60 days)
  * - recentPast (diffDays -1 to -7 for belated wishes)
- * - allChronological (all sorted from next upcoming)
+ * - all (all sorted from next upcoming)
  */
 export async function getClubCelebrationsTimeline(
   clubSlug = "lions",
   districtId = null,
   clubName = null
 ) {
+  const cacheKey = `celebrations_${clubSlug}_${districtId || "all"}_${clubName || "all"}`;
   try {
     let query = supabase.from("profiles").select("*");
 
@@ -632,10 +716,10 @@ export async function getClubCelebrationsTimeline(
     const today = allEvents.filter((e) => e.diffDays === 0);
     const tomorrow = allEvents.filter((e) => e.diffDays === 1);
     const thisWeek = allEvents
-      .filter((e) => e.diffDays >= 2 && e.diffDays <= 7)
+      .filter((e) => e.diffDays >= 0 && e.diffDays <= 7)
       .sort((a, b) => a.diffDays - b.diffDays);
     const thisMonth = allEvents
-      .filter((e) => e.diffDays > 7 && e.diffDays <= 30)
+      .filter((e) => e.diffDays >= 0 && e.diffDays <= 30)
       .sort((a, b) => a.diffDays - b.diffDays);
     const upcoming = allEvents
       .filter((e) => e.diffDays > 0 && e.diffDays <= 60)
@@ -651,7 +735,7 @@ export async function getClubCelebrationsTimeline(
       return aVal - bVal;
     });
 
-    return {
+    const result = {
       today,
       tomorrow,
       thisWeek,
@@ -661,8 +745,17 @@ export async function getClubCelebrationsTimeline(
       all: allSorted,
       totalCelebrants: allEvents.length,
     };
+
+    // Save to client persistence cache
+    cacheService.set(cacheKey, result, 1000 * 60 * 15);
+
+    return result;
   } catch (err) {
     console.error("Error generating celebrations timeline:", err);
+    // Return cached records on network failure if available
+    const cached = cacheService.get(cacheKey);
+    if (cached) return cached;
+
     return {
       today: [],
       tomorrow: [],

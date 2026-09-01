@@ -9,6 +9,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { FaWhatsapp as FaWhatsappIcon } from "react-icons/fa";
+import { formatCelebrationWishMessage } from "../utils/celebrationMessageHelper";
 
 export default function CelebrationMessageSender({
   timeline,
@@ -21,7 +22,6 @@ export default function CelebrationMessageSender({
   const [activeMemberId, setActiveMemberId] = useState(
     selectedCelebrant?.id || ""
   );
-  const [templateType, setTemplateType] = useState("standard");
   const [customMessage, setCustomMessage] = useState("");
   const [isCopied, setIsCopied] = useState(false);
 
@@ -38,50 +38,23 @@ export default function CelebrationMessageSender({
   useEffect(() => {
     if (!activeEvent) return;
 
-    const m = activeEvent.member;
-    const displayName = m.fullName || m.person_name || m.business_name || "Member";
-    const isBday = activeEvent.type === "BIRTHDAY";
+    const clubSlug = clubTitle.toLowerCase().includes("vasavi")
+      ? "vasavi"
+      : clubTitle.toLowerCase().includes("rotary")
+      ? "rotary"
+      : "lions";
 
-    if (activeEvent.diffDays === 0) {
-      // Today
-      if (isBday) {
-        setCustomMessage(
-          `Dear ${displayName}, wishing you a very Happy Birthday! 🎂🎉 May your day be filled with joy and your year ahead bring great health and success. - Warm greetings from ${clubTitle}`
-        );
-      } else {
-        setCustomMessage(
-          `Dear ${displayName} ${
-            activeEvent.spouse ? `& ${activeEvent.spouse}` : ""
-          }, wishing you both a very Happy Wedding Anniversary! 💍✨ May your bond grow stronger with each passing year. - Warm greetings from ${clubTitle}`
-        );
-      }
-    } else if (activeEvent.diffDays > 0) {
-      // Upcoming / Advance
-      if (isBday) {
-        setCustomMessage(
-          `Dear ${displayName}, wishing you a very Happy Birthday in advance (${activeEvent.dateFormatted})! 🎂🎉 Wishing you fantastic celebrations and happiness ahead. - Warm wishes from ${clubTitle}`
-        );
-      } else {
-        setCustomMessage(
-          `Dear ${displayName} ${
-            activeEvent.spouse ? `& ${activeEvent.spouse}` : ""
-          }, wishing you both a very Happy Wedding Anniversary in advance (${activeEvent.dateFormatted})! 💍✨ - Warm wishes from ${clubTitle}`
-        );
-      }
-    } else {
-      // Belated
-      if (isBday) {
-        setCustomMessage(
-          `Dear ${displayName}, wishing you a very Happy Belated Birthday! 🎂 Hope you had a wonderful celebration. Wishing you health and prosperity! - Best wishes from ${clubTitle}`
-        );
-      } else {
-        setCustomMessage(
-          `Dear ${displayName} ${
-            activeEvent.spouse ? `& ${activeEvent.spouse}` : ""
-          }, wishing you both a Happy Belated Wedding Anniversary! 💍✨ Wishing you endless togetherness. - Best wishes from ${clubTitle}`
-        );
-      }
-    }
+    const formatted = formatCelebrationWishMessage({
+      member: activeEvent.member,
+      type: activeEvent.type,
+      diffDays: activeEvent.diffDays,
+      dateFormatted: activeEvent.dateFormatted,
+      spouse: activeEvent.spouse,
+      clubSlug,
+      clubTitle,
+    });
+
+    setCustomMessage(formatted);
   }, [activeEvent, clubTitle]);
 
   if (!activeEvent || allEvents.length === 0) return null;

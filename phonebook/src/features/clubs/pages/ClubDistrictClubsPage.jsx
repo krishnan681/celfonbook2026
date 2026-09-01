@@ -26,6 +26,7 @@ import {
 import ClubProfileCard from "../components/ClubProfileCard";
 import FounderCard from "../components/FounderCard";
 import CelebrationsAside from "../components/CelebrationsAside";
+import TabsCarousel from "../components/TabsCarousel";
 import "../../search/components/css/SearchBar.css";
 import "./css/LionsClubPages.css";
 
@@ -448,30 +449,13 @@ const ClubDistrictClubsPage = () => {
           </div>
         </div>
 
-        {/* Designation Filter Buttons */}
-        <div className="district-filter-tabs-container">
-          <div className="district-filter-tabs">
-            {filterTabs.map((tab) => {
-              const IconComponent = tab.icon;
-              const isActive = activeFilter === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  className={`filter-tab-btn ${isActive ? "active" : ""}`}
-                  onClick={() => handleFilterChange(tab.id)}
-                  title={tab.title || tab.label}
-                >
-                  <IconComponent size={16} />
-                  <span>{tab.label}</span>
-                  {!isLoading && (
-                    <span className="filter-tab-count">{tab.count}</span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        {/* Designation Filter Tabs Carousel */}
+        <TabsCarousel
+          tabs={filterTabs}
+          activeTabId={activeFilter}
+          onSelectTab={handleFilterChange}
+          isLoading={isLoading}
+        />
 
         {/* 2-Column Content Layout: Main Clubs/Members on Left + Celebrations Aside on Right */}
         <div className="district-content-layout">

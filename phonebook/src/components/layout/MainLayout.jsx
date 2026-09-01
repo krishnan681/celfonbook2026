@@ -1,23 +1,8 @@
-// import { Outlet } from "react-router-dom";
-// import Navbar from "./Navbar";
-// import "./navbar.css";
-
-// const MainLayout = () => {
-//   return (
-//     <div className="layout">
-//       <Navbar />
-//       <div className="layout-content">
-//         <Outlet />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default MainLayout;
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SearchFooter from "./SearchFooter";
+import OfflineBanner from "../common/OfflineBanner";
 
 export default function MainLayout() {
   const location = useLocation();
@@ -25,6 +10,7 @@ export default function MainLayout() {
 
   return (
     <>
+      <OfflineBanner />
       <Navbar />
 
       <main>
@@ -35,4 +21,4 @@ export default function MainLayout() {
       {isSearchPage ? <SearchFooter /> : <Footer />}
     </>
   );
-}
+}

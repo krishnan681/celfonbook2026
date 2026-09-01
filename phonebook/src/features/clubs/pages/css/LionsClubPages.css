@@ -323,7 +323,10 @@
   padding: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -334,22 +337,110 @@
 .district-card {
   align-items: center;
   text-align: center;
-  padding: 28px 20px;
+  padding: 24px 18px;
   gap: 10px;
 }
 
+/* Enhanced District Card with Logo & Stats */
+.district-card-enhanced {
+  background: #ffffff;
+
+  border-radius: 16px;
+  padding: 24px 18px 20px;
+
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.district-card-enhanced:hover {
+  transform: translateY(-5px);
+  border-color: #16a34a;
+  box-shadow: 0 12px 28px rgba(22, 163, 74, 0.16);
+}
+
+.theme-vasavi .district-card-enhanced:hover {
+  border-color: #dc2626;
+  box-shadow: 0 12px 28px rgba(220, 38, 38, 0.16);
+}
+
 .district-card-logo-box {
-  width: 76px;
-  height: 76px;
+  width: 78px;
+  height: 78px;
+  background: #ffffff;
+  border-radius: 50%;
+  padding: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 2px;
-  transition: transform 0.2s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  border: 2px solid #f1f5f9;
+  transition: transform 0.25s ease;
 }
 
-.district-card:hover .district-card-logo-box {
-  transform: scale(1.06);
+/* .district-card-enhanced:hover .district-card-logo-box {
+  transform: scale(1.08);
+  border-color: #16a34a;
+} */
+
+.theme-vasavi .district-card-enhanced:hover .district-card-logo-box {
+  border-color: #dc2626;
+}
+
+.district-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.district-card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.district-code-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.district-club-tag {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.district-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.district-stat-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #005a36;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.theme-vasavi .district-stat-pill {
+  color: #991b1b;
+  background: #fef2f2;
+  border-color: #fecaca;
 }
 
 .district-card-logo {
@@ -357,13 +448,13 @@
   max-height: 100%;
   object-fit: contain;
 }
-
+/* 
 .district-card:hover,
 .town-profile-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 24px rgba(22, 163, 74, 0.16);
   border-color: #15803d;
-}
+} */
 
 .district-badge-row {
   display: flex;
@@ -1001,6 +1092,118 @@
   color: #16a34a;
 }
 
+.theme-vasavi .celebration-subtab-btn.active .tab-badge {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* 4-Chip Subfilter Bar */
+.celebrations-subfilter-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 8px 10px;
+  background: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.celebrations-subfilter-chip {
+  padding: 6px 4px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.celebrations-subfilter-chip:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.celebrations-subfilter-chip.active {
+  background: #f0fdf4;
+  color: #166534;
+  border-color: #86efac;
+  font-weight: 700;
+}
+
+.theme-vasavi .celebrations-subfilter-chip.active {
+  background: #fef2f2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+.celebrations-subfilter-chip .chip-count {
+  font-size: 0.65rem;
+  background: #e2e8f0;
+  color: #475569;
+  padding: 1px 5px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.celebrations-subfilter-chip.active .chip-count {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.theme-vasavi .celebrations-subfilter-chip.active .chip-count {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+/* Switch Filter Helper Button */
+.celebrations-switch-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #86efac;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 6px;
+}
+
+.celebrations-switch-filter-btn:hover {
+  background: #dcfce7;
+  transform: translateY(-1px);
+}
+
+.celebrations-switch-filter-btn.secondary {
+  background: #f8fafc;
+  color: #475569;
+  border-color: #cbd5e1;
+}
+
+.celebrations-switch-filter-btn.secondary:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.theme-vasavi .celebrations-switch-filter-btn {
+  background: #fef2f2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+.theme-vasavi .celebrations-switch-filter-btn:hover {
+  background: #fee2e2;
+}
+
 /* Scrollable Row List Container */
 .celebrations-rows-container {
   padding: 10px 12px;
@@ -1025,7 +1228,7 @@
 
 .celebrations-empty-box {
   text-align: center;
-  padding: 30px 10px;
+  padding: 24px 10px;
   color: #94a3b8;
   font-size: 0.85rem;
   display: flex;
@@ -1168,7 +1371,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #25D366;
+  background: #25d366;
   color: white;
   padding: 4px 8px;
   border-radius: 6px;
@@ -1256,7 +1459,7 @@
 }
 
 .sender-message-input:focus {
-  border-color: #25D366;
+  border-color: #25d366;
   box-shadow: 0 0 0 2px rgba(37, 211, 102, 0.15);
 }
 
@@ -1269,7 +1472,7 @@
 .sender-whatsapp-btn {
   flex: 1;
   height: 36px;
-  background: #25D366;
+  background: #25d366;
   color: white;
   border: none;
   border-radius: 8px;
@@ -1336,6 +1539,3 @@
     max-height: 320px;
   }
 }
-
-
-

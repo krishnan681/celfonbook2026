@@ -1,12 +1,8 @@
-// src/features/clubs/components/CelebrationsAside.jsx
 import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  Cake,
-  PartyPopper,
-  MessageSquare,
-} from "lucide-react";
+import { Cake, PartyPopper, MessageSquare, Calendar, X } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
+import { formatCelebrationWishMessage } from "../utils/celebrationMessageHelper";
 
 export default function CelebrationsAside({
   timeline,
@@ -16,149 +12,179 @@ export default function CelebrationsAside({
 }) {
   const allEvents = timeline?.all || [];
 
-  // Tabs inside this aside card: "ALL", "BIRTHDAYS", "ANNIVERSARIES"
-  const [activeTab, setActiveTab] = useState("ALL");
+  // Determine club slug from basePath or title
+  const clubSlug = basePath.toLowerCase().includes("vasavi")
+    ? "vasavi"
+    : basePath.toLowerCase().includes("rotary")
+      ? "rotary"
+      : "lions";
 
-  // Selected celebrant for the fixed bottom composer
+  // Primary Tabs: "BIRTHDAYS" (default) or "ANNIVERSARIES" (No "ALL" tab)
+  const [activeTab, setActiveTab] = useState("BIRTHDAYS");
+
+  // Sub-Filter under active tab: "TODAY", "THIS_WEEK", "THIS_MONTH", "ALL"
+  const [subFilter, setSubFilter] = useState("TODAY");
+
+  // Selected celebrant ID for the fixed bottom composer
   const [selectedEventId, setSelectedEventId] = useState("");
 
-  // Count calculations
-  const birthdayCount = useMemo(
-    () => allEvents.filter((e) => e.type === "BIRTHDAY").length,
-    [allEvents]
+  // Base arrays for each category
+  const bdayEvents = useMemo(
+    () => allEvents.filter((e) => e.type === "BIRTHDAY"),
+    [allEvents],
   );
-  const anniversaryCount = useMemo(
-    () => allEvents.filter((e) => e.type === "ANNIVERSARY").length,
-    [allEvents]
+  const anniEvents = useMemo(
+    () => allEvents.filter((e) => e.type === "ANNIVERSARY"),
+    [allEvents],
   );
 
-  // Filter list by selected tab
-  const filteredEvents = useMemo(() => {
-    if (activeTab === "BIRTHDAYS") {
-      return allEvents.filter((e) => e.type === "BIRTHDAY");
-    }
-    if (activeTab === "ANNIVERSARIES") {
-      return allEvents.filter((e) => e.type === "ANNIVERSARY");
-    }
-    return allEvents;
-  }, [allEvents, activeTab]);
+  // Counts for Birthdays
+  const todayBirthdays = useMemo(
+    () => bdayEvents.filter((e) => e.diffDays === 0),
+    [bdayEvents],
+  );
+  const thisWeekBirthdays = useMemo(
+    () =>
+      bdayEvents
+        .filter((e) => e.diffDays >= 0 && e.diffDays <= 7)
+        .sort((a, b) => a.diffDays - b.diffDays),
+    [bdayEvents],
+  );
+  const thisMonthBirthdays = useMemo(
+    () =>
+      bdayEvents
+        .filter((e) => e.diffDays >= 0 && e.diffDays <= 30)
+        .sort((a, b) => a.diffDays - b.diffDays),
+    [bdayEvents],
+  );
 
-  // Set default selected event
+  // Counts for Anniversaries
+  const todayAnniversaries = useMemo(
+    () => anniEvents.filter((e) => e.diffDays === 0),
+    [anniEvents],
+  );
+  const thisWeekAnniversaries = useMemo(
+    () =>
+      anniEvents
+        .filter((e) => e.diffDays >= 0 && e.diffDays <= 7)
+        .sort((a, b) => a.diffDays - b.diffDays),
+    [anniEvents],
+  );
+  const thisMonthAnniversaries = useMemo(
+    () =>
+      anniEvents
+        .filter((e) => e.diffDays >= 0 && e.diffDays <= 30)
+        .sort((a, b) => a.diffDays - b.diffDays),
+    [anniEvents],
+  );
+
+  // Active sub-filter counts
+  const currentCounts =
+    activeTab === "BIRTHDAYS"
+      ? {
+          TODAY: todayBirthdays.length,
+          THIS_WEEK: thisWeekBirthdays.length,
+          THIS_MONTH: thisMonthBirthdays.length,
+          ALL: bdayEvents.length,
+        }
+      : {
+          TODAY: todayAnniversaries.length,
+          THIS_WEEK: thisWeekAnniversaries.length,
+          THIS_MONTH: thisMonthAnniversaries.length,
+          ALL: anniEvents.length,
+        };
+
+  // If "TODAY" has 0 records, auto-fallback to THIS_WEEK or ALL smoothly if available
   useEffect(() => {
-    if (!selectedEventId && filteredEvents.length > 0) {
-      const todayEvent = filteredEvents.find((e) => e.diffDays === 0);
-      setSelectedEventId(todayEvent ? todayEvent.id : filteredEvents[0].id);
-    } else if (
-      selectedEventId &&
-      !filteredEvents.some((e) => e.id === selectedEventId) &&
-      filteredEvents.length > 0
-    ) {
-      setSelectedEventId(filteredEvents[0].id);
+    if (activeTab === "BIRTHDAYS") {
+      if (
+        todayBirthdays.length === 0 &&
+        thisWeekBirthdays.length > 0 &&
+        subFilter === "TODAY"
+      ) {
+        setSubFilter("THIS_WEEK");
+      } else if (
+        todayBirthdays.length === 0 &&
+        thisWeekBirthdays.length === 0 &&
+        bdayEvents.length > 0 &&
+        subFilter === "TODAY"
+      ) {
+        setSubFilter("ALL");
+      }
+    } else if (activeTab === "ANNIVERSARIES") {
+      if (
+        todayAnniversaries.length === 0 &&
+        thisWeekAnniversaries.length > 0 &&
+        subFilter === "TODAY"
+      ) {
+        setSubFilter("THIS_WEEK");
+      } else if (
+        todayAnniversaries.length === 0 &&
+        thisWeekAnniversaries.length === 0 &&
+        anniEvents.length > 0 &&
+        subFilter === "TODAY"
+      ) {
+        setSubFilter("ALL");
+      }
     }
-  }, [filteredEvents, selectedEventId]);
+  }, [
+    activeTab,
+    todayBirthdays.length,
+    thisWeekBirthdays.length,
+    bdayEvents.length,
+    todayAnniversaries.length,
+    thisWeekAnniversaries.length,
+    anniEvents.length,
+  ]);
 
-  const activeSelectedEvent =
-    allEvents.find((e) => e.id === selectedEventId) || filteredEvents[0] || null;
+  // Compute filtered events based on activeTab and subFilter
+  const filteredEvents = useMemo(() => {
+    const list = activeTab === "BIRTHDAYS" ? bdayEvents : anniEvents;
+    if (subFilter === "TODAY") {
+      return list.filter((e) => e.diffDays === 0);
+    }
+    if (subFilter === "THIS_WEEK") {
+      return list
+        .filter((e) => e.diffDays >= 0 && e.diffDays <= 7)
+        .sort((a, b) => a.diffDays - b.diffDays);
+    }
+    if (subFilter === "THIS_MONTH") {
+      return list
+        .filter((e) => e.diffDays >= 0 && e.diffDays <= 30)
+        .sort((a, b) => a.diffDays - b.diffDays);
+    }
+    return list; // ALL
+  }, [activeTab, subFilter, bdayEvents, anniEvents]);
+
+  // Only select an event when explicitly clicked by user (No auto-selection)
+  const activeSelectedEvent = useMemo(() => {
+    if (!selectedEventId) return null;
+    return (
+      filteredEvents.find((e) => e.id === selectedEventId) ||
+      allEvents.find((e) => e.id === selectedEventId) ||
+      null
+    );
+  }, [selectedEventId, filteredEvents, allEvents]);
 
   // Custom Message state for bottom fixed sender
   const [messageText, setMessageText] = useState("");
 
-  // Update default wish message when activeSelectedEvent changes
+  // Update default wish message with clean Lion / Vasavi formatting and (msg thro CELFON BOOK)
   useEffect(() => {
     if (!activeSelectedEvent) return;
 
-    const m = activeSelectedEvent.member;
-    const personName =
-      m.person_name || m.fullName || m.business_name || "Member";
-    const spouse = activeSelectedEvent.spouse || "";
-    const isBday = activeSelectedEvent.type === "BIRTHDAY";
+    const formatted = formatCelebrationWishMessage({
+      member: activeSelectedEvent.member,
+      type: activeSelectedEvent.type,
+      diffDays: activeSelectedEvent.diffDays,
+      dateFormatted: activeSelectedEvent.dateFormatted,
+      spouse: activeSelectedEvent.spouse,
+      clubSlug,
+      clubTitle,
+    });
 
-    if (activeSelectedEvent.diffDays === 0) {
-      // Today
-      if (isBday) {
-        setMessageText(
-          `Dear ${personName}, wishing you a very Happy Birthday! 🎂🎉 May your day be filled with joy and success! - Best wishes from ${clubTitle}`
-        );
-      } else {
-        setMessageText(
-          `Dear ${personName} ${
-            spouse ? `& ${spouse}` : ""
-          }, wishing you both a very Happy Wedding Anniversary! 💍✨ - Best wishes from ${clubTitle}`
-        );
-      }
-    } else if (activeSelectedEvent.diffDays > 0) {
-      // Upcoming
-      if (isBday) {
-        setMessageText(
-          `Dear ${personName}, wishing you a very Happy Birthday in advance (${activeSelectedEvent.dateFormatted})! 🎂🎉 - Warm wishes from ${clubTitle}`
-        );
-      } else {
-        setMessageText(
-          `Dear ${personName} ${
-            spouse ? `& ${spouse}` : ""
-          }, wishing you both a very Happy Wedding Anniversary in advance (${activeSelectedEvent.dateFormatted})! 💍✨ - Warm wishes from ${clubTitle}`
-        );
-      }
-    } else {
-      // Belated
-      if (isBday) {
-        setMessageText(
-          `Dear ${personName}, wishing you a very Happy Belated Birthday! 🎂 Hope you had a wonderful day! - Warm wishes from ${clubTitle}`
-        );
-      } else {
-        setMessageText(
-          `Dear ${personName} ${
-            spouse ? `& ${spouse}` : ""
-          }, wishing you both a Happy Belated Wedding Anniversary! 💍✨ - Warm wishes from ${clubTitle}`
-        );
-      }
-    }
-  }, [activeSelectedEvent, clubTitle]);
-
-  const generateWishText = (item, customMsg = null) => {
-    if (customMsg) return customMsg;
-    const m = item.member;
-    const personName =
-      m.person_name || m.fullName || m.business_name || "Member";
-    const spouse = item.spouse || "";
-    const isBday = item.type === "BIRTHDAY";
-
-    if (item.diffDays === 0) {
-      return isBday
-        ? `Dear ${personName}, wishing you a very Happy Birthday! 🎂🎉 - Best wishes from ${clubTitle}`
-        : `Dear ${personName} ${
-            spouse ? `& ${spouse}` : ""
-          }, wishing you both a very Happy Wedding Anniversary! 💍✨ - Best wishes from ${clubTitle}`;
-    } else if (item.diffDays > 0) {
-      return isBday
-        ? `Dear ${personName}, wishing you a very Happy Birthday in advance (${item.dateFormatted})! 🎂🎉 - from ${clubTitle}`
-        : `Dear ${personName} ${
-            spouse ? `& ${spouse}` : ""
-          }, wishing you both a very Happy Wedding Anniversary in advance (${item.dateFormatted})! 💍✨ - from ${clubTitle}`;
-    } else {
-      return isBday
-        ? `Dear ${personName}, wishing you a very Happy Belated Birthday! 🎂 - from ${clubTitle}`
-        : `Dear ${personName} ${
-            spouse ? `& ${spouse}` : ""
-          }, wishing you both a Happy Belated Wedding Anniversary! 💍✨ - from ${clubTitle}`;
-    }
-  };
-
-  const generateWhatsAppUrl = (item, customMsg = null) => {
-    const m = item.member;
-    const rawPhone = (m.mobile_number || m.phone || "").replace(/[^0-9]/g, "");
-    if (!rawPhone) return null;
-    const text = generateWishText(item, customMsg);
-    return `https://wa.me/91${rawPhone}?text=${encodeURIComponent(text)}`;
-  };
-
-  const generateSmsUrl = (item, customMsg = null) => {
-    const m = item.member;
-    const rawPhone = (m.mobile_number || m.phone || "").replace(/[^0-9]/g, "");
-    if (!rawPhone) return null;
-    const text = generateWishText(item, customMsg);
-    return `sms:${rawPhone}?body=${encodeURIComponent(text)}`;
-  };
+    setMessageText(formatted);
+  }, [activeSelectedEvent, clubSlug, clubTitle]);
 
   const handleSendBottomWhatsApp = () => {
     if (!activeSelectedEvent) return;
@@ -168,9 +194,7 @@ export default function CelebrationsAside({
       alert("No mobile number registered for this member.");
       return;
     }
-    const url = `https://wa.me/91${rawPhone}?text=${encodeURIComponent(
-      messageText
-    )}`;
+    const url = `https://wa.me/91${rawPhone}?text=${encodeURIComponent(messageText)}`;
     window.open(url, "_blank");
   };
 
@@ -182,10 +206,15 @@ export default function CelebrationsAside({
       alert("No mobile number registered for this member.");
       return;
     }
-    window.location.href = `sms:${rawPhone}?body=${encodeURIComponent(
-      messageText
-    )}`;
+    window.location.href = `sms:${rawPhone}?body=${encodeURIComponent(messageText)}`;
   };
+
+  const subFilterLabel =
+    subFilter === "TODAY"
+      ? "Today"
+      : subFilter === "THIS_WEEK"
+        ? "This Week"
+        : "All Celebrations";
 
   return (
     <aside className="celebrations-constant-card">
@@ -196,30 +225,21 @@ export default function CelebrationsAside({
             <PartyPopper size={18} />
           </div>
           <div>
-            <h4 className="celebrations-header-title">Celebrations & Wishes</h4>
+            <h4 className="celebrations-header-title">
+              Celebrations &amp; Wishes
+            </h4>
             <span className="celebrations-header-subtitle">
-              Member Birthdays & Anniversaries
+              {clubTitle} Member Celebrations
             </span>
           </div>
         </div>
         <span className="celebrations-total-pill">
-          {allEvents.length} Total
+          {filteredEvents.length} {subFilterLabel}
         </span>
       </div>
 
-      {/* 2. Sub-Tabs inside the Card: All, Birthday, Wedding Day */}
+      {/* 2. Primary Tabs: Birthday & Wedding Day */}
       <div className="celebrations-card-tabs">
-        <button
-          type="button"
-          className={`celebration-subtab-btn ${
-            activeTab === "ALL" ? "active" : ""
-          }`}
-          onClick={() => setActiveTab("ALL")}
-        >
-          <span>🎉 All</span>
-          <span className="tab-badge">{allEvents.length}</span>
-        </button>
-
         <button
           type="button"
           className={`celebration-subtab-btn ${
@@ -228,7 +248,13 @@ export default function CelebrationsAside({
           onClick={() => setActiveTab("BIRTHDAYS")}
         >
           <span>🎂 Birthday</span>
-          <span className="tab-badge">{birthdayCount}</span>
+          <span className="tab-badge">
+            {todayBirthdays.length > 0
+              ? `${todayBirthdays.length} today`
+              : thisWeekBirthdays.length > 0
+                ? `${thisWeekBirthdays.length} this wk`
+                : bdayEvents.length}
+          </span>
         </button>
 
         <button
@@ -239,16 +265,77 @@ export default function CelebrationsAside({
           onClick={() => setActiveTab("ANNIVERSARIES")}
         >
           <span>💍 Wedding Day</span>
-          <span className="tab-badge">{anniversaryCount}</span>
+          <span className="tab-badge">
+            {todayAnniversaries.length > 0
+              ? `${todayAnniversaries.length} today`
+              : thisWeekAnniversaries.length > 0
+                ? `${thisWeekAnniversaries.length} this wk`
+                : anniEvents.length}
+          </span>
         </button>
       </div>
 
-      {/* 3. Row-by-Row Celebrants Listing (Scrollable) */}
+      {/* 3. Sub-Tabs: Today, This Week, All */}
+      <div className="celebrations-subfilter-bar">
+        <button
+          type="button"
+          className={`celebrations-subfilter-chip ${
+            subFilter === "TODAY" ? "active" : ""
+          }`}
+          onClick={() => setSubFilter("TODAY")}
+        >
+          <span>☀️ Today</span>
+          <span className="chip-count">{currentCounts.TODAY}</span>
+        </button>
+
+        <button
+          type="button"
+          className={`celebrations-subfilter-chip ${
+            subFilter === "THIS_WEEK" ? "active" : ""
+          }`}
+          onClick={() => setSubFilter("THIS_WEEK")}
+        >
+          <span>📅 This Week</span>
+          <span className="chip-count">{currentCounts.THIS_WEEK}</span>
+        </button>
+
+        <button
+          type="button"
+          className={`celebrations-subfilter-chip ${
+            subFilter === "ALL" ? "active" : ""
+          }`}
+          onClick={() => setSubFilter("ALL")}
+        >
+          <span>🌟 All</span>
+          <span className="chip-count">{currentCounts.ALL}</span>
+        </button>
+      </div>
+
+      {/* 4. Row-by-Row Celebrants Listing */}
       <div className="celebrations-rows-container">
         {filteredEvents.length === 0 ? (
           <div className="celebrations-empty-box">
             <Cake size={32} color="#cbd5e1" />
-            <p>No celebration records found for this tab.</p>
+            <p>
+              No{" "}
+              {activeTab === "BIRTHDAYS"
+                ? "birthdays"
+                : "wedding anniversaries"}{" "}
+              {subFilter === "TODAY"
+                ? "today."
+                : subFilter === "THIS_WEEK"
+                  ? "this week."
+                  : "found."}
+            </p>
+            {subFilter === "TODAY" && currentCounts.THIS_WEEK > 0 && (
+              <button
+                type="button"
+                className="celebrations-switch-filter-btn"
+                onClick={() => setSubFilter("THIS_WEEK")}
+              >
+                👉 View {currentCounts.THIS_WEEK} Celebrations This Week
+              </button>
+            )}
           </div>
         ) : (
           filteredEvents.map((item) => {
@@ -258,8 +345,6 @@ export default function CelebrationsAside({
             const isBday = item.type === "BIRTHDAY";
             const isToday = item.diffDays === 0;
             const isSelected = activeSelectedEvent?.id === item.id;
-            const waUrl = generateWhatsAppUrl(item);
-            const smsUrl = generateSmsUrl(item);
 
             // For Wedding: "Raj & Shanthi Wedding Day"
             const rowTitle = isBday
@@ -273,85 +358,86 @@ export default function CelebrationsAside({
                   isToday ? "is-today" : ""
                 } ${isSelected ? "is-selected" : ""}`}
                 onClick={() => {
-                  setSelectedEventId(item.id);
+                  const newId = isSelected ? "" : item.id;
+                  setSelectedEventId(newId);
                   if (onSelectCelebrantForMessage) {
-                    onSelectCelebrantForMessage(item);
+                    onSelectCelebrantForMessage(newId ? item : null);
                   }
                 }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  cursor: "pointer",
+                }}
               >
-                {/* Left Icon / Type Badge */}
                 <div
-                  className={`celebration-row-icon ${
-                    isBday ? "bday-icon" : "anni-icon"
-                  }`}
-                  title={isBday ? "Birthday" : "Wedding Anniversary"}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    flex: 1,
+                    minWidth: 0,
+                  }}
                 >
-                  {isBday ? "🎂" : "💍"}
-                </div>
-
-                {/* Middle Info */}
-                <div className="celebration-row-info">
-                  <div className="celebration-row-name-wrap">
-                    <Link
-                      to={`${basePath}/member/${m.id}`}
-                      className="celebration-row-name"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {rowTitle}
-                    </Link>
+                  {/* Left Icon / Type Badge */}
+                  <div
+                    className={`celebration-row-icon ${
+                      isBday ? "bday-icon" : "anni-icon"
+                    }`}
+                    title={isBday ? "Birthday" : "Wedding Anniversary"}
+                  >
+                    {isBday ? "🎂" : "💍"}
                   </div>
 
-                  <div className="celebration-row-meta">
-                    <span
-                      className={`celebration-status-pill ${
-                        isToday
-                          ? "status-today"
+                  {/* Middle Info */}
+                  <div className="celebration-row-info">
+                    <div className="celebration-row-name-wrap">
+                      <span className="celebration-row-name">
+                        {rowTitle}
+                      </span>
+                    </div>
+
+                    <div className="celebration-row-meta">
+                      <span
+                        className={`celebration-status-pill ${
+                          isToday
+                            ? "status-today"
+                            : item.diffDays === 1
+                              ? "status-tomorrow"
+                              : item.diffDays > 0
+                                ? "status-upcoming"
+                                : "status-past"
+                        }`}
+                      >
+                        {isToday
+                          ? "TODAY"
                           : item.diffDays === 1
-                          ? "status-tomorrow"
-                          : item.diffDays > 0
-                          ? "status-upcoming"
-                          : "status-past"
-                      }`}
-                    >
-                      {isToday
-                        ? "TODAY"
-                        : item.diffDays === 1
-                        ? "Tomorrow"
-                        : item.dateFormatted}
-                    </span>
-                    <span className="celebration-club">
-                      {m.clubName || "Club Member"}
-                    </span>
+                            ? "Tomorrow"
+                            : item.dateFormatted}
+                      </span>
+                      <span className="celebration-club">
+                        {m.clubName || "Club Member"}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Right Quick Wish Actions: WhatsApp & SMS */}
-                <div className="celebration-row-actions">
-                  {waUrl && (
-                    <a
-                      href={waUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="celebration-quick-wish-btn"
-                      onClick={(e) => e.stopPropagation()}
-                      title={`Send WhatsApp wish to ${personName}`}
-                    >
-                      <FaWhatsapp size={13} />
-                      <span>Wish</span>
-                    </a>
-                  )}
-
-                  {smsUrl && (
-                    <a
-                      href={smsUrl}
-                      className="celebration-quick-sms-btn"
-                      onClick={(e) => e.stopPropagation()}
-                      title={`Send SMS wish to ${personName}`}
-                    >
-                      <MessageSquare size={13} />
-                      <span>SMS</span>
-                    </a>
-                  )}
+                {/* Quick Selection Indicator (No WhatsApp / SMS buttons on individual member rows) */}
+                <div
+                  style={{
+                    fontSize: "0.72rem",
+                    color: isSelected ? "#005a36" : "#94a3b8",
+                    fontWeight: "700",
+                    padding: "4px 8px",
+                    borderRadius: "6px",
+                    background: isSelected
+                      ? "rgba(0, 90, 54, 0.1)"
+                      : "transparent",
+                    flexShrink: 0,
+                  }}
+                >
+                  {isSelected ? "Selected ✓" : "Tap to Wish"}
                 </div>
               </div>
             );
@@ -359,15 +445,15 @@ export default function CelebrationsAside({
         )}
       </div>
 
-      {/* 4. Fixed "Send Message" at the bottom of the Card (WhatsApp & SMS) */}
+      {/* 5. Fixed "Send Message" at the bottom of the Card (WhatsApp & SMS) - ONLY shown when card is selected */}
       {activeSelectedEvent && (
         <div className="celebrations-bottom-fixed-sender">
           <div className="sender-target-header">
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", flex: 1, minWidth: 0 }}>
               <span style={{ fontSize: "0.9rem" }}>
                 {activeSelectedEvent.type === "BIRTHDAY" ? "🎂" : "💍"}
               </span>
-              <span className="sender-target-name">
+              <span className="sender-target-name" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 Wishing:{" "}
                 <strong>
                   {activeSelectedEvent.type === "BIRTHDAY"
@@ -388,18 +474,38 @@ export default function CelebrationsAside({
                 </strong>
               </span>
             </div>
-            <span className="sender-target-date">
-              {activeSelectedEvent.dateFormatted}
-            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+              <span className="sender-target-date">
+                {activeSelectedEvent.dateFormatted}
+              </span>
+              <button
+                type="button"
+                onClick={() => setSelectedEventId("")}
+                title="Close Wish Message"
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "#64748b",
+                  padding: "2px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <X size={14} />
+              </button>
+            </div>
           </div>
 
           <div className="sender-textarea-wrapper">
             <textarea
               className="sender-message-input"
-              rows={2}
+              rows={3}
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}
-              placeholder="Type your celebration greetings..."
+              placeholder="Type celebration greetings..."
+              style={{ lineHeight: "1.4", fontSize: "0.78rem" }}
             />
           </div>
 
@@ -424,7 +530,7 @@ export default function CelebrationsAside({
               style={{ flex: 1 }}
             >
               <MessageSquare size={15} />
-              <span>Normal SMS</span>
+              <span>SMS</span>
             </button>
           </div>
         </div>
