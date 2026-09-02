@@ -48,25 +48,7 @@ export default function FounderCard({ clubSlug = "lions" }) {
         }}
       >
         <div style={{ flex: "1 1 300px" }}>
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              background: isVasavi ? "#ffedd5" : "#fef3c7",
-              color: isVasavi ? "#9a3412" : "#92400e",
-              fontSize: "0.75rem",
-              fontWeight: "700",
-              padding: "3px 10px",
-              borderRadius: "20px",
-              textTransform: "uppercase",
-              letterSpacing: "0.5px",
-              marginBottom: "10px",
-            }}
-          >
-            <Award size={14} />
-            <span>Honoring Our Founder &amp; Heritage</span>
-          </div>
+         
 
           <h3
             style={{
@@ -80,16 +62,21 @@ export default function FounderCard({ clubSlug = "lions" }) {
             {founderData.founderName}
           </h3>
 
-          <p
-            style={{
-              fontSize: "0.88rem",
-              color: "#64748b",
-              fontWeight: "600",
-              margin: "0 0 14px 0",
-            }}
-          >
-            {founderData.title} ({founderData.birthYear} - {founderData.deathYear})
-          </p>
+          {founderData.title && (
+            <p
+              style={{
+                fontSize: "0.88rem",
+                color: "#64748b",
+                fontWeight: "600",
+                margin: "0 0 14px 0",
+              }}
+            >
+              {founderData.title}
+              {founderData.birthYear && founderData.deathYear
+                ? ` (${founderData.birthYear} - ${founderData.deathYear})`
+                : ""}
+            </p>
+          )}
 
           <p
             style={{
@@ -133,7 +120,7 @@ export default function FounderCard({ clubSlug = "lions" }) {
       </div>
 
       {/* Quote Banner */}
-      {founderData.famousQuote && (
+      {(founderData.famousQuote || founderData.quote) && (
         <div
           style={{
             marginTop: "14px",
@@ -162,7 +149,7 @@ export default function FounderCard({ clubSlug = "lions" }) {
               color: "#1e293b",
             }}
           >
-            "{founderData.famousQuote}"
+            "{founderData.famousQuote || founderData.quote}"
           </span>
         </div>
       )}

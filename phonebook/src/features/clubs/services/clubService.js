@@ -828,17 +828,16 @@ export function getClubFounderInfo(clubSlug = "lions") {
     };
   }
 
-  // Default: Lions Club (Melvin Jones)
+  // Default: Lions Club
   return {
     clubSlug: "lions",
     clubName: "Lions Clubs International",
-    founderName: "Melvin Jones (1879 - 1961)",
-    title: "The Visionary Founder of Lions Clubs International",
+    founderName: "LIONS CLUBS INTERNATIONAL",
+ 
     shortSummary:
-      "Melvin Jones founded Lions Clubs International in 1917 with the philosophy: 'You can't get very far until you start doing something for somebody else.' Today it is the world's largest service club organization.",
+      "Lions Clubs International is a global service organization of volunteers dedicated to improving communities, supporting people in need, promoting health and education, and creating positive change through humanitarian service.",
     coverImage: "https://images.unsplash.com/photo-1532012164546-f432f2e3edd3?w=600&auto=format&fit=crop&q=80",
     portraitImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
-    quote: "You can't get very far until you start doing something for somebody else.",
     pdfDownloadUrl: null,
     pages: [
       {

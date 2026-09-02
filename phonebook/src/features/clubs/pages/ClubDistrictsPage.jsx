@@ -19,6 +19,8 @@ import {
   getClubCelebrations,
 } from "../services/clubService";
 import { formatCelebrationWishMessage } from "../utils/celebrationMessageHelper";
+import { getCurrentUser } from "../../../core/services/profileService";
+import { supabase } from "../../../core/config/supabaseClient";
 import ClubProfileCard from "../components/ClubProfileCard";
 import FounderCard from "../components/FounderCard";
 import lionsDefaultLogo from "../../../assets/images/Clubs/Lions_Clubs_International_logo.svg";
@@ -41,6 +43,39 @@ const ClubDistrictsPage = () => {
   const [searchResults, setSearchResults] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [isKeywordFocused, setIsKeywordFocused] = useState(false);
+  const [senderName, setSenderName] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchLoggedInUser() {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const profile = await getCurrentUser().catch(() => null);
+        if (isMounted) {
+          const name =
+            profile?.person_name ||
+            profile?.fullName ||
+            profile?.business_name ||
+            profile?.display_name ||
+            user.user_metadata?.full_name ||
+            user.user_metadata?.name ||
+            user.user_metadata?.person_name ||
+            "";
+          if (name) setSenderName(name.trim());
+        }
+      } catch (err) {
+        console.error("Error fetching logged in user:", err);
+      }
+    }
+    fetchLoggedInUser();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -184,6 +219,7 @@ const ClubDistrictsPage = () => {
                   spouse: c.spouse || "",
                   clubSlug,
                   clubTitle,
+                  senderName,
                 });
                 const waUrl = rawPhone
                   ? `https://wa.me/91${rawPhone}?text=${encodeURIComponent(

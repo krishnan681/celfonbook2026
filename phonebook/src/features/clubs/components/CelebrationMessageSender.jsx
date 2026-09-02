@@ -1,5 +1,5 @@
 // src/features/clubs/components/CelebrationMessageSender.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Send,
   Sparkles,
@@ -7,9 +7,12 @@ import {
   PartyPopper,
   Calendar,
   CheckCircle,
+  Pencil,
 } from "lucide-react";
 import { FaWhatsapp as FaWhatsappIcon } from "react-icons/fa";
 import { formatCelebrationWishMessage } from "../utils/celebrationMessageHelper";
+import { getCurrentUser } from "../../../core/services/profileService";
+import { supabase } from "../../../core/config/supabaseClient";
 
 export default function CelebrationMessageSender({
   timeline,
@@ -20,10 +23,43 @@ export default function CelebrationMessageSender({
   const allEvents = timeline?.all || [];
 
   const [activeMemberId, setActiveMemberId] = useState(
-    selectedCelebrant?.id || ""
+    selectedCelebrant?.id || "",
   );
   const [customMessage, setCustomMessage] = useState("");
   const [isCopied, setIsCopied] = useState(false);
+  const [senderName, setSenderName] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchLoggedInUser() {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const profile = await getCurrentUser().catch(() => null);
+        if (isMounted) {
+          const name =
+            profile?.person_name ||
+            profile?.fullName ||
+            profile?.business_name ||
+            profile?.display_name ||
+            user.user_metadata?.full_name ||
+            user.user_metadata?.name ||
+            user.user_metadata?.person_name ||
+            "";
+          if (name) setSenderName(name.trim());
+        }
+      } catch (err) {
+        console.error("Error fetching logged in user:", err);
+      }
+    }
+    fetchLoggedInUser();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (selectedCelebrant) {
@@ -33,18 +69,18 @@ export default function CelebrationMessageSender({
     }
   }, [selectedCelebrant, allEvents]);
 
-  const activeEvent = allEvents.find((e) => e.id === activeMemberId) || allEvents[0];
+  const activeEvent =
+    allEvents.find((e) => e.id === activeMemberId) || allEvents[0];
 
-  useEffect(() => {
-    if (!activeEvent) return;
-
+  const defaultFormattedMessage = useMemo(() => {
+    if (!activeEvent) return "";
     const clubSlug = clubTitle.toLowerCase().includes("vasavi")
       ? "vasavi"
       : clubTitle.toLowerCase().includes("rotary")
-      ? "rotary"
-      : "lions";
+        ? "rotary"
+        : "lions";
 
-    const formatted = formatCelebrationWishMessage({
+    return formatCelebrationWishMessage({
       member: activeEvent.member,
       type: activeEvent.type,
       diffDays: activeEvent.diffDays,
@@ -52,10 +88,13 @@ export default function CelebrationMessageSender({
       spouse: activeEvent.spouse,
       clubSlug,
       clubTitle,
+      senderName,
     });
+  }, [activeEvent, clubTitle, senderName]);
 
-    setCustomMessage(formatted);
-  }, [activeEvent, clubTitle]);
+  useEffect(() => {
+    setCustomMessage(defaultFormattedMessage);
+  }, [defaultFormattedMessage]);
 
   if (!activeEvent || allEvents.length === 0) return null;
 
@@ -68,7 +107,9 @@ export default function CelebrationMessageSender({
 
   const handleSendWhatsApp = () => {
     if (!rawMobile) {
-      alert("No phone number available for this member to send WhatsApp message.");
+      alert(
+        "No phone number available for this member to send WhatsApp message.",
+      );
       return;
     }
     const url = `https://wa.me/91${rawMobile}?text=${encodeURIComponent(customMessage)}`;
@@ -130,7 +171,8 @@ export default function CelebrationMessageSender({
                 color: "#94a3b8",
               }}
             >
-              Send personalized greetings for upcoming dates or belated wishes for finished events
+              Send personalized greetings for upcoming dates or belated wishes
+              for finished events
             </p>
           </div>
         </div>
@@ -161,7 +203,8 @@ export default function CelebrationMessageSender({
                 m.fullName || m.person_name || m.business_name || "Member";
               return (
                 <option key={evt.id} value={evt.id}>
-                  {evt.type === "BIRTHDAY" ? "🎂" : "💍"} {name} ({evt.status} - {evt.dateFormatted})
+                  {evt.type === "BIRTHDAY" ? "🎂" : "💍"} {name} ({evt.status} -{" "}
+                  {evt.dateFormatted})
                 </option>
               );
             })}
@@ -185,7 +228,9 @@ export default function CelebrationMessageSender({
         <div>
           <span style={{ color: "#94a3b8" }}>Recipient: </span>
           <strong style={{ color: "#f8fafc" }}>
-            {targetMember.fullName || targetMember.person_name || targetMember.business_name}
+            {targetMember.fullName ||
+              targetMember.person_name ||
+              targetMember.business_name}
           </strong>{" "}
           <span
             style={{
@@ -196,13 +241,13 @@ export default function CelebrationMessageSender({
                 activeEvent.type === "BIRTHDAY"
                   ? "rgba(245, 158, 11, 0.2)"
                   : "rgba(236, 72, 153, 0.2)",
-              color:
-                activeEvent.type === "BIRTHDAY" ? "#fcd34d" : "#f472b6",
+              color: activeEvent.type === "BIRTHDAY" ? "#fcd34d" : "#f472b6",
               fontWeight: "700",
               fontSize: "0.75rem",
             }}
           >
-            {activeEvent.title} • {activeEvent.status} ({activeEvent.dateFormatted})
+            {activeEvent.title} • {activeEvent.status} (
+            {activeEvent.dateFormatted})
           </span>
         </div>
         <span style={{ color: "#64748b", fontSize: "0.8rem" }}>
@@ -211,7 +256,7 @@ export default function CelebrationMessageSender({
       </div>
 
       {/* Message Textarea */}
-      <div style={{ marginBottom: "16px" }}>
+      <div style={{ marginBottom: "16px", position: "relative" }}>
         <textarea
           rows={3}
           value={customMessage}
@@ -223,7 +268,7 @@ export default function CelebrationMessageSender({
             color: "#f8fafc",
             border: "1px solid rgba(255, 255, 255, 0.15)",
             borderRadius: "12px",
-            padding: "12px 16px",
+            padding: "12px 36px 12px 16px",
             fontSize: "0.9rem",
             lineHeight: 1.5,
             resize: "vertical",
@@ -231,6 +276,22 @@ export default function CelebrationMessageSender({
             boxSizing: "border-box",
           }}
         />
+        <span
+          title="Editable message"
+          style={{
+            position: "absolute",
+            top: "14px",
+            right: "12px",
+            color: "#94a3b8",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            pointerEvents: "none",
+            opacity: 0.75,
+          }}
+        >
+          <Pencil size={14} />
+        </span>
       </div>
 
       {/* Action Buttons */}

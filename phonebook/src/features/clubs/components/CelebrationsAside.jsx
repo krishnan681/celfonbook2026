@@ -1,8 +1,10 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Cake, PartyPopper, MessageSquare, Calendar, X } from "lucide-react";
+import { Cake, PartyPopper, MessageSquare, Calendar, X, Pencil } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { formatCelebrationWishMessage } from "../utils/celebrationMessageHelper";
+import { getCurrentUser } from "../../../core/services/profileService";
+import { supabase } from "../../../core/config/supabaseClient";
 
 export default function CelebrationsAside({
   timeline,
@@ -166,14 +168,45 @@ export default function CelebrationsAside({
     );
   }, [selectedEventId, filteredEvents, allEvents]);
 
-  // Custom Message state for bottom fixed sender
-  const [messageText, setMessageText] = useState("");
+  // Logged-in user name for celebration messages
+  const [senderName, setSenderName] = useState("");
 
-  // Update default wish message with clean Lion / Vasavi formatting and (msg thro CELFON BOOK)
   useEffect(() => {
-    if (!activeSelectedEvent) return;
+    let isMounted = true;
+    async function fetchLoggedInUser() {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) return;
 
-    const formatted = formatCelebrationWishMessage({
+        const profile = await getCurrentUser().catch(() => null);
+        if (isMounted) {
+          const name =
+            profile?.person_name ||
+            profile?.fullName ||
+            profile?.business_name ||
+            profile?.display_name ||
+            user.user_metadata?.full_name ||
+            user.user_metadata?.name ||
+            user.user_metadata?.person_name ||
+            "";
+          if (name) setSenderName(name.trim());
+        }
+      } catch (err) {
+        console.error("Error fetching logged in user:", err);
+      }
+    }
+    fetchLoggedInUser();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Default wish template for current selected event
+  const defaultWishMessage = useMemo(() => {
+    if (!activeSelectedEvent) return "";
+    return formatCelebrationWishMessage({
       member: activeSelectedEvent.member,
       type: activeSelectedEvent.type,
       diffDays: activeSelectedEvent.diffDays,
@@ -181,10 +214,17 @@ export default function CelebrationsAside({
       spouse: activeSelectedEvent.spouse,
       clubSlug,
       clubTitle,
+      senderName,
     });
+  }, [activeSelectedEvent, clubSlug, clubTitle, senderName]);
 
-    setMessageText(formatted);
-  }, [activeSelectedEvent, clubSlug, clubTitle]);
+  // Custom Message state for bottom fixed sender
+  const [messageText, setMessageText] = useState("");
+
+  // Update wish message when active event or default message changes
+  useEffect(() => {
+    setMessageText(defaultWishMessage);
+  }, [defaultWishMessage]);
 
   const handleSendBottomWhatsApp = () => {
     if (!activeSelectedEvent) return;
@@ -206,7 +246,12 @@ export default function CelebrationsAside({
       alert("No mobile number registered for this member.");
       return;
     }
-    window.location.href = `sms:${rawPhone}?body=${encodeURIComponent(messageText)}`;
+    // Use safe link click so page state and celebrant list are preserved without page refresh
+    const link = document.createElement("a");
+    link.href = `sms:${rawPhone}?body=${encodeURIComponent(messageText)}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const subFilterLabel =
@@ -480,7 +525,10 @@ export default function CelebrationsAside({
               </span>
               <button
                 type="button"
-                onClick={() => setSelectedEventId("")}
+                onClick={() => {
+                  setSelectedEventId("");
+                  if (onSelectCelebrantForMessage) onSelectCelebrantForMessage(null);
+                }}
                 title="Close Wish Message"
                 style={{
                   background: "transparent",
@@ -497,6 +545,7 @@ export default function CelebrationsAside({
               </button>
             </div>
           </div>
+           
 
           <div className="sender-textarea-wrapper">
             <textarea
@@ -505,8 +554,10 @@ export default function CelebrationsAside({
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}
               placeholder="Type celebration greetings..."
-              style={{ lineHeight: "1.4", fontSize: "0.78rem" }}
             />
+           <span className="sender-floating-edit-icon" title="Editable message">
+              <Pencil size={13} />
+            </span>
           </div>
 
           <div

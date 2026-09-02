@@ -138,11 +138,11 @@ export const downloadFounderPdf = (founderData) => {
       <div class="header">
         <div class="club-tag">${founderData.clubName} Heritage Chronicle</div>
         <h1 class="founder-name">${founderData.founderName}</h1>
-        <div class="founder-dates">${founderData.title} (${founderData.birthYear} - ${founderData.deathYear})</div>
+        <div class="founder-dates">${founderData.title || ""}${founderData.birthYear && founderData.deathYear ? ` (${founderData.birthYear} - ${founderData.deathYear})` : ""}</div>
       </div>
 
       <div class="motto-box">
-        <div class="motto-text">"${founderData.famousQuote || ""}"</div>
+        <div class="motto-text">"${founderData.famousQuote || founderData.quote || ""}"</div>
       </div>
 
       <div class="chapters-container">
