@@ -883,49 +883,77 @@ export function getClubFounderInfo(clubSlug = "lions") {
  */
 export async function searchClubMembers(clubSlug = "lions", nameQuery = "", keyQuery = "") {
   try {
-    const cleanName = nameQuery.trim();
-    const cleanKey = keyQuery.trim();
+    const cleanName = (nameQuery || "").trim();
+    const cleanKey = (keyQuery || "").trim();
 
     if (!cleanName && !cleanKey) return [];
 
     let query = supabase.from("profiles").select("*");
 
-    // Strict club isolation
-    if (clubSlug === "vasavi") {
-      query = query.or("assn.ilike.%vasavi%,district.eq.V501A");
-    } else if (clubSlug === "lions") {
-      query = query.or("assn.ilike.%lion%,district.eq.3241D,district.eq.3242C");
-    } else {
-      const clubInfo = await getClubInfo(clubSlug);
-      if (clubInfo.search_keyword) {
-        query = query.ilike("assn", `%${clubInfo.search_keyword}%`);
+    if (cleanName && cleanKey) {
+      query = query.or(
+        `person_name.ilike.%${cleanName}%,business_name.ilike.%${cleanName}%,keywords.ilike.%${cleanKey}%,activity.ilike.%${cleanKey}%,member_num.ilike.%${cleanKey}%,mobile_number.ilike.%${cleanKey}%`
+      );
+    } else if (cleanName) {
+      query = query.or(
+        `person_name.ilike.%${cleanName}%,business_name.ilike.%${cleanName}%`
+      );
+    } else if (cleanKey) {
+      query = query.or(
+        `keywords.ilike.%${cleanKey}%,activity.ilike.%${cleanKey}%,member_num.ilike.%${cleanKey}%,mobile_number.ilike.%${cleanKey}%,post_of_member.ilike.%${cleanKey}%,club.ilike.%${cleanKey}%`
+      );
+    }
+
+    const { data: resData, error } = await query.limit(200);
+    let data = resData || [];
+
+    if (error || data.length === 0) {
+      let fbQuery = supabase.from("profiles").select("*");
+      if (cleanName) {
+        fbQuery = fbQuery.or(`person_name.ilike.%${cleanName}%,business_name.ilike.%${cleanName}%`);
+      } else if (cleanKey) {
+        fbQuery = fbQuery.or(`keywords.ilike.%${cleanKey}%,activity.ilike.%${cleanKey}%,mobile_number.ilike.%${cleanKey}%`);
+      }
+      const { data: fbData } = await fbQuery.limit(200);
+      if (fbData && fbData.length > 0) {
+        data = fbData;
       }
     }
 
-    if (cleanName) {
-      query = query.or(
-        `person_name.ilike.%${cleanName}%,business_name.ilike.%${cleanName}%,keywords.ilike.%${cleanName}%`
-      );
-    }
-
-    if (cleanKey) {
-      query = query.or(
-        `member_num.ilike.%${cleanKey}%,mobile_number.ilike.%${cleanKey}%,keywords.ilike.%${cleanKey}%`
-      );
-    }
-
-    const { data, error } = await query.limit(100);
-    if (error) throw error;
-
-    // Filter out rows from other clubs in case of loose or query
-    const filtered = (data || []).filter((row) => {
+    // Filter out rows from other clubs in case of loose query and verify full match
+    const filtered = data.filter((row) => {
       const assn = (row.assn || "").toLowerCase();
       const dist = (row.district || "").toUpperCase();
+
       if (clubSlug === "vasavi") {
-        return assn.includes("vasavi") || dist === "V501A";
+        if (!assn.includes("vasavi") && dist !== "V501A") return false;
       } else if (clubSlug === "lions") {
-        return (assn.includes("lion") || dist === "3241D" || dist === "3242C") && !assn.includes("vasavi");
+        if (assn.includes("vasavi")) return false;
       }
+
+      if (cleanName) {
+        const nLow = cleanName.toLowerCase();
+        const matchName =
+          (row.person_name && row.person_name.toLowerCase().includes(nLow)) ||
+          (row.business_name && row.business_name.toLowerCase().includes(nLow));
+        if (!matchName) return false;
+      }
+
+      if (cleanKey) {
+        const kLow = cleanKey.toLowerCase();
+        const matchKey =
+          (row.keywords && row.keywords.toLowerCase().includes(kLow)) ||
+          (row.activity && row.activity.toLowerCase().includes(kLow)) ||
+          (row.description && row.description.toLowerCase().includes(kLow)) ||
+          (row.post_of_member && row.post_of_member.toLowerCase().includes(kLow)) ||
+          (row.role && row.role.toLowerCase().includes(kLow)) ||
+          (row.member_num && String(row.member_num).toLowerCase().includes(kLow)) ||
+          (row.mobile_number && row.mobile_number.includes(cleanKey)) ||
+          (row.club && row.club.toLowerCase().includes(kLow)) ||
+          (row.city && row.city.toLowerCase().includes(kLow));
+        if (!matchKey) return false;
+      }
+
       return true;
     });
 

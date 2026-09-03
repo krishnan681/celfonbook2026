@@ -311,7 +311,7 @@ const ClubDistrictsPage = () => {
                     id="member-name-input"
                     type="text"
                     className="lions-input-field"
-                    placeholder={`Search ${clubTitle} Name or Business`}
+                    placeholder="Business / Person Name"
                     value={memberName}
                     onChange={(e) => setMemberName(e.target.value)}
                   />
@@ -321,14 +321,14 @@ const ClubDistrictsPage = () => {
               <div className="lions-input-group">
                 <label htmlFor="member-key-input">
                   <Key size={16} />
-                  Member No / Mobile / Keyword
+                  Keyword Search
                 </label>
                 <div className="lions-input-box">
                   <input
                     id="member-key-input"
                     type="text"
                     className="lions-input-field"
-                    placeholder="Search by Member No, Mobile..."
+                    placeholder="Keyword Search"
                     value={memberKey}
                     onFocus={() => setIsKeywordFocused(true)}
                     onBlur={() => setIsKeywordFocused(false)}

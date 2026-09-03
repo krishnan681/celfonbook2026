@@ -702,12 +702,19 @@
 }
 
 /* Color Theme Rules for Lions (Green) vs Vasavi (Red) */
-.theme-vasavi .search-btn {
-  background: #dc2626 !important;
+.theme-vasavi .search-btn,
+.theme-vasavi .lions-btn-search {
+  background: #7c2d12 !important;
 }
 
-.theme-vasavi .search-btn:hover {
-  background: #b91c1c !important;
+.theme-vasavi .search-btn:hover,
+.theme-vasavi .lions-btn-search:hover {
+  background: #9a3412 !important;
+}
+
+.theme-vasavi .lions-input-field:focus {
+  border-color: #7c2d12 !important;
+  box-shadow: 0 0 0 3px rgba(124, 45, 18, 0.15) !important;
 }
 
 .theme-vasavi .lions-back-btn:hover {
@@ -737,12 +744,19 @@
   color: #dc2626 !important;
 }
 
-.theme-lions .search-btn {
-  background: #16a34a !important;
+.theme-lions .search-btn,
+.theme-lions .lions-btn-search {
+  background: #005a36 !important;
 }
 
-.theme-lions .search-btn:hover {
-  background: #15803d !important;
+.theme-lions .search-btn:hover,
+.theme-lions .lions-btn-search:hover {
+  background: #00462a !important;
+}
+
+.theme-lions .lions-input-field:focus {
+  border-color: #005a36 !important;
+  box-shadow: 0 0 0 3px rgba(0, 90, 54, 0.15) !important;
 }
 
 .theme-lions .lions-back-btn:hover {

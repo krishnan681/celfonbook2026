@@ -15,13 +15,14 @@ import {
   Compass,
   Briefcase,
   Users,
+  User,
+  Key,
 } from "lucide-react";
-import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
-import { TbTag } from "react-icons/tb";
 import {
   getDistrictData,
   getClubInfo,
   getClubCelebrationsTimeline,
+  searchClubMembers,
 } from "../services/clubService";
 import ClubProfileCard from "../components/ClubProfileCard";
 import FounderCard from "../components/FounderCard";
@@ -125,6 +126,8 @@ const ClubDistrictClubsPage = () => {
   const [businessName, setBusinessName] = useState("");
   const [keywords, setKeywords] = useState("");
   const [isKeywordFocused, setIsKeywordFocused] = useState(false);
+  const [searchResults, setSearchResults] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -161,6 +164,116 @@ const ClubDistrictClubsPage = () => {
     (clubSlug === "vasavi" ? "Vasavi Club" : "Lions Club");
   const basePath = clubSlug === "lions" ? "/lions-club" : `/clubs/${clubSlug}`;
 
+  const hasSearchQuery = Boolean(
+    businessName.trim() || keywords.trim() || searchResults !== null
+  );
+
+  // Search handler (Global / Database search with fallback to local district members)
+  const handleSearch = async (e) => {
+    if (e) e.preventDefault();
+    const bQuery = businessName.trim();
+    const kQuery = keywords.trim();
+
+    if (!bQuery && !kQuery) {
+      setSearchResults(null);
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const results = await searchClubMembers(clubSlug, bQuery, kQuery);
+      setSearchResults(results || []);
+    } catch (err) {
+      console.error("Search failed:", err);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleResetSearch = () => {
+    setBusinessName("");
+    setKeywords("");
+    setSearchResults(null);
+    setIsKeywordFocused(false);
+  };
+
+  // Real-time matching members for search
+  const displayedSearchResults = useMemo(() => {
+    const bQuery = businessName.trim().toLowerCase();
+    const kQuery = keywords.trim().toLowerCase();
+
+    if (!bQuery && !kQuery) {
+      return searchResults || [];
+    }
+
+    // Filter local district members
+    const localMatches = members.filter((member) => {
+      const matchName =
+        !bQuery ||
+        (member.fullName && member.fullName.toLowerCase().includes(bQuery)) ||
+        (member.person_name && member.person_name.toLowerCase().includes(bQuery)) ||
+        (member.name && member.name.toLowerCase().includes(bQuery)) ||
+        (member.business_name && member.business_name.toLowerCase().includes(bQuery)) ||
+        (member.fullBusinessName && member.fullBusinessName.toLowerCase().includes(bQuery)) ||
+        (member.club && member.club.toLowerCase().includes(bQuery)) ||
+        (member.clubName && member.clubName.toLowerCase().includes(bQuery));
+
+      const matchKeyword =
+        !kQuery ||
+        (member.keywords && member.keywords.toLowerCase().includes(kQuery)) ||
+        (member.profession && member.profession.toLowerCase().includes(kQuery)) ||
+        (member.activity && member.activity.toLowerCase().includes(kQuery)) ||
+        (member.description && member.description.toLowerCase().includes(kQuery)) ||
+        (member.post && member.post.toLowerCase().includes(kQuery)) ||
+        (member.postFull && member.postFull.toLowerCase().includes(kQuery)) ||
+        (member.memberNo && String(member.memberNo).toLowerCase().includes(kQuery)) ||
+        (member.membership_number && String(member.membership_number).toLowerCase().includes(kQuery)) ||
+        (member.mobile && member.mobile.includes(kQuery)) ||
+        (member.mobile_number && member.mobile_number.includes(kQuery)) ||
+        (member.city && member.city.toLowerCase().includes(kQuery)) ||
+        (member.club && member.club.toLowerCase().includes(kQuery));
+
+      return matchName && matchKeyword;
+    });
+
+    if (searchResults && searchResults.length > 0) {
+      const seen = new Set(localMatches.map((m) => m.id));
+      const merged = [...localMatches];
+      searchResults.forEach((m) => {
+        if (!seen.has(m.id)) {
+          seen.add(m.id);
+          merged.push(m);
+        }
+      });
+      return merged;
+    }
+
+    return localMatches;
+  }, [members, businessName, keywords, searchResults]);
+
+  // Real-time matching clubs for search
+  const displayedMatchingClubs = useMemo(() => {
+    const bQuery = businessName.trim().toLowerCase();
+    const kQuery = keywords.trim().toLowerCase();
+
+    if (!bQuery && !kQuery) return [];
+
+    return clubs.filter((club) => {
+      const matchName =
+        !bQuery ||
+        (club.name && club.name.toLowerCase().includes(bQuery)) ||
+        (club.district && club.district.toLowerCase().includes(bQuery));
+
+      const matchKeyword =
+        !kQuery ||
+        (club.id && String(club.id).toLowerCase().includes(kQuery)) ||
+        (club.name && club.name.toLowerCase().includes(kQuery));
+
+      return matchName && matchKeyword;
+    });
+  }, [clubs, businessName, keywords]);
+
   // Compute counts for filter tabs
   const tabCounts = useMemo(() => {
     return {
@@ -177,72 +290,20 @@ const ClubDistrictClubsPage = () => {
   // Filtered Clubs when "CLUBS" is active
   const filteredClubs = useMemo(() => {
     if (activeFilter !== "CLUBS") return [];
-    const bQuery = businessName.trim().toLowerCase();
-    const kQuery = keywords.trim().toLowerCase();
-
-    if (!bQuery && !kQuery) return clubs;
-
-    return clubs.filter((club) => {
-      const matchName =
-        !bQuery ||
-        (club.name && club.name.toLowerCase().includes(bQuery)) ||
-        (club.district && club.district.toLowerCase().includes(bQuery));
-
-      const matchKeyword =
-        !kQuery ||
-        (club.id && String(club.id).toLowerCase().includes(kQuery)) ||
-        (club.name && club.name.toLowerCase().includes(kQuery));
-
-      return matchName && matchKeyword;
-    });
-  }, [clubs, activeFilter, businessName, keywords]);
+    return clubs;
+  }, [clubs, activeFilter]);
 
   // Filtered Members for other designation tabs
   const filteredMembers = useMemo(() => {
     if (activeFilter === "CLUBS") return [];
-
-    let list = members.filter((m) => matchesRoleFilter(m, activeFilter));
-
-    const bQuery = businessName.trim().toLowerCase();
-    const kQuery = keywords.trim().toLowerCase();
-
-    if (!bQuery && !kQuery) return list;
-
-    return list.filter((member) => {
-      const matchName =
-        !bQuery ||
-        (member.fullName && member.fullName.toLowerCase().includes(bQuery)) ||
-        (member.person_name &&
-          member.person_name.toLowerCase().includes(bQuery)) ||
-        (member.business_name &&
-          member.business_name.toLowerCase().includes(bQuery)) ||
-        (member.clubName && member.clubName.toLowerCase().includes(bQuery));
-
-      const matchKeyword =
-        !kQuery ||
-        (member.post && member.post.toLowerCase().includes(kQuery)) ||
-        (member.postFull && member.postFull.toLowerCase().includes(kQuery)) ||
-        (member.profession &&
-          member.profession.toLowerCase().includes(kQuery)) ||
-        (member.category && member.category.toLowerCase().includes(kQuery)) ||
-        (member.membership_number &&
-          String(member.membership_number).toLowerCase().includes(kQuery)) ||
-        (member.mobile_number && member.mobile_number.includes(kQuery)) ||
-        (member.city && member.city.toLowerCase().includes(kQuery));
-
-      return matchName && matchKeyword;
-    });
-  }, [members, activeFilter, businessName, keywords]);
-
-  const handleResetSearch = () => {
-    setBusinessName("");
-    setKeywords("");
-  };
+    return members.filter((m) => matchesRoleFilter(m, activeFilter));
+  }, [members, activeFilter]);
 
   const handleFilterChange = (filterKey) => {
     setActiveFilter(filterKey);
     setBusinessName("");
     setKeywords("");
+    setSearchResults(null);
   };
 
   // Dynamic filter tabs definition (Celebrations is now exclusively on the right aside)
@@ -389,193 +450,277 @@ const ClubDistrictClubsPage = () => {
         <FounderCard clubSlug={clubSlug} />
 
         {/* 2-Field Search Bar */}
-        <div className="directory-search-bar" style={{ marginTop: "10px" }}>
-          <div className="search-input-group">
-            <div className="search-input-field">
-              <HiOutlineBuildingOffice2 className="search-icon" />
-              <input
-                type="text"
-                placeholder={
-                  activeFilter === "CLUBS"
-                    ? `Search Club Name in ${formattedDistrictName}`
-                    : `Search Person or Business Name in ${formattedDistrictName}`
-                }
-                value={businessName}
-                onChange={(e) => setBusinessName(e.target.value)}
-              />
-            </div>
+        <div className="lions-search-card" style={{ marginTop: "10px" }}>
+          <form onSubmit={handleSearch}>
+            <div className="lions-search-inputs-grid">
+              <div className="lions-input-group">
+                <label htmlFor="district-member-name-input">
+                  <User size={16} />
+                  Business / Person Name
+                </label>
+                <div className="lions-input-box">
+                  <input
+                    id="district-member-name-input"
+                    type="text"
+                    className="lions-input-field"
+                    placeholder="Business / Person Name"
+                    value={businessName}
+                    onChange={(e) => setBusinessName(e.target.value)}
+                  />
+                </div>
+              </div>
 
-            <div className="search-input-field">
-              <TbTag className="search-icon" />
-              <input
-                type="text"
-                placeholder={
-                  activeFilter === "CLUBS"
-                    ? "Search by Club Number / Keyword"
-                    : "Search by Profession, Post, Member No..."
-                }
-                value={keywords}
-                onFocus={() => setIsKeywordFocused(true)}
-                onBlur={() => setIsKeywordFocused(false)}
-                onChange={(e) => setKeywords(e.target.value)}
-              />
-            </div>
-          </div>
+              <div className="lions-input-group">
+                <label htmlFor="district-member-key-input">
+                  <Key size={16} />
+                  Keyword Search
+                </label>
+                <div className="lions-input-box">
+                  <input
+                    id="district-member-key-input"
+                    type="text"
+                    className="lions-input-field"
+                    placeholder="Keyword Search"
+                    value={keywords}
+                    onFocus={() => setIsKeywordFocused(true)}
+                    onBlur={() => setIsKeywordFocused(false)}
+                    onChange={(e) => setKeywords(e.target.value)}
+                  />
+                </div>
+              </div>
 
-          <div style={{ display: "flex", gap: "8px" }}>
-            <button
-              type="button"
-              className="search-btn"
-              onClick={(e) => e.preventDefault()}
-            >
-              <Search size={16} />
-              Search
-            </button>
-            {(businessName || keywords) && (
-              <button
-                type="button"
-                className="lions-btn-reset"
-                onClick={handleResetSearch}
-                title="Reset Search"
-                style={{
-                  height: "42px",
-                  padding: "0 14px",
-                  borderRadius: "10px",
-                }}
-              >
-                <RotateCcw size={16} />
-              </button>
-            )}
-          </div>
+              <div className="lions-search-actions">
+                <button
+                  type="submit"
+                  className="lions-btn-search"
+                  disabled={isSearching}
+                >
+                  {isSearching ? (
+                    <Loader2 size={18} className="animate-spin" />
+                  ) : (
+                    <Search size={18} />
+                  )}
+                  <span>{isSearching ? "Searching..." : "Search"}</span>
+                </button>
+                {hasSearchQuery && (
+                  <button
+                    type="button"
+                    className="lions-btn-reset"
+                    onClick={handleResetSearch}
+                    title="Clear Search"
+                  >
+                    <RotateCcw size={18} />
+                    <span>Clear</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </form>
         </div>
 
-        {/* Designation Filter Tabs Carousel */}
-        <TabsCarousel
-          tabs={filterTabs}
-          activeTabId={activeFilter}
-          onSelectTab={handleFilterChange}
-          isLoading={isLoading}
-        />
+        {/* Designation Filter Tabs Carousel (Shown when not in search mode) */}
+        {!hasSearchQuery && (
+          <TabsCarousel
+            tabs={filterTabs}
+            activeTabId={activeFilter}
+            onSelectTab={handleFilterChange}
+            isLoading={isLoading}
+          />
+        )}
 
         {/* 2-Column Content Layout: Main Clubs/Members on Left + Celebrations Aside on Right */}
         <div className="district-content-layout">
-          {/* Left Column: Clubs or Members Directory Grid */}
+          {/* Left Column: Clubs or Members Directory Grid / Search Results */}
           <main className="district-main-content">
-            <div className="district-clubs-list-section">
-              <div className="section-head">
-                <h3>
-                  {currentSectionMeta.icon}
-                  {currentSectionMeta.title}
-                </h3>
-                {!isLoading && (
-                  <span className="count-pill">
-                    {currentSectionMeta.count} {currentSectionMeta.unit}
-                  </span>
+            {hasSearchQuery ? (
+              /* ACTIVE SEARCH RESULTS */
+              <div className="district-clubs-list-section">
+                <div className="section-head">
+                  <h3>
+                    <Search className="section-icon" />
+                    Search Results ({displayedSearchResults.length} {displayedSearchResults.length === 1 ? "Member" : "Members"}
+                    {displayedMatchingClubs.length > 0 ? `, ${displayedMatchingClubs.length} ${displayedMatchingClubs.length === 1 ? "Club" : "Clubs"}` : ""})
+                  </h3>
+                  <button
+                    type="button"
+                    className="lions-back-btn"
+                    style={{ fontSize: "0.82rem", padding: "4px 12px" }}
+                    onClick={handleResetSearch}
+                  >
+                    Clear Search
+                  </button>
+                </div>
+
+                {/* If matching clubs exist */}
+                {displayedMatchingClubs.length > 0 && (
+                  <div style={{ marginBottom: "24px" }}>
+                    <h4 style={{ fontSize: "1rem", fontWeight: "700", color: "#1e293b", margin: "0 0 12px" }}>
+                      🏛️ Matching Clubs ({displayedMatchingClubs.length})
+                    </h4>
+                    <div className="cards-grid">
+                      {displayedMatchingClubs.map((club) => (
+                        <div
+                          key={club.id}
+                          className="district-card"
+                          onClick={() => navigate(`${basePath}/${districtId}/${club.id}`)}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              navigate(`${basePath}/${districtId}/${club.id}`);
+                            }
+                          }}
+                        >
+                          <h3 className="name">{club.name}</h3>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* If matching members exist */}
+                {displayedSearchResults.length > 0 && (
+                  <div>
+                    {displayedMatchingClubs.length > 0 && (
+                      <h4 style={{ fontSize: "1rem", fontWeight: "700", color: "#1e293b", margin: "0 0 12px" }}>
+                        👤 Matching Members ({displayedSearchResults.length})
+                      </h4>
+                    )}
+                    <div className="cards-grid">
+                      {displayedSearchResults.map((member) => (
+                        <ClubProfileCard
+                          key={member.id}
+                          person={member}
+                          roleTitle={member.postFull || member.post}
+                          isLeadership={member.isLeadership}
+                          isKeywordFocused={isKeywordFocused}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* If no matches at all */}
+                {displayedSearchResults.length === 0 && displayedMatchingClubs.length === 0 && (
+                  <div
+                    style={{
+                      padding: "30px",
+                      background: "white",
+                      borderRadius: "12px",
+                      textAlign: "center",
+                      color: "#64748b",
+                    }}
+                  >
+                    <p>No {clubTitle} members or clubs found matching your search.</p>
+                    <button
+                      type="button"
+                      className="lions-back-btn"
+                      style={{ margin: "12px auto 0" }}
+                      onClick={handleResetSearch}
+                    >
+                      Clear Search
+                    </button>
+                  </div>
                 )}
               </div>
-
-              {isLoading ? (
-                <div
-                  style={{
-                    textAlign: "center",
-                    padding: "50px",
-                    color: "#64748b",
-                  }}
-                >
-                  <Loader2
-                    size={32}
-                    className="animate-spin"
-                    style={{ margin: "0 auto 12px" }}
-                  />
-                  <p>Fetching district data from directory...</p>
+            ) : (
+              /* REGULAR TAB CONTENT */
+              <div className="district-clubs-list-section">
+                <div className="section-head">
+                  <h3>
+                    {currentSectionMeta.icon}
+                    {currentSectionMeta.title}
+                  </h3>
+                  {!isLoading && (
+                    <span className="count-pill">
+                      {currentSectionMeta.count} {currentSectionMeta.unit}
+                    </span>
+                  )}
                 </div>
-              ) : activeFilter === "CLUBS" ? (
-                /* CLUBS GRID */
-                filteredClubs.length === 0 ? (
+
+                {isLoading ? (
                   <div
                     style={{
-                      padding: "30px",
-                      background: "white",
-                      borderRadius: "12px",
                       textAlign: "center",
+                      padding: "50px",
                       color: "#64748b",
                     }}
                   >
-                    <p>No clubs found matching your search.</p>
-                    {(businessName || keywords) && (
-                      <button
-                        type="button"
-                        className="lions-back-btn"
-                        style={{ margin: "12px auto 0" }}
-                        onClick={handleResetSearch}
-                      >
-                        Clear Search
-                      </button>
-                    )}
+                    <Loader2
+                      size={32}
+                      className="animate-spin"
+                      style={{ margin: "0 auto 12px" }}
+                    />
+                    <p>Fetching district data from directory...</p>
                   </div>
-                ) : (
-                  <div className="cards-grid">
-                    {filteredClubs.map((club) => (
-                      <div
-                        key={club.id}
-                        className="district-card"
-                        onClick={() =>
-                          navigate(`${basePath}/${districtId}/${club.id}`)
-                        }
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            navigate(`${basePath}/${districtId}/${club.id}`);
+                ) : activeFilter === "CLUBS" ? (
+                  /* CLUBS GRID */
+                  filteredClubs.length === 0 ? (
+                    <div
+                      style={{
+                        padding: "30px",
+                        background: "white",
+                        borderRadius: "12px",
+                        textAlign: "center",
+                        color: "#64748b",
+                      }}
+                    >
+                      <p>No clubs found in this district.</p>
+                    </div>
+                  ) : (
+                    <div className="cards-grid">
+                      {filteredClubs.map((club) => (
+                        <div
+                          key={club.id}
+                          className="district-card"
+                          onClick={() =>
+                            navigate(`${basePath}/${districtId}/${club.id}`)
                           }
-                        }}
-                      >
-                        <h3 className="name">{club.name}</h3>
-                      </div>
-                    ))}
-                  </div>
-                )
-              ) : (
-                /* MEMBER GRID (For DC, RC, ZC, DG, Cabinet, All Members) */
-                filteredMembers.length === 0 ? (
-                  <div
-                    style={{
-                      padding: "30px",
-                      background: "white",
-                      borderRadius: "12px",
-                      textAlign: "center",
-                      color: "#64748b",
-                    }}
-                  >
-                    <p>
-                      No members found under this designation or search filter.
-                    </p>
-                    {(businessName || keywords) && (
-                      <button
-                        type="button"
-                        className="lions-back-btn"
-                        style={{ margin: "12px auto 0" }}
-                        onClick={handleResetSearch}
-                      >
-                        Clear Search
-                      </button>
-                    )}
-                  </div>
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              navigate(`${basePath}/${districtId}/${club.id}`);
+                            }
+                          }}
+                        >
+                          <h3 className="name">{club.name}</h3>
+                        </div>
+                      ))}
+                    </div>
+                  )
                 ) : (
-                  <div className="cards-grid">
-                    {filteredMembers.map((member) => (
-                      <ClubProfileCard
-                        key={member.id}
-                        person={member}
-                        roleTitle={member.postFull || member.post}
-                        isLeadership={member.isLeadership}
-                        isKeywordFocused={isKeywordFocused}
-                      />
-                    ))}
-                  </div>
-                )
-              )}
-            </div>
+                  /* MEMBER GRID (For DC, RC, ZC, DG, Cabinet, All Members) */
+                  filteredMembers.length === 0 ? (
+                    <div
+                      style={{
+                        padding: "30px",
+                        background: "white",
+                        borderRadius: "12px",
+                        textAlign: "center",
+                        color: "#64748b",
+                      }}
+                    >
+                      <p>
+                        No members found under this designation.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="cards-grid">
+                      {filteredMembers.map((member) => (
+                        <ClubProfileCard
+                          key={member.id}
+                          person={member}
+                          roleTitle={member.postFull || member.post}
+                          isLeadership={member.isLeadership}
+                          isKeywordFocused={isKeywordFocused}
+                        />
+                      ))}
+                    </div>
+                  )
+                )}
+              </div>
+            )}
           </main>
 
           {/* Right Column: Celebrations Aside */}

@@ -10,9 +10,9 @@ import {
   Search,
   RotateCcw,
   Loader2,
+  User,
+  Key,
 } from "lucide-react";
-import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
-import { TbTag } from "react-icons/tb";
 import {
   getClubMembers,
   getClubInfo,
@@ -180,56 +180,67 @@ const ClubDetailPage = () => {
           {/* LEFT MAIN COLUMN */}
           <div className="district-main-column">
             {/* 2-Field Search Bar */}
-            <div className="directory-search-bar" style={{ marginTop: "0" }}>
-              <div className="search-input-group">
-                <div className="search-input-field">
-                  <HiOutlineBuildingOffice2 className="search-icon" />
-                  <input
-                    type="text"
-                    placeholder="Search Business / Person Name"
-                    value={businessName}
-                    onChange={(e) => setBusinessName(e.target.value)}
-                  />
-                </div>
+            <div className="lions-search-card" style={{ marginTop: "0", marginBottom: "20px" }}>
+              <form onSubmit={(e) => e.preventDefault()}>
+                <div className="lions-search-inputs-grid">
+                  <div className="lions-input-group">
+                    <label htmlFor="club-detail-name-input">
+                      <User size={16} />
+                      Business / Person Name
+                    </label>
+                    <div className="lions-input-box">
+                      <input
+                        id="club-detail-name-input"
+                        type="text"
+                        className="lions-input-field"
+                        placeholder="Business / Person Name"
+                        value={businessName}
+                        onChange={(e) => setBusinessName(e.target.value)}
+                      />
+                    </div>
+                  </div>
 
-                <div className="search-input-field">
-                  <TbTag className="search-icon" />
-                  <input
-                    type="text"
-                    placeholder="Search Keywords / Profession"
-                    value={keywords}
-                    onFocus={() => setIsKeywordFocused(true)}
-                    onBlur={() => setIsKeywordFocused(false)}
-                    onChange={(e) => setKeywords(e.target.value)}
-                  />
-                </div>
-              </div>
+                  <div className="lions-input-group">
+                    <label htmlFor="club-detail-key-input">
+                      <Key size={16} />
+                      Keyword Search
+                    </label>
+                    <div className="lions-input-box">
+                      <input
+                        id="club-detail-key-input"
+                        type="text"
+                        className="lions-input-field"
+                        placeholder="Keyword Search"
+                        value={keywords}
+                        onFocus={() => setIsKeywordFocused(true)}
+                        onBlur={() => setIsKeywordFocused(false)}
+                        onChange={(e) => setKeywords(e.target.value)}
+                      />
+                    </div>
+                  </div>
 
-              <div style={{ display: "flex", gap: "8px" }}>
-                <button
-                  type="button"
-                  className="search-btn"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <Search size={16} />
-                  Search
-                </button>
-                {(businessName || keywords) && (
-                  <button
-                    type="button"
-                    className="lions-btn-reset"
-                    onClick={handleResetSearch}
-                    title="Reset Search"
-                    style={{
-                      height: "42px",
-                      padding: "0 14px",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <RotateCcw size={16} />
-                  </button>
-                )}
-              </div>
+                  <div className="lions-search-actions">
+                    <button
+                      type="submit"
+                      className="lions-btn-search"
+                    >
+                      <Search size={18} />
+                      <span>Search</span>
+                    </button>
+                    {(businessName || keywords) && (
+                      <button
+                        type="button"
+                        className="lions-btn-reset"
+                        onClick={handleResetSearch}
+                        title="Clear Search"
+                      >
+                        <RotateCcw size={18} />
+                        <span>Clear</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </form>
             </div>
 
             {/* Main Club Roster Content */}
