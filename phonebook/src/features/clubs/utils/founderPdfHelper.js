@@ -7,7 +7,15 @@ export const downloadFounderPdf = (founderData) => {
   if (!founderData) return;
 
   if (founderData.pdfDownloadUrl) {
-    window.open(founderData.pdfDownloadUrl, "_blank");
+    const link = document.createElement("a");
+    link.href = founderData.pdfDownloadUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    const filename = `${(founderData.clubName || "Club").replace(/\s+/g, "_")}_Book.pdf`;
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     return;
   }
 

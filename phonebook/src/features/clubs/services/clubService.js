@@ -779,14 +779,12 @@ export function getClubFounderInfo(clubSlug = "lions") {
     return {
       clubSlug: "vasavi",
       clubName: "Vasavi Clubs International",
-      founderName: "Vasavi Heritage & Founders",
-      title: "The Legacy of Sri Vasavi Kanyaka Parameswari & Vasavi Movement",
+      founderName: "VASAVI CLUBS INTERNATIONAL",
       shortSummary:
-        "Vasavi Clubs International was founded to foster brotherhood, mutual business growth, community service, and youth empowerment inspired by the eternal ideals of peace, integrity, and selflessness.",
+        "Vasavi Clubs International is a global service organization promoting friendship, fellowship, social welfare, education, healthcare, community development and humanitarian service, empowering members to serve society and improve lives through collective action.",
       coverImage: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80",
       portraitImage: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&auto=format&fit=crop&q=80",
-      quote: "Friendship, Service, and Universal Brotherhood for Community Prosperity.",
-      pdfDownloadUrl: null,
+      pdfDownloadUrl: "/docs/vasavi_club_book.pdf",
       pages: [
         {
           pageNumber: 1,
@@ -838,7 +836,7 @@ export function getClubFounderInfo(clubSlug = "lions") {
       "Lions Clubs International is a global service organization of volunteers dedicated to improving communities, supporting people in need, promoting health and education, and creating positive change through humanitarian service.",
     coverImage: "https://images.unsplash.com/photo-1532012164546-f432f2e3edd3?w=600&auto=format&fit=crop&q=80",
     portraitImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
-    pdfDownloadUrl: null,
+    pdfDownloadUrl: "/docs/lions_club_book.pdf",
     pages: [
       {
         pageNumber: 1,
