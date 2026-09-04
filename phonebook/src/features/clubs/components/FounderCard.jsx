@@ -1,8 +1,8 @@
 // src/features/clubs/components/FounderCard.jsx
 import React from "react";
-import { Download, Award, Quote } from "lucide-react";
+import { Download, BookOpen, Quote } from "lucide-react";
 import { getClubFounderInfo } from "../services/clubService";
-import { downloadFounderPdf } from "../utils/founderPdfHelper";
+import { openFounderPdf, downloadFounderPdf } from "../utils/founderPdfHelper";
 
 export default function FounderCard({ clubSlug = "lions" }) {
   const founderData = getClubFounderInfo(clubSlug);
@@ -48,8 +48,6 @@ export default function FounderCard({ clubSlug = "lions" }) {
         }}
       >
         <div style={{ flex: "1 1 300px" }}>
-         
-
           <h3
             style={{
               fontSize: "1.35rem",
@@ -86,15 +84,22 @@ export default function FounderCard({ clubSlug = "lions" }) {
               margin: "0 0 16px 0",
             }}
           >
-            {founderData.shortSummary}
+            {founderData.shortSummary} <br /> {founderData.secondpara}
           </p>
         </div>
 
-        {/* Action Button: Download Chronicle PDF */}
-        <div>
+        {/* Action Buttons: View Book (PDF) & Download PDF */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "10px",
+          }}
+        >
           <button
             type="button"
-            onClick={() => downloadFounderPdf(founderData)}
+            onClick={() => openFounderPdf(founderData)}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -104,17 +109,48 @@ export default function FounderCard({ clubSlug = "lions" }) {
               border: "none",
               borderRadius: "10px",
               padding: "10px 18px",
-              fontSize: "0.85rem",
+              fontSize: "0.88rem",
               fontWeight: "700",
               cursor: "pointer",
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.12)",
-              transition: "transform 0.2s ease",
+              boxShadow: "0 4px 14px rgba(0, 0, 0, 0.15)",
+              transition: "all 0.2s ease",
             }}
             onMouseOver={(e) => (e.currentTarget.style.transform = "translateY(-1px)")}
             onMouseOut={(e) => (e.currentTarget.style.transform = "translateY(0)")}
           >
-            <Download size={16} />
-            <span>Download Book (PDF)</span>
+            <BookOpen size={17} />
+            <span>Read Book Online (PDF)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => downloadFounderPdf(founderData)}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              background: "#f8fafc",
+              color: "#475569",
+              border: "1px solid #cbd5e1",
+              borderRadius: "10px",
+              padding: "10px 14px",
+              fontSize: "0.82rem",
+              fontWeight: "600",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = "#f1f5f9";
+              e.currentTarget.style.color = "#0f172a";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = "#f8fafc";
+              e.currentTarget.style.color = "#475569";
+            }}
+            title="Download or Save PDF"
+          >
+            <Download size={15} />
+            <span>Download</span>
           </button>
         </div>
       </div>

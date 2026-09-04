@@ -727,7 +727,7 @@ const ClubDistrictClubsPage = () => {
           <aside className="district-celebrations-aside-column">
             <CelebrationsAside
               timeline={celebrationsTimeline}
-              clubTitle={clubTitle}
+              clubTitle={formattedDistrictName}
               basePath={basePath}
             />
           </aside>

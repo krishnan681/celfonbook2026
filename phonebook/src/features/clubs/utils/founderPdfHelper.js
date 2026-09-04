@@ -1,7 +1,23 @@
 // src/features/clubs/utils/founderPdfHelper.js
 
 /**
- * Generates and triggers download / print-to-PDF of Founder Heritage Chronicle
+ * Opens Founder Heritage Book PDF online directly in a new tab for reading
+ */
+export const openFounderPdf = (founderData) => {
+  if (!founderData) return;
+
+  const url = founderData.pdfDownloadUrl || founderData.pdfUrl;
+  if (url) {
+    window.open(url, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  // Fallback to online formatted HTML view in new tab if no PDF file
+  viewFormattedChronicle(founderData);
+};
+
+/**
+ * Generates and triggers download of Founder Heritage Chronicle
  */
 export const downloadFounderPdf = (founderData) => {
   if (!founderData) return;
@@ -19,9 +35,13 @@ export const downloadFounderPdf = (founderData) => {
     return;
   }
 
+  viewFormattedChronicle(founderData);
+};
+
+function viewFormattedChronicle(founderData) {
   const printWindow = window.open("", "_blank");
   if (!printWindow) {
-    alert("Please allow popups to download or print the PDF.");
+    alert("Please allow popups to view the book online.");
     return;
   }
 

@@ -56,7 +56,7 @@ const ClubDetailPage = () => {
         const [info, data, timeline] = await Promise.all([
           getClubInfo(clubSlug),
           getClubMembers(districtId, clubId, clubSlug),
-          getClubCelebrationsTimeline(clubSlug, districtId, clubId),
+          getClubCelebrationsTimeline(clubSlug, districtId),
         ]);
 
         if (isMounted) {
@@ -367,7 +367,7 @@ const ClubDetailPage = () => {
           <div className="district-celebrations-aside-column">
             <CelebrationsAside
               timeline={celebrationsTimeline}
-              clubTitle={decodedClubName || clubTitle}
+              clubTitle={formattedDistrictName}
               basePath={basePath}
             />
           </div>

@@ -1,6 +1,10 @@
 // src/features/clubs/services/clubService.js
 import { supabase } from "../../../core/config/supabaseClient";
 import { cacheService } from "../../../core/services/cacheService";
+import {
+  formatPersonNameWithPrefix,
+  getClubPrefixForProfile,
+} from "../../../core/utils/nameHelper";
 import lionsDefaultLogo from "../../../assets/images/Clubs/Lions_Clubs_International_logo.svg";
 import vasaviDefaultLogo from "../../../assets/images/Clubs/Vasavi.png";
 
@@ -68,9 +72,15 @@ export const checkIsLeadership = (post) => {
 export const normalizeMember = (profile, defaultDistrict = "3242C", clubSlug = "lions") => {
   if (!profile) return null;
 
-  const fullName = profile.person_prefix
-    ? `${profile.person_prefix} ${profile.person_name || ""}`.trim()
-    : profile.person_name || profile.business_name || "Unnamed Member";
+  const fallbackPrefix = (clubSlug || "").toLowerCase() === "vasavi" ? "Vn" : "Lion";
+  const formattedPersonName = formatPersonNameWithPrefix(profile, fallbackPrefix);
+  const fullName =
+    formattedPersonName ||
+    profile.person_name ||
+    profile.business_name ||
+    "Unnamed Member";
+
+  const memberPrefix = getClubPrefixForProfile(profile, fallbackPrefix);
 
   const fullBusinessName = profile.business_prefix
     ? `${profile.business_prefix} ${profile.business_name || ""}`.trim()
@@ -87,9 +97,9 @@ export const normalizeMember = (profile, defaultDistrict = "3242C", clubSlug = "
     id: profile.id,
     clubSlug: clubSlug,
     memberNo: profile.member_num || "",
-    name: profile.person_name || profile.business_name || "Unnamed Member",
+    name: fullName,
     fullName,
-    prefix: profile.person_prefix || "",
+    prefix: memberPrefix,
     mobile: profile.mobile_number || "",
     phone: profile.mobile_number || profile.landline || "",
     post: rawPost,
@@ -608,9 +618,10 @@ export async function getClubCelebrations(clubSlug = "lions", districtId = null)
 export async function getClubCelebrationsTimeline(
   clubSlug = "lions",
   districtId = null,
-  clubName = null
+  _clubName = null
 ) {
-  const cacheKey = `celebrations_${clubSlug}_${districtId || "all"}_${clubName || "all"}`;
+  // District-wide celebration cache key: celebrations must not vary by club
+  const cacheKey = `celebrations_${clubSlug}_${districtId || "all"}`;
   try {
     let query = supabase.from("profiles").select("*");
 
@@ -630,19 +641,16 @@ export async function getClubCelebrationsTimeline(
       query = query.eq("district", districtId);
     }
 
-    if (clubName) {
-      query = query.ilike("club", `%${clubName}%`);
-    }
-
     let { data, error } = await query;
     if (error) throw error;
 
-    // Fallback to district if club-specific has no records
-    if ((!data || data.length === 0) && clubName) {
+    // Fallback if specific district has no records
+    if (!data || data.length === 0) {
+      const fallbackDistrict = clubSlug === "vasavi" ? "V501A" : "3242C";
       const fallbackQuery = supabase
         .from("profiles")
         .select("*")
-        .eq("district", districtId || "3242C");
+        .eq("district", fallbackDistrict);
       const { data: fbData } = await fallbackQuery;
       if (fbData && fbData.length > 0) {
         data = fbData;
@@ -782,44 +790,77 @@ export function getClubFounderInfo(clubSlug = "lions") {
       founderName: "VASAVI CLUBS INTERNATIONAL",
       shortSummary:
         "Vasavi Clubs International is a global service organization promoting friendship, fellowship, social welfare, education, healthcare, community development and humanitarian service, empowering members to serve society and improve lives through collective action.",
-      coverImage: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80",
-      portraitImage: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&auto=format&fit=crop&q=80",
+      secondpara:
+        "Download to find - VCI History,  KCGF. Donors,  Vasavi Matha Prayer & Pledge , International Presidents Team,  Intl Office Bearers, Vasavi clubs in India and around the World, Vision and Mission for the year",
+      coverImage:
+        "https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80",
+      portraitImage:
+        "https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&auto=format&fit=crop&q=80",
       pdfDownloadUrl: "/docs/vasavi_club_book.pdf",
+ 
       pages: [
         {
           pageNumber: 1,
-          chapter: "1. The Genesis",
+          chapter: "1. VCI History & Genesis",
           title: "Origins of Vasavi Clubs International",
           content: [
-            "Vasavi Clubs International took its origin to unite like-minded individuals dedicated to societal welfare, mutual support, education, and cultural preservation.",
-            "The foundational vision emphasizes ethical leadership, empowering underprivileged communities through healthcare camps, scholarship initiatives, and business networking among members.",
+            "Vasavi Clubs International took its origin to unite Arya Vysya and like-minded individuals worldwide, dedicated to societal welfare, mutual support, education, and cultural heritage.",
+            "The foundational vision emphasizes ethical leadership, empowering underprivileged communities through healthcare camps, scholarship endowments, marriage assistance, and business networking among members.",
+            "From humble beginnings, the organization has blossomed into a magnificent international movement with hundreds of clubs and thousands of dedicated members serving unconditionally.",
           ],
         },
         {
           pageNumber: 2,
-          chapter: "2. Core Principles",
-          title: "Service, Fellowship & Empowerment",
+          chapter: "2. Vasavi Matha Prayer & Pledge",
+          title: "Divine Prayer & Code of Fellowship",
           content: [
-            "With chapters across the globe, Vasavi Clubs actively coordinate humanitarian activities such as blood donation drives, artificial limb distribution, and women entrepreneurship workshops.",
-            "Fellowship meetings strengthen social bonding among families while fostering collaborative opportunities in trade and commerce.",
+            "Vasavi Matha Prayer: 'O Divine Mother Sri Kanyaka Parameswari, bless us with wisdom, peace, prosperity, and the spirit of selflessness to serve our fellow beings with unconditional love and devotion.'",
+            "VCI Member Pledge: 'We, the members of Vasavi Clubs International, pledge ourselves to uphold truth, non-violence, service, and universal brotherhood. We resolve to assist the poor, educate the needy, respect elders, and foster unity across all sections of society.'",
           ],
         },
         {
           pageNumber: 3,
-          chapter: "3. Global Impact",
-          title: "A Worldwide Network of Goodness",
+          chapter: "3. KCGF Donors & Charitable Funds",
+          title: "Kalpatharuvu Club Growth Fund & Philanthropy",
           content: [
-            "Today, thousands of dedicated club members participate across hundreds of districts and zones.",
-            "Each district champions community development, disaster relief, and youth leadership wings (VJC - Vasavi Junior Clubs), creating a lasting generational impact.",
+            "The Kalpatharuvu Club Growth Fund (KCGF) represents the lifeblood of humanitarian funding in Vasavi Clubs International. Donors contribute generously to permanent trust funds for healthcare, education, and disaster management.",
+            "KCGF Diamond, Platinum, and Gold fellowship titles are conferred on benefactors whose philanthropic support powers state-of-the-art dialysis centers, diagnostic labs, artificial limb centers, and student scholarship foundations.",
           ],
         },
         {
           pageNumber: 4,
-          chapter: "4. The Path Ahead",
-          title: "Digital Connectivity & Sustainable Service",
+          chapter: "4. International President's Team",
+          title: "Leadership, Vision & Strategic Goals",
           content: [
-            "As we advance into modern times, digital directories like Celfonbook bridge the gap between members, enabling instant contact, celebratory wishes, and cross-border commercial harmony.",
-            "May the spirit of service continue to light the lives of countless individuals worldwide.",
+            "The International President leads with an inspiring annual theme focusing on 'Service with Compassion and Sustainable Growth'.",
+            "Supported by the First Vice International President, Second Vice International President, and the Cabinet Secretariat, the leadership drives innovative welfare programs across all administrative districts.",
+          ],
+        },
+        {
+          pageNumber: 5,
+          chapter: "5. International Office Bearers",
+          title: "Organizational Hierarchy & Administration",
+          content: [
+            "Vasavi Clubs International operates through a structured democratic administration spanning the International Board, Multiple Council Chairpersons, District Governors (DGs), Region Chairpersons (RCs), Zone Chairpersons (ZCs), and Club Presidents.",
+            "Dedicated wings including Vasavi Vanitha Clubs (women empowerment) and Vasavi Junior Clubs (VJC youth leadership) ensure vibrant multi-generational participation.",
+          ],
+        },
+        {
+          pageNumber: 6,
+          chapter: "6. Vasavi Clubs in India & Around the World",
+          title: "Global Footprint of Fellowship & Service",
+          content: [
+            "Vasavi Clubs have established vibrant chapters across Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, Maharashtra, and North India, alongside international chapters in the USA, UK, UAE, Singapore, Malaysia, and Australia.",
+            "Cross-border business networking, youth cultural exchanges, and global disaster relief efforts exemplify the borderless brotherhood of Vasavians worldwide.",
+          ],
+        },
+        {
+          pageNumber: 7,
+          chapter: "7. Vision & Mission for the Year",
+          title: "Empowering Lives Through Sustainable Action",
+          content: [
+            "Vision: To be the most trusted and impactful community service organization fostering moral values, economic empowerment, and societal welfare.",
+            "Mission: To establish healthcare facilities in rural belts, support 10,000+ underprivileged students annually, nurture young entrepreneurs, and expand digital directory connectivity through platforms like Celfonbook 2026.",
           ],
         },
       ],
@@ -831,47 +872,74 @@ export function getClubFounderInfo(clubSlug = "lions") {
     clubSlug: "lions",
     clubName: "Lions Clubs International",
     founderName: "LIONS CLUBS INTERNATIONAL",
- 
     shortSummary:
       "Lions Clubs International is a global service organization of volunteers dedicated to improving communities, supporting people in need, promoting health and education, and creating positive change through humanitarian service.",
-    coverImage: "https://images.unsplash.com/photo-1532012164546-f432f2e3edd3?w=600&auto=format&fit=crop&q=80",
-    portraitImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
+    secondpara:
+      "Download to find - LCI History,  LCIF,  Lions Pledge, International President Team,  Intl Office Bearers, Lionism around the World and India.",
+    coverImage:
+      "https://images.unsplash.com/photo-1532012164546-f432f2e3edd3?w=600&auto=format&fit=crop&q=80",
+    portraitImage:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
     pdfDownloadUrl: "/docs/lions_club_book.pdf",
+ 
     pages: [
       {
         pageNumber: 1,
-        chapter: "1. Early Life",
-        title: "The Birth of an Ideal",
+        chapter: "1. Melvin Jones & LCI History",
+        title: "The Genesis of the World's Greatest Service Movement",
         content: [
-          "Melvin Jones was born on January 13, 1879, in Fort Thomas, Arizona, the son of a United States Army captain who commanded a troop of scouts.",
-          "As a young man, Melvin Jones made his home in Chicago, Illinois, where he worked with an insurance firm and later founded his own successful agency in 1913.",
+          "Melvin Jones was born on January 13, 1879, in Fort Thomas, Arizona, the son of a United States Army captain. As a young man in Chicago, he established a thriving insurance agency in 1913.",
+          "He joined the Business Circle luncheon group and promptly asked: 'What if these men, who are successful because of their drive and intelligence, were to put their talents to work improving their communities?'",
+          "On June 7, 1917, delegates from men's clubs met in Chicago to establish Lions Clubs International. In October 1917, the historic first national convention convened in Dallas, Texas.",
+          "In 1925, at the Cedar Point convention, Helen Keller challenged Lions to become 'Knights of the Blind in the crusade against darkness,' establishing vision care as Lionism's signature cause.",
         ],
       },
       {
         pageNumber: 2,
-        chapter: "2. The Historic 1917 Meeting",
-        title: "From Business to Humanitarian Service",
+        chapter: "2. LCIF (Lions Clubs Int. Foundation)",
+        title: "Empowering Humanitarian Service Worldwide",
         content: [
-          "He joined the Business Circle, a businessmen's luncheon group, and was promptly elected secretary. But Melvin wondered: 'What if these men, who are successful because of their drive and intelligence, were to put their talents to work improving their communities?'",
-          "At his invitation, delegates from men's clubs met in Chicago on June 7, 1917, founding Lions Clubs International. In October 1917, the first national convention was held in Dallas, Texas.",
+          "Lions Clubs International Foundation (LCIF) is the charitable arm of Lions Clubs International, providing millions of dollars in grants for major humanitarian projects.",
+          "LCIF champions global causes including: Vision Care (SightFirst), Disaster Relief, Childhood Cancer, Diabetes Awareness, Hunger Relief, Environment Protection, and Youth Empowerment (Lions Quest).",
+          "The Melvin Jones Fellowship (MJF) award and Progressive MJF (PMJF) recognize individuals who donate generously to LCIF's world-changing humanitarian mission.",
         ],
       },
       {
         pageNumber: 3,
-        chapter: "3. 'We Serve' & Global Expansion",
-        title: "The World's Largest Service Organization",
+        chapter: "3. Lions Pledge, Ethics & Purposes",
+        title: "Guiding Principles of Lionism",
         content: [
-          "Melvin Jones eventually abandoned his insurance business to devote himself full-time to Lionism at International Headquarters in Chicago.",
-          "Under his mentorship, Lions Clubs earned worldwide prestige for civic betterment, blindness prevention (answering Helen Keller's 1925 challenge to become 'Knights of the Blind'), youth programs, and humanitarian relief.",
+          "Lions Club Motto: 'WE SERVE'",
+          "Lions Pledge: 'I pledge allegiance to my country and to the cause of peace throughout the world. I believe in the principles of Lionism: to create and foster a spirit of understanding among the peoples of the world; to promote good citizenship; and to take an active interest in the civic, commercial, social, and moral welfare of the community.'",
+          "Lions Code of Ethics emphasizes honesty in business, friendship as an end and not a means, civic responsibility, and loyalty to community and country above personal gain.",
         ],
       },
       {
         pageNumber: 4,
-        chapter: "4. Lasting Legacy",
-        title: "A Beacon for Generations",
+        chapter: "4. International President's Team",
+        title: "Global Leadership & Presidential Theme",
         content: [
-          "Melvin Jones passed away in 1961, leaving behind a movement with over 1.4 million members across 200+ countries.",
-          "His philosophy remains the core motto of Lionism: 'We Serve'. The Melvin Jones Fellowship (MJF) award stands today as the highest tribute to humanitarian service.",
+          "The International President leads the global association under a visionary theme, motivating 1.4 million members across 200+ countries to set new benchmarks in service impact and membership growth.",
+          "The executive leadership team comprises the Immediate Past International President, First, Second, and Third Vice Presidents, and the International Board of Directors representing every constitutional area.",
+        ],
+      },
+      {
+        pageNumber: 5,
+        chapter: "5. International Office Bearers",
+        title: "Constitutional Areas & District Administration",
+        content: [
+          "Lions Clubs International is organized across 8 Constitutional Areas globally, spanning Multiple Districts (e.g., MD 324 in India), Sub-Districts (e.g., District 3242C, 3241D), Regions, and Zones.",
+          "District Governors (DG), First Vice District Governors (1st VDG), Second Vice District Governors (2nd VDG), Region Chairpersons (RC), Zone Chairpersons (ZC), and Cabinet Secretary/Treasurer guide local clubs in executing grassroots community welfare projects.",
+        ],
+      },
+      {
+        pageNumber: 6,
+        chapter: "6. Lionism in India & Around the World",
+        title: "A Glorious History of Service in India",
+        content: [
+          "Lionism in India began on February 3, 1956, when the first Lions Club was chartered in Bombay (Mumbai), sponsored by Lions Clubs of Akron, Ohio.",
+          "Today, India is one of the largest and most vibrant Lions constitutional areas globally (ISAME - India, South Asia, Middle East), operating world-class eye hospitals, blood banks, dialysis centers, skill development academies, and disaster relief task forces.",
+          "Through digital initiatives like Celfonbook 2026, Lions across District 3242C and beyond remain closely connected in fellowship and service.",
         ],
       },
     ],

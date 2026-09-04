@@ -1,8 +1,8 @@
-// src/features/clubs/components/ClubProfileCard.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Phone, MessageSquare, MapPin } from "lucide-react";
 import { maskPhoneNumber } from "../../../core/utils/maskHelper";
+import { formatPersonNameWithPrefix } from "../../../core/utils/nameHelper";
 import "../../search/components/css/profilecard.css";
 
 const ClubProfileCard = ({
@@ -15,8 +15,10 @@ const ClubProfileCard = ({
 
   if (!person) return null;
 
+  const formattedPersonName = formatPersonNameWithPrefix(person);
   const name =
     person.fullName ||
+    formattedPersonName ||
     person.person_name ||
     person.business_name ||
     person.name ||
