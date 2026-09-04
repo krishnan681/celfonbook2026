@@ -170,9 +170,7 @@ const ClubDetailPage = () => {
             </span>
           </div>
           <h2>{decodedClubName}</h2>
-          <div className="club-address">
-            <span>{clubTitle} Official Chapter Directory</span>
-          </div>
+          
         </div>
 
         {/* 2-Column Responsive Layout: Left Main Column & Right Celebrations Aside */}
