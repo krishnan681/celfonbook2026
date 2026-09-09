@@ -246,7 +246,6 @@ import { LeadService } from "../Service/leadService";
 import DiscountModal from "./DiscountModal";
 import { DiscountService } from "../Service/discountService";
 import { maskPhoneNumber } from "../../../core/utils/maskHelper";
-import { formatPersonNameWithPrefix } from "../../../core/utils/nameHelper";
 
 const ProfileCard = ({ profile, isKeywordFocused }) => {
   const navigate = useNavigate();
@@ -263,12 +262,7 @@ const ProfileCard = ({ profile, isKeywordFocused }) => {
     return <TNGovCard profile={profile} />;
   }
 
-  const formattedPersonName = formatPersonNameWithPrefix(profile);
-  const hasBusinessName = Boolean(profile.business_name && profile.business_name.trim());
-  const name = hasBusinessName
-    ? profile.business_name.trim()
-    : formattedPersonName || profile.person_name || "Unnamed";
-
+  const name = profile.business_name || profile.person_name || "Unnamed";
   const city = profile.city || "Not specified";
   const keywords = profile.keywords?.trim() || "";
 
@@ -445,12 +439,6 @@ const handleCardClick = async () => {
         </div>
 
         <div className="card-info">
-          {hasBusinessName && formattedPersonName && (
-            <p className="person-name" style={{ fontSize: "0.85rem", color: "#475569", fontWeight: 600, margin: "0 0 4px 0" }}>
-              👤 {formattedPersonName}
-            </p>
-          )}
-
           <p className="type-location">
             <MapPin size={14} /> {city}
           </p>
