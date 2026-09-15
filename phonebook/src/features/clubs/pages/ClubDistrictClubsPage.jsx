@@ -23,6 +23,8 @@ import {
   getClubInfo,
   getClubCelebrationsTimeline,
   searchClubMembers,
+  getDistinctPostTabs,
+  matchesPostFilter,
 } from "../services/clubService";
 import ClubProfileCard from "../components/ClubProfileCard";
 import FounderCard from "../components/FounderCard";
@@ -30,65 +32,6 @@ import CelebrationsAside from "../components/CelebrationsAside";
 import TabsCarousel from "../components/TabsCarousel";
 import "../../search/components/css/SearchBar.css";
 import "./css/LionsClubPages.css";
-
-/**
- * Role matching utility for club designation tabs
- */
-const matchesRoleFilter = (member, filterKey) => {
-  if (!member) return false;
-  const post = (member.post || "").trim().toLowerCase();
-  const postFull = (member.postFull || "").trim().toLowerCase();
-  const combined = `${post} ${postFull}`;
-
-  switch (filterKey) {
-    case "DC":
-      return (
-        post === "dc" ||
-        combined.includes("district chairperson") ||
-        combined.includes("district chairman") ||
-        combined.includes("district coordinator") ||
-        /\bdc\b/i.test(post) ||
-        post.startsWith("dc ") ||
-        post.startsWith("dc-") ||
-        post.startsWith("dc/")
-      );
-    case "RC":
-      return (
-        post === "rc" ||
-        combined.includes("region chairperson") ||
-        combined.includes("region chairman") ||
-        combined.includes("regional chairperson") ||
-        /\brc\b/i.test(post) ||
-        post.startsWith("rc ") ||
-        post.startsWith("rc-") ||
-        post.startsWith("rc/")
-      );
-    case "ZC":
-      return (
-        post === "zc" ||
-        combined.includes("zone chairperson") ||
-        combined.includes("zone chairman") ||
-        /\bzc\b/i.test(post) ||
-        post.startsWith("zc ") ||
-        post.startsWith("zc-") ||
-        post.startsWith("zc/")
-      );
-    case "DG":
-      return (
-        post === "dg" ||
-        (combined.includes("district governor") &&
-          !combined.includes("vice") &&
-          !combined.includes("vdg")) ||
-        /\bdg\b/i.test(post)
-      );
-    case "CABINET":
-      return member.isLeadership === true;
-    case "ALL_MEMBERS":
-      return true;
-    default:
-      return true;
-  }
-};
 
 const ClubDistrictClubsPage = () => {
   const { districtId, clubSlug: paramSlug } = useParams();
@@ -274,18 +217,20 @@ const ClubDistrictClubsPage = () => {
     });
   }, [clubs, businessName, keywords]);
 
-  // Compute counts for filter tabs
-  const tabCounts = useMemo(() => {
-    return {
-      CLUBS: clubs.length,
-      DC: members.filter((m) => matchesRoleFilter(m, "DC")).length,
-      RC: members.filter((m) => matchesRoleFilter(m, "RC")).length,
-      ZC: members.filter((m) => matchesRoleFilter(m, "ZC")).length,
-      DG: members.filter((m) => matchesRoleFilter(m, "DG")).length,
-      CABINET: members.filter((m) => matchesRoleFilter(m, "CABINET")).length,
-      ALL_MEMBERS: members.length,
-    };
-  }, [clubs, members]);
+  // Dynamic filter tabs generated from backend post_of_member data
+  const filterTabs = useMemo(() => {
+    return getDistinctPostTabs(members, clubs, true);
+  }, [members, clubs]);
+
+  // Ensure active filter is valid whenever dynamic tabs load
+  useEffect(() => {
+    if (!isLoading && filterTabs.length > 0) {
+      const exists = filterTabs.some((t) => t.id === activeFilter);
+      if (!exists) {
+        setActiveFilter(filterTabs[0].id);
+      }
+    }
+  }, [filterTabs, activeFilter, isLoading]);
 
   // Filtered Clubs when "CLUBS" is active
   const filteredClubs = useMemo(() => {
@@ -293,10 +238,10 @@ const ClubDistrictClubsPage = () => {
     return clubs;
   }, [clubs, activeFilter]);
 
-  // Filtered Members for other designation tabs
+  // Filtered Members for post_of_member designation tabs
   const filteredMembers = useMemo(() => {
     if (activeFilter === "CLUBS") return [];
-    return members.filter((m) => matchesRoleFilter(m, activeFilter));
+    return members.filter((m) => matchesPostFilter(m, activeFilter));
   }, [members, activeFilter]);
 
   const handleFilterChange = (filterKey) => {
@@ -306,114 +251,36 @@ const ClubDistrictClubsPage = () => {
     setSearchResults(null);
   };
 
-  // Dynamic filter tabs definition (Celebrations is now exclusively on the right aside)
-  const filterTabs = [
-    { id: "CLUBS", label: "Clubs", count: tabCounts.CLUBS, icon: Building2 },
-    {
-      id: "DC",
-      label: "DC",
-      count: tabCounts.DC,
-      icon: ShieldCheck,
-      title: "District Chairpersons",
-    },
-    {
-      id: "RC",
-      label: "RC",
-      count: tabCounts.RC,
-      icon: Compass,
-      title: "Region Chairpersons",
-    },
-    {
-      id: "ZC",
-      label: "ZC",
-      count: tabCounts.ZC,
-      icon: Briefcase,
-      title: "Zone Chairpersons",
-    },
-    {
-      id: "DG",
-      label: "DG",
-      count: tabCounts.DG,
-      icon: Crown,
-      title: "District Governor",
-    },
-    {
-      id: "CABINET",
-      label: "Cabinet Officers",
-      count: tabCounts.CABINET,
-      icon: Award,
-      title: "Designated Cabinet Members",
-    },
-    {
-      id: "ALL_MEMBERS",
-      label: "All Members",
-      count: tabCounts.ALL_MEMBERS,
-      icon: Users,
-      title: "Complete Member Roster",
-    },
-  ];
-
-  // Section title metadata
+  // Section title metadata dynamically computed from active tab
   const currentSectionMeta = useMemo(() => {
-    switch (activeFilter) {
-      case "CLUBS":
-        return {
-          title: `Clubs in ${formattedDistrictName}`,
-          count: filteredClubs.length,
-          unit: "Clubs",
-          icon: <Building2 className="section-icon" />,
-        };
-      case "DC":
-        return {
-          title: `District Chairpersons (DC) - ${formattedDistrictName}`,
-          count: filteredMembers.length,
-          unit: "Chairpersons",
-          icon: <ShieldCheck className="section-icon" />,
-        };
-      case "RC":
-        return {
-          title: `Region Chairpersons (RC) - ${formattedDistrictName}`,
-          count: filteredMembers.length,
-          unit: "Chairpersons",
-          icon: <Compass className="section-icon" />,
-        };
-      case "ZC":
-        return {
-          title: `Zone Chairpersons (ZC) - ${formattedDistrictName}`,
-          count: filteredMembers.length,
-          unit: "Chairpersons",
-          icon: <Briefcase className="section-icon" />,
-        };
-      case "DG":
-        return {
-          title: `District Governor (DG) - ${formattedDistrictName}`,
-          count: filteredMembers.length,
-          unit: "Officers",
-          icon: <Crown className="section-icon" />,
-        };
-      case "CABINET":
-        return {
-          title: `Cabinet Officers - ${formattedDistrictName}`,
-          count: filteredMembers.length,
-          unit: "Officers",
-          icon: <Award className="section-icon" />,
-        };
-      case "ALL_MEMBERS":
-        return {
-          title: `All Directory Members in ${formattedDistrictName}`,
-          count: filteredMembers.length,
-          unit: "Members",
-          icon: <Users className="section-icon" />,
-        };
-      default:
-        return {
-          title: "Directory Listing",
-          count: 0,
-          unit: "Items",
-          icon: <Building2 className="section-icon" />,
-        };
+    if (activeFilter === "CLUBS") {
+      return {
+        title: `Clubs in ${formattedDistrictName}`,
+        count: filteredClubs.length,
+        unit: filteredClubs.length === 1 ? "Club" : "Clubs",
+        icon: <Building2 className="section-icon" />,
+      };
     }
-  }, [activeFilter, filteredClubs, filteredMembers, formattedDistrictName]);
+    if (activeFilter === "ALL_MEMBERS") {
+      return {
+        title: `All Directory Members in ${formattedDistrictName}`,
+        count: filteredMembers.length,
+        unit: filteredMembers.length === 1 ? "Member" : "Members",
+        icon: <Users className="section-icon" />,
+      };
+    }
+
+    const activeTabObj = filterTabs.find((t) => t.id === activeFilter);
+    const label = activeTabObj ? activeTabObj.label : activeFilter;
+    const IconComp = activeTabObj ? activeTabObj.icon : Award;
+
+    return {
+      title: `${label} - ${formattedDistrictName}`,
+      count: filteredMembers.length,
+      unit: filteredMembers.length === 1 ? "Member" : "Members",
+      icon: IconComp ? <IconComp className="section-icon" /> : <Award className="section-icon" />,
+    };
+  }, [activeFilter, filteredClubs, filteredMembers, formattedDistrictName, filterTabs]);
 
   const themeClass = clubSlug === "vasavi" ? "theme-vasavi" : "theme-lions";
 

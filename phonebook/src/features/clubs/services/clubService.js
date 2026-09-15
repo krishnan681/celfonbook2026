@@ -1,4 +1,14 @@
 // src/features/clubs/services/clubService.js
+import {
+  Building2,
+  Users,
+  Crown,
+  ShieldCheck,
+  Compass,
+  Briefcase,
+  Award,
+  UserCheck,
+} from "lucide-react";
 import { supabase } from "../../../core/config/supabaseClient";
 import { cacheService } from "../../../core/services/cacheService";
 import {
@@ -55,6 +65,108 @@ export const expandPostTitle = (post) => {
 };
 
 /**
+ * Get appropriate Lucide icon component based on post designation
+ */
+export const getPostIcon = (postTitle = "") => {
+  const p = (postTitle || "").toLowerCase().trim();
+  if (
+    p.includes("governor") ||
+    p === "dg" ||
+    p.includes("vdg") ||
+    p.includes("president") ||
+    p === "cp"
+  ) {
+    return Crown;
+  }
+  if (
+    p.includes("district chair") ||
+    p.includes("dc") ||
+    p.includes("coordinator")
+  ) {
+    return ShieldCheck;
+  }
+  if (
+    p.includes("region chair") ||
+    p.includes("rc") ||
+    p.includes("vice president")
+  ) {
+    return Compass;
+  }
+  if (
+    p.includes("zone chair") ||
+    p.includes("zc") ||
+    p.includes("treasurer") ||
+    p === "ct"
+  ) {
+    return Briefcase;
+  }
+  if (
+    p.includes("secretary") ||
+    p === "cs" ||
+    p.includes("tamer") ||
+    p.includes("twister")
+  ) {
+    return UserCheck;
+  }
+  if (
+    p.includes("cabinet") ||
+    p.includes("director") ||
+    p.includes("pro") ||
+    p.includes("officer")
+  ) {
+    return Award;
+  }
+  if (
+    p === "member" ||
+    p.includes("general member") ||
+    p.includes("life member")
+  ) {
+    return Users;
+  }
+  return Award;
+};
+
+/**
+ * Check leadership post ranking priority for tab sorting
+ */
+export const getPostPriority = (post = "") => {
+  const p = (post || "").toLowerCase().trim();
+  if (
+    p === "dg" ||
+    (p.includes("district governor") &&
+      !p.includes("vice") &&
+      !p.includes("vdg"))
+  )
+    return 1;
+  if (p === "vdg1" || p === "1st vdg" || p.includes("first vice")) return 2;
+  if (p === "vdg2" || p === "2nd vdg" || p.includes("second vice")) return 3;
+  if (p === "cabinet secretary" || p === "cs") return 4;
+  if (p === "cabinet treasurer" || p === "ct") return 5;
+  if (
+    p === "dc" ||
+    p.includes("district chair") ||
+    p.includes("district coordinator")
+  )
+    return 6;
+  if (
+    p === "rc" ||
+    p.includes("region chair") ||
+    p.includes("regional chair")
+  )
+    return 7;
+  if (p === "zc" || p.includes("zone chair")) return 8;
+  if (p === "president" || p === "cp" || p.includes("charter president"))
+    return 9;
+  if (p.includes("vice president")) return 10;
+  if (p.includes("secretary")) return 11;
+  if (p.includes("treasurer")) return 12;
+  if (p.includes("director")) return 13;
+  if (p.includes("pro") || p.includes("public relations")) return 14;
+  if (p === "member" || p === "general member" || p === "user") return 99;
+  return 50;
+};
+
+/**
  * Check if a post indicates a designated officer / leader
  */
 export const checkIsLeadership = (post) => {
@@ -64,6 +176,146 @@ export const checkIsLeadership = (post) => {
     return false;
   }
   return true;
+};
+
+/**
+ * Dynamically extract unique `post_of_member` tabs from backend member profiles
+ */
+export const getDistinctPostTabs = (
+  members = [],
+  clubs = [],
+  includeClubs = true
+) => {
+  const tabs = [];
+
+  if (includeClubs && clubs && clubs.length > 0) {
+    tabs.push({
+      id: "CLUBS",
+      label: "Clubs",
+      count: clubs.length,
+      icon: Building2,
+      title: "All Clubs in District",
+    });
+  }
+
+  tabs.push({
+    id: "ALL_MEMBERS",
+    label: "All Members",
+    count: (members || []).length,
+    icon: Users,
+    title: "Complete Member Roster",
+  });
+
+  // Group members by distinct post_of_member
+  const postMap = new Map();
+
+  (members || []).forEach((member) => {
+    const rawPost = (
+      member.post_of_member ||
+      member.post ||
+      member.role ||
+      "Member"
+    ).trim();
+    const cleanKey = rawPost.toLowerCase() || "member";
+
+    if (!postMap.has(cleanKey)) {
+      const displayLabel = expandPostTitle(rawPost) || rawPost;
+      postMap.set(cleanKey, {
+        id: `POST_${cleanKey}`,
+        rawKey: cleanKey,
+        rawPost: rawPost,
+        label: displayLabel,
+        title: displayLabel,
+        icon: getPostIcon(rawPost),
+        priority: getPostPriority(rawPost),
+        count: 0,
+      });
+    }
+
+    postMap.get(cleanKey).count += 1;
+  });
+
+  // Sort post tabs by priority then alphabetically
+  const sortedPosts = Array.from(postMap.values()).sort((a, b) => {
+    if (a.priority !== b.priority) {
+      return a.priority - b.priority;
+    }
+    return a.label.localeCompare(b.label);
+  });
+
+  return [...tabs, ...sortedPosts];
+};
+
+/**
+ * Filter members based on active tab / post_of_member filter
+ */
+export const matchesPostFilter = (member, filterKey) => {
+  if (!member || !filterKey) return false;
+  if (filterKey === "ALL_MEMBERS") return true;
+  if (filterKey === "CLUBS") return false;
+
+  const rawPost = (
+    member.post_of_member ||
+    member.post ||
+    member.role ||
+    "Member"
+  ).trim();
+  const rawKey = rawPost.toLowerCase();
+
+  // If filterKey is in the form "POST_xxx"
+  if (filterKey.startsWith("POST_")) {
+    const targetKey = filterKey.replace(/^POST_/, "").toLowerCase();
+    return rawKey === targetKey;
+  }
+
+  // Direct match or standard legacy key matches
+  const targetLower = filterKey.toLowerCase().trim();
+  if (rawKey === targetLower) return true;
+
+  // Handle standard abbreviations
+  if (targetLower === "dc") {
+    return (
+      rawKey === "dc" ||
+      rawKey.includes("district chair") ||
+      rawKey.includes("district chairman") ||
+      rawKey.includes("district coordinator") ||
+      rawKey.startsWith("dc ") ||
+      rawKey.startsWith("dc-") ||
+      rawKey.startsWith("dc/")
+    );
+  }
+  if (targetLower === "rc") {
+    return (
+      rawKey === "rc" ||
+      rawKey.includes("region chair") ||
+      rawKey.includes("regional chair") ||
+      rawKey.startsWith("rc ") ||
+      rawKey.startsWith("rc-") ||
+      rawKey.startsWith("rc/")
+    );
+  }
+  if (targetLower === "zc") {
+    return (
+      rawKey === "zc" ||
+      rawKey.includes("zone chair") ||
+      rawKey.startsWith("zc ") ||
+      rawKey.startsWith("zc-") ||
+      rawKey.startsWith("zc/")
+    );
+  }
+  if (targetLower === "dg") {
+    return (
+      rawKey === "dg" ||
+      (rawKey.includes("district governor") &&
+        !rawKey.includes("vice") &&
+        !rawKey.includes("vdg"))
+    );
+  }
+  if (targetLower === "cabinet") {
+    return member.isLeadership === true;
+  }
+
+  return false;
 };
 
 /**
@@ -102,6 +354,7 @@ export const normalizeMember = (profile, defaultDistrict = "3242C", clubSlug = "
     prefix: memberPrefix,
     mobile: profile.mobile_number || "",
     phone: profile.mobile_number || profile.landline || "",
+    post_of_member: profile.post_of_member || rawPost,
     post: rawPost,
     postFull: postFull,
     businessName: profile.business_name || "",

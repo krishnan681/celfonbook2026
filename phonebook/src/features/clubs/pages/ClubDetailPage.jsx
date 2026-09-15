@@ -12,14 +12,18 @@ import {
   Loader2,
   User,
   Key,
+  Award,
 } from "lucide-react";
 import {
   getClubMembers,
   getClubInfo,
   getClubCelebrationsTimeline,
+  getDistinctPostTabs,
+  matchesPostFilter,
 } from "../services/clubService";
 import ClubProfileCard from "../components/ClubProfileCard";
 import CelebrationsAside from "../components/CelebrationsAside";
+import TabsCarousel from "../components/TabsCarousel";
 import "../../search/components/css/SearchBar.css";
 import "./css/LionsClubPages.css";
 
@@ -42,6 +46,9 @@ const ClubDetailPage = () => {
   const [members, setMembers] = useState([]);
   const [celebrationsTimeline, setCelebrationsTimeline] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Active filter tab (e.g. "ALL_MEMBERS", "POST_president", "POST_secretary", etc.)
+  const [activeFilter, setActiveFilter] = useState("ALL_MEMBERS");
 
   // Search state
   const [businessName, setBusinessName] = useState("");
@@ -82,6 +89,21 @@ const ClubDetailPage = () => {
     (clubSlug === "vasavi" ? "Vasavi Club" : "Lions Club");
   const basePath = clubSlug === "lions" ? "/lions-club" : `/clubs/${clubSlug}`;
 
+  // Dynamic filter tabs generated from backend post_of_member data (without Clubs tab)
+  const filterTabs = useMemo(() => {
+    return getDistinctPostTabs(members, [], false);
+  }, [members]);
+
+  // Ensure active filter is valid
+  useEffect(() => {
+    if (!isLoading && filterTabs.length > 0) {
+      const exists = filterTabs.some((t) => t.id === activeFilter);
+      if (!exists) {
+        setActiveFilter("ALL_MEMBERS");
+      }
+    }
+  }, [filterTabs, activeFilter, isLoading]);
+
   // Filtered members based on search inputs
   const filteredMembers = useMemo(() => {
     const bQuery = businessName.trim().toLowerCase();
@@ -112,16 +134,42 @@ const ClubDetailPage = () => {
     });
   }, [members, businessName, keywords]);
 
-  const leadershipOfficers = filteredMembers.filter((m) => m.isLeadership);
-  const generalMembers = filteredMembers.filter((m) => !m.isLeadership);
+  const hasSearchQuery = Boolean(businessName || keywords);
+
+  // Members filtered by search AND active designation tab
+  const displayedMembers = useMemo(() => {
+    if (activeFilter === "ALL_MEMBERS" || hasSearchQuery) {
+      return filteredMembers;
+    }
+    return filteredMembers.filter((m) => matchesPostFilter(m, activeFilter));
+  }, [filteredMembers, activeFilter, hasSearchQuery]);
+
+  const leadershipOfficers = displayedMembers.filter((m) => m.isLeadership);
+  const generalMembers = displayedMembers.filter((m) => !m.isLeadership);
   const hasBothSections =
-    leadershipOfficers.length > 0 && generalMembers.length > 0;
+    activeFilter === "ALL_MEMBERS" &&
+    leadershipOfficers.length > 0 &&
+    generalMembers.length > 0;
 
   const handleResetSearch = () => {
     setBusinessName("");
     setKeywords("");
     setIsKeywordFocused(false);
   };
+
+  const currentTabMeta = useMemo(() => {
+    if (activeFilter === "ALL_MEMBERS") {
+      return {
+        label: `Members of ${decodedClubName}`,
+        icon: Users,
+      };
+    }
+    const tabObj = filterTabs.find((t) => t.id === activeFilter);
+    return {
+      label: tabObj ? `${tabObj.label} - ${decodedClubName}` : decodedClubName,
+      icon: tabObj?.icon || Award,
+    };
+  }, [activeFilter, decodedClubName, filterTabs]);
 
   const themeClass = clubSlug === "vasavi" ? "theme-vasavi" : "theme-lions";
 
@@ -170,7 +218,6 @@ const ClubDetailPage = () => {
             </span>
           </div>
           <h2>{decodedClubName}</h2>
-          
         </div>
 
         {/* 2-Column Responsive Layout: Left Main Column & Right Celebrations Aside */}
@@ -241,6 +288,16 @@ const ClubDetailPage = () => {
               </form>
             </div>
 
+            {/* Dynamic post_of_member Filter Tabs in Rows (Shown when not searching and multiple tabs exist) */}
+            {!hasSearchQuery && filterTabs.length > 2 && (
+              <TabsCarousel
+                tabs={filterTabs}
+                activeTabId={activeFilter}
+                onSelectTab={setActiveFilter}
+                isLoading={isLoading}
+              />
+            )}
+
             {/* Main Club Roster Content */}
             <div className="district-clubs-list-section">
               {isLoading ? (
@@ -258,7 +315,7 @@ const ClubDetailPage = () => {
                   />
                   <p>Loading members for {decodedClubName}...</p>
                 </div>
-              ) : filteredMembers.length === 0 ? (
+              ) : displayedMembers.length === 0 ? (
                 <div
                   style={{
                     padding: "30px",
@@ -269,7 +326,9 @@ const ClubDetailPage = () => {
                   }}
                 >
                   <p>
-                    No members found in {decodedClubName} matching your search.
+                    {hasSearchQuery
+                      ? `No members found in ${decodedClubName} matching your search.`
+                      : `No members found with this designation in ${decodedClubName}.`}
                   </p>
                   {(businessName || keywords) && (
                     <button
@@ -340,15 +399,15 @@ const ClubDetailPage = () => {
                 <>
                   <div className="section-head">
                     <h3>
-                      <Users className="section-icon" />
-                      Members of {decodedClubName}
+                      {React.createElement(currentTabMeta.icon, { className: "section-icon" })}
+                      {currentTabMeta.label}
                     </h3>
                     <span className="count-pill">
-                      {filteredMembers.length} Members
+                      {displayedMembers.length} {displayedMembers.length === 1 ? "Member" : "Members"}
                     </span>
                   </div>
                   <div className="cards-grid">
-                    {filteredMembers.map((member) => (
+                    {displayedMembers.map((member) => (
                       <ClubProfileCard
                         key={member.id}
                         person={member}

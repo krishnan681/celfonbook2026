@@ -1,69 +1,21 @@
 /* src/features/clubs/components/css/TabsCarousel.css */
 
+.tabs-rows-wrapper,
 .tabs-carousel-wrapper {
   position: relative;
-  display: flex;
-  align-items: center;
+  display: block;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
+.tabs-rows-track,
 .tabs-carousel-track {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 6px 4px 10px;
+  gap: 10px 12px;
   width: 100%;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-  -webkit-overflow-scrolling: touch;
-}
-
-.tabs-carousel-track::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-/* Arrow Buttons */
-.tabs-carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #ffffff;
-  color: #1e293b;
-  border: 1.5px solid #cbd5e1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 5;
-  transition: all 0.2s ease;
-}
-
-.tabs-carousel-arrow:hover {
-  background: #005a36;
-  color: #ffffff;
-  border-color: #005a36;
-  transform: translateY(-50%) scale(1.08);
-}
-
-.theme-vasavi .tabs-carousel-arrow:hover {
-  background: #dc2626;
-  color: #ffffff;
-  border-color: #dc2626;
-}
-
-.tabs-carousel-arrow.left {
-  left: -12px;
-}
-
-.tabs-carousel-arrow.right {
-  right: -12px;
+  padding: 4px 0;
 }
 
 /* Individual Tab Button styling */
@@ -74,62 +26,75 @@
   padding: 9px 18px;
   background: #ffffff;
   border: 1.5px solid #cbd5e1;
-  border-radius: 30px;
+  border-radius: 9999px;
   font-size: 0.88rem;
   font-weight: 600;
   color: #334155;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  flex-shrink: 0;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   user-select: none;
+}
+
+.tab-btn-icon {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.tab-btn-label {
+  display: inline-block;
+  line-height: 1;
 }
 
 .filter-tab-btn:hover {
   border-color: #16a34a;
   color: #005a36;
   background: #f0fdf4;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 90, 54, 0.12);
+}
+
+.filter-tab-btn:hover .tab-btn-icon {
+  transform: scale(1.1);
 }
 
 .theme-vasavi .filter-tab-btn:hover {
   border-color: #dc2626;
   color: #dc2626;
   background: #fef2f2;
+  box-shadow: 0 4px 10px rgba(220, 38, 38, 0.12);
 }
 
+/* Active Tab Styles */
 .filter-tab-btn.active {
   background: linear-gradient(135deg, #005a36 0%, #16a34a 100%);
   color: #ffffff;
   border-color: #005a36;
-  box-shadow: 0 4px 12px rgba(0, 90, 54, 0.22);
+  box-shadow: 0 4px 14px rgba(0, 90, 54, 0.28);
+  transform: translateY(-1px);
 }
 
 .theme-vasavi .filter-tab-btn.active {
   background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%);
   color: #ffffff;
   border-color: #991b1b;
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.22);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.28);
+  transform: translateY(-1px);
 }
 
-.filter-tab-btn.active .filter-tab-count {
-  background: #f2a900;
-  color: #002d62;
-  font-weight: 800;
-}
-
+/* Count Badges */
 .filter-tab-count {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: #f1f5f9;
-  color: #64748b;
+  color: #475569;
   font-size: 0.74rem;
   font-weight: 700;
   padding: 2px 8px;
-  border-radius: 12px;
-  min-width: 18px;
+  border-radius: 9999px;
+  min-width: 20px;
   transition: all 0.2s ease;
 }
 
@@ -143,18 +108,47 @@
   color: #dc2626;
 }
 
-@media (max-width: 640px) {
-  .tabs-carousel-arrow {
-    display: none; /* Mobile touch swipe feels natural without blocking arrow buttons */
-  }
+.filter-tab-btn.active .filter-tab-count {
+  background: #fef08a;
+  color: #854d0e;
+  font-weight: 800;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
 
+.theme-vasavi .filter-tab-btn.active .filter-tab-count {
+  background: #fef08a;
+  color: #854d0e;
+  font-weight: 800;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tabs-rows-track,
   .tabs-carousel-track {
-    padding: 4px 2px 8px;
     gap: 8px;
   }
 
   .filter-tab-btn {
     padding: 8px 14px;
     font-size: 0.82rem;
+    gap: 6px;
+  }
+
+  .filter-tab-count {
+    padding: 2px 6px;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tabs-rows-track,
+  .tabs-carousel-track {
+    gap: 6px 8px;
+  }
+
+  .filter-tab-btn {
+    padding: 7px 12px;
+    font-size: 0.78rem;
   }
 }

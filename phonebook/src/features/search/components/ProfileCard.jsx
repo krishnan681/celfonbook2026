@@ -281,11 +281,7 @@ const ProfileCard = ({ profile, isKeywordFocused }) => {
     borderClass = "card-normal";
   }
 
-  // console.log("PROFILE:", profile);
-  // console.log("is_prime:", profile.is_prime);
-  // console.log("is_business:", profile.is_business);
-  // console.log("normal_list:", profile.normal_list);
-  // console.log("Applied Border:", borderClass);
+ 
 
   /* ---------------- LOGIN CHECK ---------------- */
 
@@ -504,4 +500,4 @@ const handleCardClick = async () => {
 
 export default ProfileCard;
 
-// 9791955157
+ 
