@@ -13,6 +13,7 @@ import {
   User,
   Key,
   Award,
+  MessageSquare,
 } from "lucide-react";
 import {
   getClubMembers,
@@ -24,6 +25,7 @@ import {
 import ClubProfileCard from "../components/ClubProfileCard";
 import CelebrationsAside from "../components/CelebrationsAside";
 import TabsCarousel from "../components/TabsCarousel";
+import BulkSmsModal from "../components/BulkSmsModal";
 import "../../search/components/css/SearchBar.css";
 import "./css/LionsClubPages.css";
 
@@ -49,6 +51,7 @@ const ClubDetailPage = () => {
 
   // Active filter tab (e.g. "ALL_MEMBERS", "POST_president", "POST_secretary", etc.)
   const [activeFilter, setActiveFilter] = useState("ALL_MEMBERS");
+  const [isBulkSmsOpen, setIsBulkSmsOpen] = useState(false);
 
   // Search state
   const [businessName, setBusinessName] = useState("");
@@ -402,9 +405,22 @@ const ClubDetailPage = () => {
                       {React.createElement(currentTabMeta.icon, { className: "section-icon" })}
                       {currentTabMeta.label}
                     </h3>
-                    <span className="count-pill">
-                      {displayedMembers.length} {displayedMembers.length === 1 ? "Member" : "Members"}
-                    </span>
+                    <div className="section-actions">
+                      <span className="count-pill">
+                        {displayedMembers.length} {displayedMembers.length === 1 ? "Member" : "Members"}
+                      </span>
+                      {displayedMembers.length > 0 && (
+                        <button
+                          type="button"
+                          className="lions-bulk-sms-btn"
+                          onClick={() => setIsBulkSmsOpen(true)}
+                          title={`Send Bulk SMS to ${displayedMembers.length} members`}
+                        >
+                          <MessageSquare size={15} />
+                          <span>Bulk SMS</span>
+                        </button>
+                      )}
+                    </div>
                   </div>
                   <div className="cards-grid">
                     {displayedMembers.map((member) => (
@@ -432,6 +448,20 @@ const ClubDetailPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Bulk SMS Modal */}
+      <BulkSmsModal
+        isOpen={isBulkSmsOpen}
+        onClose={() => setIsBulkSmsOpen(false)}
+        members={displayedMembers}
+        title={
+          currentTabMeta.label
+            ? currentTabMeta.label.split(" - ")[0]
+            : "Members"
+        }
+        clubOrDistrictName={decodedClubName}
+        themeClass={themeClass}
+      />
     </div>
   );
 };

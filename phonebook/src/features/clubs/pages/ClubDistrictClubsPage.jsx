@@ -17,6 +17,7 @@ import {
   Users,
   User,
   Key,
+  MessageSquare,
 } from "lucide-react";
 import {
   getDistrictData,
@@ -30,6 +31,7 @@ import ClubProfileCard from "../components/ClubProfileCard";
 import FounderCard from "../components/FounderCard";
 import CelebrationsAside from "../components/CelebrationsAside";
 import TabsCarousel from "../components/TabsCarousel";
+import BulkSmsModal from "../components/BulkSmsModal";
 import "../../search/components/css/SearchBar.css";
 import "./css/LionsClubPages.css";
 
@@ -64,6 +66,7 @@ const ClubDistrictClubsPage = () => {
 
   // Active filter tab: "CLUBS", "DC", "RC", "ZC", "DG", "CABINET", "ALL_MEMBERS"
   const [activeFilter, setActiveFilter] = useState("CLUBS");
+  const [isBulkSmsOpen, setIsBulkSmsOpen] = useState(false);
 
   // Search state
   const [businessName, setBusinessName] = useState("");
@@ -498,11 +501,24 @@ const ClubDistrictClubsPage = () => {
                     {currentSectionMeta.icon}
                     {currentSectionMeta.title}
                   </h3>
-                  {!isLoading && (
-                    <span className="count-pill">
-                      {currentSectionMeta.count} {currentSectionMeta.unit}
-                    </span>
-                  )}
+                  <div className="section-actions">
+                    {!isLoading && (
+                      <span className="count-pill">
+                        {currentSectionMeta.count} {currentSectionMeta.unit}
+                      </span>
+                    )}
+                    {!isLoading && activeFilter !== "CLUBS" && filteredMembers.length > 0 && (
+                      <button
+                        type="button"
+                        className="lions-bulk-sms-btn"
+                        onClick={() => setIsBulkSmsOpen(true)}
+                        title={`Send Bulk SMS to ${filteredMembers.length} ${currentSectionMeta.title}`}
+                      >
+                        <MessageSquare size={15} />
+                        <span>Bulk SMS</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {isLoading ? (
@@ -600,6 +616,20 @@ const ClubDistrictClubsPage = () => {
           </aside>
         </div>
       </div>
+
+      {/* Bulk SMS Modal */}
+      <BulkSmsModal
+        isOpen={isBulkSmsOpen}
+        onClose={() => setIsBulkSmsOpen(false)}
+        members={filteredMembers}
+        title={
+          currentSectionMeta.title
+            ? currentSectionMeta.title.split(" - ")[0]
+            : "Officers"
+        }
+        clubOrDistrictName={formattedDistrictName}
+        themeClass={themeClass}
+      />
     </div>
   );
 };

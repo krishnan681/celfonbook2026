@@ -122,6 +122,62 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
+/* Tab Toggle Button (Show More / Hide) */
+.tab-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #f8fafc;
+  border: 1.5px dashed #94a3b8;
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.tab-toggle-btn:hover {
+  background: #ecfdf5;
+  border-color: #059669;
+  border-style: solid;
+  color: #047857;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.15);
+}
+
+.tab-toggle-btn.expanded {
+  background: #f1f5f9;
+  border-color: #64748b;
+  border-style: solid;
+  color: #334155;
+}
+
+.tab-toggle-btn.expanded:hover {
+  background: #fee2e2;
+  border-color: #dc2626;
+  color: #b91c1c;
+}
+
+.tab-toggle-icon {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.tab-toggle-btn:hover .tab-toggle-icon {
+  transform: scale(1.15);
+}
+
+.theme-vasavi .tab-toggle-btn:hover {
+  background: #fff1f2;
+  border-color: #e11d48;
+  color: #be123c;
+  box-shadow: 0 2px 8px rgba(225, 29, 72, 0.15);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .tabs-rows-track,

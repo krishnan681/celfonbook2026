@@ -1,0 +1,623 @@
+/* src/features/clubs/components/css/BulkSmsModal.css */
+
+.bulk-sms-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+  animation: bulkSmsFadeIn 0.2s ease-out;
+}
+
+@keyframes bulkSmsFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.bulk-sms-modal-container {
+  background: #ffffff;
+  width: 100%;
+  max-width: 580px;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: bulkSmsScaleUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes bulkSmsScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Header */
+.bulk-sms-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, #005a36 0%, #16a34a 100%);
+  color: #ffffff;
+}
+
+.theme-vasavi .bulk-sms-header {
+  background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%);
+}
+
+.bulk-sms-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bulk-sms-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.bulk-sms-header h3 {
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.bulk-sms-subtitle {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.bulk-sms-close-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+}
+
+.bulk-sms-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Modal Body */
+.bulk-sms-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Recipient summary bar */
+.bulk-sms-recipient-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.summary-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #334155;
+}
+
+.summary-icon {
+  color: #059669;
+}
+
+.theme-vasavi .summary-icon {
+  color: #dc2626;
+}
+
+.summary-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-select-all,
+.btn-view-list {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+
+.btn-select-all:hover,
+.btn-view-list:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+
+/* Recipient List */
+.bulk-sms-recipients-list {
+  max-height: 160px;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #fafafa;
+}
+
+.recipient-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  user-select: none;
+}
+
+.recipient-item:hover {
+  background: #f1f5f9;
+}
+
+.recipient-item.selected {
+  background: #ecfdf5;
+}
+
+.theme-vasavi .recipient-item.selected {
+  background: #fef2f2;
+}
+
+.recipient-item input[type="checkbox"] {
+  accent-color: #005a36;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.theme-vasavi .recipient-item input[type="checkbox"] {
+  accent-color: #991b1b;
+}
+
+.recipient-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.84rem;
+}
+
+.recipient-name {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.recipient-details {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.no-recipients {
+  padding: 12px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+/* Warning Notice */
+.bulk-sms-warning-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fffbeb;
+  border: 1px solid #fef3c7;
+  color: #92400e;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Channel Selector Tabs (Normal SMS / WhatsApp / Email) */
+.bulk-channel-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.channel-tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 9px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+}
+
+.channel-tab-btn:hover:not(.disabled-tab) {
+  color: #1e293b;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.channel-tab-btn.active {
+  background: #ffffff;
+  color: #005a36;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.theme-vasavi .channel-tab-btn.active {
+  color: #991b1b;
+}
+
+.channel-tab-btn.active.whatsapp {
+  color: #059669;
+}
+
+.channel-tab-btn.active.email {
+  color: #0284c7;
+}
+
+.channel-tab-btn.disabled-tab {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.channel-badge {
+  background: #e2e8f0;
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  margin-left: 2px;
+}
+
+.channel-tab-btn.active .channel-badge {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.theme-vasavi .channel-tab-btn.active .channel-badge {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.channel-tab-btn.active.email .channel-badge {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+/* Info notice */
+.bulk-sms-info-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Textarea Field */
+.bulk-sms-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.field-label-row label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.copy-message-btn {
+  background: transparent;
+  border: none;
+  color: #0284c7;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 4px;
+}
+
+.copy-message-btn:hover {
+  text-decoration: underline;
+}
+
+.bulk-sms-textarea {
+  width: 100%;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #0f172a;
+  resize: vertical;
+  min-height: 110px;
+  box-sizing: border-box;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.bulk-sms-textarea:focus {
+  outline: none;
+  border-color: #005a36;
+  box-shadow: 0 0 0 3px rgba(0, 90, 54, 0.12);
+}
+
+.theme-vasavi .bulk-sms-textarea:focus {
+  border-color: #991b1b;
+  box-shadow: 0 0 0 3px rgba(153, 27, 27, 0.12);
+}
+
+.char-count-row {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.74rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Modal Footer */
+.bulk-sms-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.bulk-sms-copy-btn {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.18s ease;
+}
+
+.bulk-sms-copy-btn:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.bulk-sms-copy-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bulk-sms-main-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bulk-sms-cancel-btn {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.bulk-sms-cancel-btn:hover {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.bulk-sms-send-btn {
+  background: linear-gradient(135deg, #005a36 0%, #16a34a 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0, 90, 54, 0.25);
+  transition: all 0.2s ease;
+}
+
+.theme-vasavi .bulk-sms-send-btn {
+  background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%);
+  box-shadow: 0 2px 6px rgba(153, 27, 27, 0.25);
+}
+
+.bulk-sms-send-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 90, 54, 0.35);
+}
+
+.theme-vasavi .bulk-sms-send-btn:hover:not(:disabled) {
+  box-shadow: 0 4px 12px rgba(153, 27, 27, 0.35);
+}
+
+.bulk-sms-send-btn.btn-whatsapp {
+  background: linear-gradient(135deg, #128c7e 0%, #25d366 100%);
+  box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
+}
+
+.bulk-sms-send-btn.btn-whatsapp:hover:not(:disabled) {
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.45);
+}
+
+.bulk-sms-send-btn.btn-email {
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+
+.bulk-sms-send-btn.btn-email:hover:not(:disabled) {
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.bulk-sms-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Bulk SMS Button in section-head */
+.lions-bulk-sms-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #f0fdf4;
+  border: 1.5px solid #16a34a;
+  border-radius: 9999px;
+  color: #15803d;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(22, 163, 74, 0.12);
+}
+
+.lions-bulk-sms-btn:hover {
+  background: #16a34a;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(22, 163, 74, 0.25);
+}
+
+.theme-vasavi .lions-bulk-sms-btn {
+  background: #fef2f2;
+  border-color: #dc2626;
+  color: #b91c1c;
+  box-shadow: 0 1px 3px rgba(220, 38, 38, 0.12);
+}
+
+.theme-vasavi .lions-bulk-sms-btn:hover {
+  background: #dc2626;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(220, 38, 38, 0.25);
+}
+
+.section-head .section-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .bulk-sms-header {
+    padding: 14px 18px;
+  }
+
+  .bulk-sms-body {
+    padding: 16px 18px;
+  }
+
+  .bulk-sms-footer {
+    padding: 12px 18px;
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .bulk-sms-main-actions {
+    display: flex;
+    width: 100%;
+  }
+
+  .bulk-sms-cancel-btn {
+    flex: 1;
+  }
+
+  .bulk-sms-send-btn {
+    flex: 2;
+    justify-content: center;
+  }
+
+  .bulk-sms-copy-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
