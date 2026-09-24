@@ -515,7 +515,7 @@ const ClubDistrictClubsPage = () => {
                         title={`Send Bulk SMS to ${filteredMembers.length} ${currentSectionMeta.title}`}
                       >
                         <MessageSquare size={15} />
-                        <span>Bulk SMS</span>
+                        <span>SMS / WA / E-mail</span>
                       </button>
                     )}
                   </div>

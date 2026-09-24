@@ -331,7 +331,7 @@ export default function BulkSmsModal({
               onClick={() => setActiveChannel("sms")}
             >
               <Smartphone size={16} />
-              <span>Normal SMS</span>
+              <span> SMS</span>
               <span className="channel-badge">{validMobileRecipients.length}</span>
             </button>
 
