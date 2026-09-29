@@ -3,8 +3,6 @@ import React, { useState, useMemo, useEffect } from "react";
 import {
   X,
   MessageSquare,
-  Copy,
-  Check,
   Smartphone,
   Users,
   AlertCircle,
@@ -12,8 +10,8 @@ import {
   Send,
   ChevronDown,
   ChevronUp,
+  Pencil,
 } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
 import { supabase } from "../../../core/config/supabaseClient";
 import { getCurrentUser } from "../../../core/services/profileService";
 import "./css/BulkSmsModal.css";
@@ -26,7 +24,7 @@ export default function BulkSmsModal({
   clubOrDistrictName = "",
   themeClass = "theme-lions",
 }) {
-  // Channel state: "sms" (default), "whatsapp", "email"
+  // Channel state: "sms" (default), "email"
   const [activeChannel, setActiveChannel] = useState("sms");
 
   // Logged-in user's name from signup/profile
@@ -121,14 +119,17 @@ export default function BulkSmsModal({
 
   // Selected recipient IDs
   const [selectedIds, setSelectedIds] = useState([]);
-  const [copiedData, setCopiedData] = useState(false);
-  const [copiedMessage, setCopiedMessage] = useState(false);
   const [showRecipientList, setShowRecipientList] = useState(false);
 
   // Default customizable message with sender's name in Regards signature
   const defaultMessage = useMemo(() => {
     const signature = senderName || "Club Officer";
-    return `Dear ${title},\nGreetings!\n\nThis is an announcement for all our respected officers.\n\nRegards,\n${signature}`;
+    let greetingRole = (title || "Member").trim();
+    // Add Lion next to the selected role (e.g., Secretary Lion, Zone Chairperson Lion)
+    if (!greetingRole.toLowerCase().includes("lion")) {
+      greetingRole = `${greetingRole} Lion`;
+    }
+    return `Dear ${greetingRole},\nGreetings!\n\nThis is an announcement for all our respected officers.\n\nRegards,\n${signature}`;
   }, [title, senderName]);
 
   const [message, setMessage] = useState(defaultMessage);
@@ -146,8 +147,6 @@ export default function BulkSmsModal({
       } else {
         setSelectedIds(validMobileRecipients.map((r) => r.id));
       }
-      setCopiedData(false);
-      setCopiedMessage(false);
     }
   }, [isOpen, activeChannel, validMobileRecipients, validEmailRecipients]);
 
@@ -205,24 +204,7 @@ export default function BulkSmsModal({
     window.location.href = smsUrl;
   };
 
-  // 2. WhatsApp
-  const handleSendWhatsApp = () => {
-    const encodedBody = encodeURIComponent(message);
-    if (selectedNumbers.length === 1) {
-      // Single recipient direct chat
-      const cleanNum = selectedNumbers[0].replace(/^0+/, "");
-      const formatted = cleanNum.startsWith("91") ? cleanNum : `91${cleanNum}`;
-      window.open(`https://wa.me/${formatted}?text=${encodedBody}`, "_blank");
-    } else {
-      // Multi-recipient share sheet
-      window.open(
-        `https://api.whatsapp.com/send?text=${encodedBody}`,
-        "_blank"
-      );
-    }
-  };
-
-  // 3. Email
+  // 2. Email
   const handleSendEmail = () => {
     if (selectedEmails.length === 0) {
       alert("No email addresses available for the selected recipients.");
@@ -240,36 +222,11 @@ export default function BulkSmsModal({
   const handlePrimarySend = () => {
     if (activeChannel === "sms") {
       handleSendSMS();
-    } else if (activeChannel === "whatsapp") {
-      handleSendWhatsApp();
     } else if (activeChannel === "email") {
       handleSendEmail();
     }
   };
 
-  // Copy contact data (numbers or emails depending on active channel)
-  const handleCopyContacts = () => {
-    const textToCopy =
-      activeChannel === "email"
-        ? selectedEmails.join(", ")
-        : selectedNumbers.join(", ");
-
-    if (!textToCopy) return;
-
-    navigator.clipboard.writeText(textToCopy).then(() => {
-      setCopiedData(true);
-      setTimeout(() => setCopiedData(false), 2500);
-    });
-  };
-
-  // Copy message text
-  const handleCopyMessage = () => {
-    if (!message) return;
-    navigator.clipboard.writeText(message).then(() => {
-      setCopiedMessage(true);
-      setTimeout(() => setCopiedMessage(false), 2500);
-    });
-  };
 
   const currentSelectionCount =
     activeChannel === "email" ? selectedEmails.length : selectedNumbers.length;
@@ -289,15 +246,12 @@ export default function BulkSmsModal({
           <div className="bulk-sms-title-group">
             <div className="bulk-sms-icon-wrap">
               {activeChannel === "sms" && <Smartphone size={20} />}
-              {activeChannel === "whatsapp" && <FaWhatsapp size={20} />}
               {activeChannel === "email" && <Mail size={20} />}
             </div>
             <div>
               <h3>
                 {activeChannel === "sms"
                   ? `Send Normal SMS to ${title}`
-                  : activeChannel === "whatsapp"
-                  ? `Send WhatsApp to ${title}`
                   : `Send Email to ${title}`}
               </h3>
               <p className="bulk-sms-subtitle">
@@ -319,7 +273,7 @@ export default function BulkSmsModal({
 
         {/* Modal Body */}
         <div className="bulk-sms-body">
-          {/* Channel Selector: Normal SMS (Default) / WhatsApp / Email */}
+          {/* Channel Selector: Normal SMS (Default) / Email */}
           <div className="bulk-channel-tabs" role="tablist">
             <button
               type="button"
@@ -332,20 +286,6 @@ export default function BulkSmsModal({
             >
               <Smartphone size={16} />
               <span> SMS</span>
-              <span className="channel-badge">{validMobileRecipients.length}</span>
-            </button>
-
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeChannel === "whatsapp"}
-              className={`channel-tab-btn ${
-                activeChannel === "whatsapp" ? "active whatsapp" : ""
-              }`}
-              onClick={() => setActiveChannel("whatsapp")}
-            >
-              <FaWhatsapp size={16} />
-              <span>WhatsApp</span>
               <span className="channel-badge">{validMobileRecipients.length}</span>
             </button>
 
@@ -456,7 +396,7 @@ export default function BulkSmsModal({
           {activeChannel === "whatsapp" && (
             <div className="bulk-sms-info-notice">
               <span>
-                💡 <strong>WhatsApp Broadcast:</strong> Opens WhatsApp to share with contacts/groups, or use <strong>Copy Numbers</strong> below to create a WhatsApp broadcast list.
+                💡 <strong>WhatsApp:</strong> Opens WhatsApp to share your announcement directly with the selected recipients.
               </span>
             </div>
           )}
@@ -467,33 +407,48 @@ export default function BulkSmsModal({
               <label htmlFor="bulk-sms-textarea">
                 {activeChannel === "email" ? "Email Body" : "Message Content"}
               </label>
-              <button
-                type="button"
-                className="copy-message-btn"
-                onClick={handleCopyMessage}
-                title="Copy message text"
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  fontSize: "0.78rem",
+                  color: "#64748b",
+                  fontWeight: 500,
+                }}
+                title="Message is editable"
               >
-                {copiedMessage ? (
-                  <>
-                    <Check size={13} />
-                    <span>Copied!</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy size={13} />
-                    <span>Copy Text</span>
-                  </>
-                )}
-              </button>
+                <Pencil size={13} />
+                <span>Editable</span>
+              </span>
             </div>
-            <textarea
-              id="bulk-sms-textarea"
-              className="bulk-sms-textarea"
-              rows={5}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type your message..."
-            />
+            <div style={{ position: "relative" }}>
+              <textarea
+                id="bulk-sms-textarea"
+                className="bulk-sms-textarea"
+                rows={5}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Type your message..."
+                style={{ paddingRight: "36px" }}
+              />
+              <span
+                title="Editable message"
+                style={{
+                  position: "absolute",
+                  top: "12px",
+                  right: "12px",
+                  color: "#94a3b8",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  pointerEvents: "none",
+                  opacity: 0.75,
+                }}
+              >
+                <Pencil size={14} />
+              </span>
+            </div>
             <div className="char-count-row">
               {activeChannel === "sms" ? (
                 <span>
@@ -509,38 +464,7 @@ export default function BulkSmsModal({
 
         {/* Modal Footer Actions */}
         <div className="bulk-sms-footer">
-          <button
-            type="button"
-            className="bulk-sms-copy-btn"
-            onClick={handleCopyContacts}
-            disabled={currentSelectionCount === 0}
-            title={
-              activeChannel === "email"
-                ? "Copy all email addresses"
-                : "Copy all phone numbers"
-            }
-          >
-            {copiedData ? (
-              <>
-                <Check size={16} />
-                <span>
-                  Copied {currentSelectionCount}{" "}
-                  {activeChannel === "email" ? "Emails!" : "Numbers!"}
-                </span>
-              </>
-            ) : (
-              <>
-                <Copy size={16} />
-                <span>
-                  {activeChannel === "email"
-                    ? `Copy Emails (${currentSelectionCount})`
-                    : `Copy Numbers (${currentSelectionCount})`}
-                </span>
-              </>
-            )}
-          </button>
-
-          <div className="bulk-sms-main-actions">
+          <div className="bulk-sms-main-actions" style={{ width: "100%", justifyContent: "flex-end" }}>
             <button
               type="button"
               className="bulk-sms-cancel-btn"
@@ -551,11 +475,7 @@ export default function BulkSmsModal({
             <button
               type="button"
               className={`bulk-sms-send-btn ${
-                activeChannel === "whatsapp"
-                  ? "btn-whatsapp"
-                  : activeChannel === "email"
-                  ? "btn-email"
-                  : "btn-sms"
+                activeChannel === "email" ? "btn-email" : "btn-sms"
               }`}
               onClick={handlePrimarySend}
               disabled={currentSelectionCount === 0}
@@ -563,19 +483,13 @@ export default function BulkSmsModal({
               {activeChannel === "sms" && (
                 <>
                   <Smartphone size={17} />
-                  <span>Open SMS App ({currentSelectionCount})</span>
-                </>
-              )}
-              {activeChannel === "whatsapp" && (
-                <>
-                  <FaWhatsapp size={17} />
-                  <span>Send via WhatsApp</span>
+                  <span>Send (via SMS App)</span>
                 </>
               )}
               {activeChannel === "email" && (
                 <>
                   <Mail size={17} />
-                  <span>Open Email App ({currentSelectionCount})</span>
+                  <span>Send (via E-mail App)</span>
                 </>
               )}
             </button>

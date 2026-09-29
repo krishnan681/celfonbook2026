@@ -598,26 +598,23 @@
 
   .bulk-sms-footer {
     padding: 12px 18px;
-    flex-direction: column-reverse;
     align-items: stretch;
   }
 
   .bulk-sms-main-actions {
     display: flex;
     width: 100%;
+    gap: 8px;
   }
 
   .bulk-sms-cancel-btn {
     flex: 1;
+    text-align: center;
+    justify-content: center;
   }
 
   .bulk-sms-send-btn {
     flex: 2;
     justify-content: center;
-  }
-
-  .bulk-sms-copy-btn {
-    justify-content: center;
-    width: 100%;
   }
 }

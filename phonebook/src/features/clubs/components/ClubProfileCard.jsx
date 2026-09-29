@@ -24,7 +24,7 @@ const ClubProfileCard = ({
     person.name ||
     "Club Member";
 
-  const city = person.city || "Coimbatore";
+  const club = person.club || person.club_name || person.clubName || person.city || "";
   const rawMobile = person.mobile_number || person.phone || person.mobile || "";
 
   // Masked mobile format
@@ -92,7 +92,7 @@ const ClubProfileCard = ({
 
       <div className="card-info">
         <p className="type-location">
-          <MapPin size={14} /> {city}
+          <MapPin size={14} /> {club}
         </p>
 
         {/* Show mobile only when keyword is NOT focused */}

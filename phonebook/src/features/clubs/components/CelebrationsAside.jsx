@@ -96,7 +96,7 @@ export default function CelebrationsAside({
           ALL: anniEvents.length,
         };
 
-  // If "TODAY" has 0 records, auto-fallback to THIS_WEEK or ALL smoothly if available
+  // If "TODAY" has 0 records, auto-fallback to THIS_WEEK if available
   useEffect(() => {
     if (activeTab === "BIRTHDAYS") {
       if (
@@ -105,13 +105,6 @@ export default function CelebrationsAside({
         subFilter === "TODAY"
       ) {
         setSubFilter("THIS_WEEK");
-      } else if (
-        todayBirthdays.length === 0 &&
-        thisWeekBirthdays.length === 0 &&
-        bdayEvents.length > 0 &&
-        subFilter === "TODAY"
-      ) {
-        setSubFilter("ALL");
       }
     } else if (activeTab === "ANNIVERSARIES") {
       if (
@@ -120,23 +113,14 @@ export default function CelebrationsAside({
         subFilter === "TODAY"
       ) {
         setSubFilter("THIS_WEEK");
-      } else if (
-        todayAnniversaries.length === 0 &&
-        thisWeekAnniversaries.length === 0 &&
-        anniEvents.length > 0 &&
-        subFilter === "TODAY"
-      ) {
-        setSubFilter("ALL");
       }
     }
   }, [
     activeTab,
     todayBirthdays.length,
     thisWeekBirthdays.length,
-    bdayEvents.length,
     todayAnniversaries.length,
     thisWeekAnniversaries.length,
-    anniEvents.length,
   ]);
 
   // Compute filtered events based on activeTab and subFilter
@@ -145,17 +129,10 @@ export default function CelebrationsAside({
     if (subFilter === "TODAY") {
       return list.filter((e) => e.diffDays === 0);
     }
-    if (subFilter === "THIS_WEEK") {
-      return list
-        .filter((e) => e.diffDays >= 0 && e.diffDays <= 7)
-        .sort((a, b) => a.diffDays - b.diffDays);
-    }
-    if (subFilter === "THIS_MONTH") {
-      return list
-        .filter((e) => e.diffDays >= 0 && e.diffDays <= 30)
-        .sort((a, b) => a.diffDays - b.diffDays);
-    }
-    return list; // ALL
+    // Default / THIS_WEEK
+    return list
+      .filter((e) => e.diffDays >= 0 && e.diffDays <= 7)
+      .sort((a, b) => a.diffDays - b.diffDays);
   }, [activeTab, subFilter, bdayEvents, anniEvents]);
 
   // Only select an event when explicitly clicked by user (No auto-selection)
@@ -254,12 +231,7 @@ export default function CelebrationsAside({
     document.body.removeChild(link);
   };
 
-  const subFilterLabel =
-    subFilter === "TODAY"
-      ? "Today"
-      : subFilter === "THIS_WEEK"
-        ? "This Week"
-        : "All Celebrations";
+  const subFilterLabel = subFilter === "TODAY" ? "Today" : "This Week";
 
   return (
     <aside className="celebrations-constant-card">
@@ -320,7 +292,7 @@ export default function CelebrationsAside({
         </button>
       </div>
 
-      {/* 3. Sub-Tabs: Today, This Week, All */}
+      {/* 3. Sub-Tabs: Today, This Week,  */}
       <div className="celebrations-subfilter-bar">
         <button
           type="button"
@@ -344,16 +316,6 @@ export default function CelebrationsAside({
           <span className="chip-count">{currentCounts.THIS_WEEK}</span>
         </button>
 
-        <button
-          type="button"
-          className={`celebrations-subfilter-chip ${
-            subFilter === "ALL" ? "active" : ""
-          }`}
-          onClick={() => setSubFilter("ALL")}
-        >
-          <span>🌟 All</span>
-          <span className="chip-count">{currentCounts.ALL}</span>
-        </button>
       </div>
 
       {/* 4. Row-by-Row Celebrants Listing */}
@@ -366,11 +328,7 @@ export default function CelebrationsAside({
               {activeTab === "BIRTHDAYS"
                 ? "birthdays"
                 : "wedding anniversaries"}{" "}
-              {subFilter === "TODAY"
-                ? "today."
-                : subFilter === "THIS_WEEK"
-                  ? "this week."
-                  : "found."}
+              {subFilter === "TODAY" ? "today." : "this week."}
             </p>
             {subFilter === "TODAY" && currentCounts.THIS_WEEK > 0 && (
               <button

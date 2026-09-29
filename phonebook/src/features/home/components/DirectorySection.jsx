@@ -318,6 +318,59 @@ const DirectorySection = () => {
             )}
           </div>
         </div>
+
+        {/* Associations and Clubs */}
+        <div className="mt-5">
+          <h2 className="section-title text-center mb-5">Directories</h2>
+
+          <div className="row g-4">
+            <div className="col-lg-4 col-md-6 col-sm-6">
+              <div
+                className="directory-card clickable-card"
+                onClick={() => navigate("")}
+              >
+                <div className="directory-card-logo">
+                  <img src=" " alt="" />
+                </div>
+                <h2>Directory 2023</h2>
+                <p>
+                  Get the complete list of businesses and organizations in your
+                  area.
+                </p>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 col-sm-6">
+              <div
+                className="directory-card clickable-card"
+                onClick={() => navigate("")}
+              >
+                <div className="directory-card-logo">
+                  <img src="" alt="" />
+                </div>
+                <h2>Coimbatore Industrial Directory 2026</h2>
+                <p>
+                  Get the complete list of businesses and organizations in your
+                  area.
+                </p>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 col-sm-6">
+              <div
+                className="directory-card clickable-card"
+                onClick={() => navigate("")}
+              >
+                <div className="directory-card-logo">
+                  <img src="" alt="" />
+                </div>
+                <h2>Coimbatore North</h2>
+                <p>
+                  Get the complete list of businesses and organizations in your
+                  area.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

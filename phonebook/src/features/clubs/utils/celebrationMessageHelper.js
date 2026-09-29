@@ -98,27 +98,27 @@ export function formatCelebrationWishMessage({
   if (diffDays === 0) {
     // Today
     if (isBday) {
-      body = `${salutation}, wishing you a very Happy Birthday! 🎂🎉 May your day be filled with happiness, health, and great success. - Best wishes from ${formattedSender}`;
+      body = `${salutation}, wishing you a very HAPPY BIRTHDAY! 🎂🎉 May your day be filled with happiness, health, and great success. - Best wishes from ${formattedSender}`;
     } else {
       const spouseText = spouse ? ` & ${spouse}` : "";
-      body = `${salutation}${spouseText}, wishing you both a very Happy Wedding Anniversary! 💍✨ May your bond grow stronger with each passing year. - Best wishes from ${formattedSender}`;
+      body = `${salutation}${spouseText}, wishing you both a very HAPPY Wedding Anniversary! 💍✨ May your bond grow stronger with each passing year. - Best wishes from ${formattedSender}`;
     }
   } else if (diffDays > 0) {
     // Upcoming / In advance
     const dateText = dateFormatted ? ` (${dateFormatted})` : "";
     if (isBday) {
-      body = `${salutation}, wishing you a very Happy Birthday in advance${dateText}! 🎂🎉 Wishing you fantastic celebrations and prosperity ahead. - Warm wishes from ${formattedSender}`;
+      body = `${salutation}, wishing you a very HAPPY BIRTHDAY in advance${dateText}! 🎂🎉 Wishing you fantastic celebrations and prosperity ahead. - Warm wishes from ${formattedSender}`;
     } else {
       const spouseText = spouse ? ` & ${spouse}` : "";
-      body = `${salutation}${spouseText}, wishing you both a very Happy Wedding Anniversary in advance${dateText}! 💍✨ Wishing you endless togetherness. - Warm wishes from ${formattedSender}`;
+      body = `${salutation}${spouseText}, wishing you both a very HAPPY WEDDING ANNIVERSARY in advance${dateText}! 💍✨ Wishing you endless togetherness. - Warm wishes from ${formattedSender}`;
     }
   } else {
     // Belated
     if (isBday) {
-      body = `${salutation}, wishing you a very Happy Belated Birthday! 🎂 Hope you had a wonderful celebration. Wishing you health and prosperity! - Best wishes from ${formattedSender}`;
+      body = `${salutation}, wishing you a very HAPPY Belated BIRTHDAY! 🎂 Hope you had a wonderful celebration. Wishing you health and prosperity! - Best wishes from ${formattedSender}`;
     } else {
       const spouseText = spouse ? ` & ${spouse}` : "";
-      body = `${salutation}${spouseText}, wishing you both a Happy Belated Wedding Anniversary! 💍✨ Wishing you endless togetherness. - Best wishes from ${formattedSender}`;
+      body = `${salutation}${spouseText}, wishing you both a HAPPY Belated WEDDING ANNIVERSARY! 💍✨ Wishing you endless togetherness. - Best wishes from ${formattedSender}`;
     }
   }
 
