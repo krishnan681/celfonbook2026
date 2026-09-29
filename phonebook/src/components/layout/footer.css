@@ -90,3 +90,9 @@
 }
 
 }
+
+/* Hide footer on specific pages (e.g., ClubDistrictClubsPage) */
+body.hide-celfon-footer .celfon-footer,
+body.hide-celfon-footer .celfon-search-footer {
+  display: none !important;
+}

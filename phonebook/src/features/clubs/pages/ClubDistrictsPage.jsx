@@ -45,6 +45,14 @@ const ClubDistrictsPage = () => {
   const [isKeywordFocused, setIsKeywordFocused] = useState(false);
   const [senderName, setSenderName] = useState("");
 
+  // Hide global footer while viewing ClubDistrictsPage
+  useEffect(() => {
+    document.body.classList.add("hide-celfon-footer");
+    return () => {
+      document.body.classList.remove("hide-celfon-footer");
+    };
+  }, []);
+
   useEffect(() => {
     let isMounted = true;
     async function fetchLoggedInUser() {
