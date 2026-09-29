@@ -234,6 +234,95 @@
   margin: 0 0 6px;
 }
 
+/* ====================== Playbook Directory Cards ====================== */
+
+.directory-card.playbook-card {
+  height: auto;
+  min-height: 300px;
+  background: #ffffff;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.directory-card.playbook-card::before {
+  display: none;
+}
+
+.directory-card.playbook-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px rgba(13, 110, 253, 0.16);
+  border-color: #0d6efd;
+}
+
+.directory-card.playbook-card .directory-card-logo {
+  width: 120px;
+  height: 155px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  background: #f8fafc;
+  flex-shrink: 0;
+}
+
+.directory-card.playbook-card .directory-card-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.directory-card.playbook-card:hover .directory-card-logo img {
+  transform: scale(1.05);
+}
+
+.directory-card.playbook-card h2 {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+
+.directory-card.playbook-card p {
+  font-size: 0.86rem;
+  color: #64748b;
+  margin: 0 0 16px;
+  line-height: 1.45;
+  flex-grow: 1;
+}
+
+.directory-card.playbook-card .playbook-action-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0d6efd;
+  background: #eff6ff;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  transition: all 0.25s ease;
+}
+
+.directory-card.playbook-card:hover .playbook-action-badge {
+  background: #0d6efd;
+  color: #ffffff;
+}
+
 /* ====================== Responsive ====================== */
 
 @media (max-width: 768px) {

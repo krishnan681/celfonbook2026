@@ -54,3 +54,22 @@ export const fetchClubs = async () => {
     return [];
   }
 };
+
+export const fetchPlaybooks = async () => {
+  try {
+    const { data, error } = await supabase
+      .from("playbooks")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (error) {
+      console.warn("fetchPlaybooks notice:", error.message);
+      return [];
+    }
+
+    return data || [];
+  } catch (err) {
+    console.error("fetchPlaybooks error:", err);
+    return [];
+  }
+};

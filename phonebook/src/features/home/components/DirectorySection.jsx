@@ -162,8 +162,15 @@ import "../pages/css/DirectorySection.css";
 
 const DirectorySection = () => {
   const navigate = useNavigate();
-  const { onlineDirectories, expos, popularFirms, clubs, loading, error } =
-    useHomeController();
+  const {
+    onlineDirectories,
+    expos,
+    popularFirms,
+    clubs,
+    playbooks,
+    loading,
+    error,
+  } = useHomeController();
 
   if (loading) return <div className="text-center py-5">Loading...</div>;
   if (error) return <div className="text-center py-5 text-danger">{error}</div>;
@@ -319,56 +326,55 @@ const DirectorySection = () => {
           </div>
         </div>
 
-        {/* Associations and Clubs */}
+        {/* Directories (Playbooks) */}
         <div className="mt-5">
           <h2 className="section-title text-center mb-5">Directories</h2>
 
-          <div className="row g-4">
-            <div className="col-lg-4 col-md-6 col-sm-6">
-              <div
-                className="directory-card clickable-card"
-                onClick={() => navigate("")}
-              >
-                <div className="directory-card-logo">
-                  <img src=" " alt="" />
+          <div className="row g-4 justify-content-center">
+            {playbooks && playbooks.length > 0 ? (
+              playbooks.map((book) => (
+                <div
+                  className="col-lg-4 col-md-6 col-sm-6"
+                  key={book.id || book.title}
+                >
+                  <div
+                    className="directory-card playbook-card clickable-card"
+                    onClick={() => {
+                      if (book.redirect_url) {
+                        window.open(
+                          book.redirect_url,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }
+                    }}
+                  >
+                    <div className="directory-card-logo">
+                      {book.image_url ? (
+                        <img
+                          src={book.image_url}
+                          alt={book.title || "Directory Cover"}
+                        />
+                      ) : (
+                        <span style={{ fontSize: "2.5rem" }}>📖</span>
+                      )}
+                    </div>
+                    <h2>{book.title}</h2>
+                    <p>
+                      Get the complete list of businesses and organizations in
+                      your area.
+                    </p>
+                    <span className="playbook-action-badge">
+                      View on Play Store ↗
+                    </span>
+                  </div>
                 </div>
-                <h2>Directory 2023</h2>
-                <p>
-                  Get the complete list of businesses and organizations in your
-                  area.
-                </p>
+              ))
+            ) : (
+              <div className="col-12 text-center">
+                <p>No directories available at the moment.</p>
               </div>
-            </div>
-            <div className="col-lg-4 col-md-6 col-sm-6">
-              <div
-                className="directory-card clickable-card"
-                onClick={() => navigate("")}
-              >
-                <div className="directory-card-logo">
-                  <img src="" alt="" />
-                </div>
-                <h2>Coimbatore Industrial Directory 2026</h2>
-                <p>
-                  Get the complete list of businesses and organizations in your
-                  area.
-                </p>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 col-sm-6">
-              <div
-                className="directory-card clickable-card"
-                onClick={() => navigate("")}
-              >
-                <div className="directory-card-logo">
-                  <img src="" alt="" />
-                </div>
-                <h2>Coimbatore North</h2>
-                <p>
-                  Get the complete list of businesses and organizations in your
-                  area.
-                </p>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
