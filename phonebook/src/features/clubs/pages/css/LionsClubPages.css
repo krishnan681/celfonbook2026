@@ -985,6 +985,26 @@
   flex-direction: column;
 }
 
+/* Districts Page 2-Column Grid with Events & News on the right */
+.districts-content-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  gap: 24px;
+  align-items: start;
+}
+
+.districts-main-content {
+  min-width: 0;
+}
+
+.districts-events-aside-column {
+  position: sticky;
+  top: 20px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Unified Constant Celebrations Card */
 .celebrations-constant-card {
   background: #ffffff;
@@ -1592,6 +1612,11 @@
     grid-template-columns: minmax(0, 1fr) 320px;
     gap: 16px;
   }
+
+  .districts-content-layout {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 16px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -1600,7 +1625,13 @@
     gap: 24px;
   }
 
-  .district-celebrations-aside-column {
+  .districts-content-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .district-celebrations-aside-column,
+  .districts-events-aside-column {
     position: static;
     max-height: none;
   }

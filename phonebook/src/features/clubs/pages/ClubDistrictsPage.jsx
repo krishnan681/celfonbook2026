@@ -23,6 +23,7 @@ import { getCurrentUser } from "../../../core/services/profileService";
 import { supabase } from "../../../core/config/supabaseClient";
 import ClubProfileCard from "../components/ClubProfileCard";
 import FounderCard from "../components/FounderCard";
+import EventsNewsCard from "../components/EventsNewsCard";
 import lionsDefaultLogo from "../../../assets/images/Clubs/Lions_Clubs_International_logo.svg";
 import vasaviDefaultLogo from "../../../assets/images/Clubs/Vasavi.png";
 import "./css/LionsClubPages.css";
@@ -305,9 +306,12 @@ const ClubDistrictsPage = () => {
           </div>
         )}
 
-        {/* Member Search Box */}
-        <div className="lions-search-card">
-          <form onSubmit={handleSearch}>
+        {/* 2-Column Content Layout: Main Districts/Search on Left, Events & News on Right */}
+        <div className="districts-content-layout">
+          <main className="districts-main-content">
+            {/* Member Search Box */}
+            <div className="lions-search-card">
+              <form onSubmit={handleSearch}>
             <div className="lions-search-inputs-grid">
               <div className="lions-input-group">
                 <label htmlFor="member-name-input">
@@ -495,6 +499,13 @@ const ClubDistrictsPage = () => {
             )}
           </div>
         )}
+          </main>
+
+          {/* Right Column: Events & News UI */}
+          <aside className="districts-events-aside-column">
+            <EventsNewsCard clubSlug={clubSlug} />
+          </aside>
+        </div>
       </div>
     </div>
   );
