@@ -119,7 +119,7 @@ export default function FounderCard({ clubSlug = "lions" }) {
             onMouseOut={(e) => (e.currentTarget.style.transform = "translateY(0)")}
           >
             <BookOpen size={17} />
-            <span>Read Book Online (PDF)</span>
+            <span>Read Book (PDF)</span>
           </button>
 
           <button
