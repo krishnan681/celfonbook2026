@@ -1561,6 +1561,30 @@
   gap: 8px;
 }
 
+
+.sender-call-btn {
+  flex: 1;
+  height: 36px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+}
+
+.sender-call-btn:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
 .sender-whatsapp-btn {
   flex: 1;
   height: 36px;

@@ -8,6 +8,7 @@ import {
   Calendar,
   CheckCircle,
   Pencil,
+  Phone,
 } from "lucide-react";
 import { FaWhatsapp as FaWhatsappIcon } from "react-icons/fa";
 import { formatCelebrationWishMessage } from "../utils/celebrationMessageHelper";
@@ -114,6 +115,14 @@ export default function CelebrationMessageSender({
     }
     const url = `https://wa.me/91${rawMobile}?text=${encodeURIComponent(customMessage)}`;
     window.open(url, "_blank");
+  };
+
+  const handleCall = () => {
+    if (!rawMobile) {
+      alert("No phone number available for this member to make a call.");
+      return;
+    }
+    window.location.href = `tel:${rawMobile}`;
   };
 
   const handleCopyMessage = () => {
@@ -318,6 +327,31 @@ export default function CelebrationMessageSender({
           }}
         >
           {isCopied ? "✓ Copied!" : "Copy Text"}
+        </button>
+
+        <button
+          type="button"
+          onClick={handleCall}
+          disabled={!rawMobile}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            background: rawMobile ? "#10b981" : "#475569",
+            color: "white",
+            border: "none",
+            borderRadius: "10px",
+            padding: "10px 20px",
+            fontSize: "0.9rem",
+            fontWeight: "700",
+            cursor: rawMobile ? "pointer" : "not-allowed",
+            boxShadow: rawMobile
+              ? "0 4px 14px rgba(16, 185, 129, 0.35)"
+              : "none",
+          }}
+        >
+          <Phone size={18} />
+          <span>Call</span>
         </button>
 
         <button

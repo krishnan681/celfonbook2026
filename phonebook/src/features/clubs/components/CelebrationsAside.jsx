@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Cake, PartyPopper, MessageSquare, Calendar, X, Pencil } from "lucide-react";
+import { Cake, PartyPopper, MessageSquare, Calendar, X, Pencil, Phone } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { formatCelebrationWishMessage } from "../utils/celebrationMessageHelper";
 import { getCurrentUser } from "../../../core/services/profileService";
@@ -231,6 +231,17 @@ export default function CelebrationsAside({
     document.body.removeChild(link);
   };
 
+  const handleCall = () => {
+    if (!activeSelectedEvent) return;
+    const m = activeSelectedEvent.member;
+    const rawPhone = (m.mobile_number || m.phone || "").replace(/[^0-9]/g, "");
+    if (!rawPhone) {
+      alert("No mobile number registered for this member to make a call.");
+      return;
+    }
+    window.location.href = `tel:${rawPhone}`;
+  };
+
   const subFilterLabel = subFilter === "TODAY" ? "Today" : "This Week";
 
   return (
@@ -426,7 +437,7 @@ export default function CelebrationsAside({
                   </div>
                 </div>
 
-                {/* Quick Selection Indicator (No WhatsApp / SMS buttons on individual member rows) */}
+                {/* Quick Selection Indicator */}
                 <div
                   style={{
                     fontSize: "0.72rem",
@@ -522,6 +533,16 @@ export default function CelebrationsAside({
             className="sender-action-row"
             style={{ display: "flex", gap: "8px" }}
           >
+            <button
+              type="button"
+              className="sender-call-btn"
+              onClick={handleCall}
+              style={{ flex: 1 }}
+            >
+              <Phone size={15} />
+              <span>Call</span>
+            </button>
+
             <button
               type="button"
               className="sender-whatsapp-btn"

@@ -360,10 +360,6 @@ const DirectorySection = () => {
                       )}
                     </div>
                     <h2>{book.title}</h2>
-                    <p>
-                      Get the complete list of businesses and organizations in
-                      your area.
-                    </p>
                     <span className="playbook-action-badge">
                       View on Play Store ↗
                     </span>
